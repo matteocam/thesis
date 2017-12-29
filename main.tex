@@ -13,7 +13,12 @@
 \usepackage{enumitem}
 \usepackage{verbatim}
 \usepackage{accents}
+\usepackage{blindtext}
+\usepackage{comment}
+\usepackage{complexity}
 \usepackage{framed}
+\usepackage[usenames, dvipsnames]{color}
+\usepackage{fancyhdr}
 \usepackage[normalem]{ulem}
 %\setlength\titlebox{6.5cm}    % You can expand the title box if you
 % really have to
@@ -42,24 +47,30 @@ This is a proposal.
 
 
 % Introduction/Motivation:
+\section{Introduction}
 \input{introduction.tex}
 
 
 % Rational Proofs: Preliminaries
+\section{Background on Rational Proofs}
 \input{rp-background.tex}
 
 
 % Rational Proofs:  Sequential Composability
+\section{Sequentially Composable Rational Proofs}
 \input{rp-sequential.tex}
 
 
 % Rational Proofs: Rational Proofs for Space-Bounded Computations
+\section{Rational Proofs for Space Bounded Computation}
 \input{rp-space-bounded.tex}
 
 %  FG FHE
+\section{Fine-Grained Somewhat Homomorphic Encryption}
 \input{fg-fhe.tex}
 
 %  FG DoC
+\section{Fine-Grained Delegation of Computation}
 \input{fg-doc.tex}
 
 

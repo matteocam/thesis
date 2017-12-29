@@ -1,0 +1,115 @@
+\begin{comment}
+In this section I describe the motivation of the problem and of the design choices.
+
+Problem: Efficient Delegation of Computation 
+[The motivation for this is straightforward]
+
+Design Principles and Points of Focus:
+- (almost) "lack" of cryptography (in the FG case, for reasons of both efficiency and assumptions)
+- adversarial assumptions:
+-- rationality, or
+-- limited resources (circuit depth)
+
+
+\end{comment}
+
+% NOTE: One possibility for the ouline is: first go all about rationality (both motivation and research questions) and then about fine-grained computation (both motivation and research questions)
+
+% TODO: Say somewhere about the perspective "trading efficiency and assumptions for adversaries' bounds"? (thus stated is particularly FG specific)
+
+In verifiable computation, a party with limited resources (called \textit{verifier}) delegates the computation of a function $f$ on input $x$ to a more powerful party (called \textit{prover}.)
+
+There is a large body of research on this problem. Such research mixes theory of computing and cryptography.
+[\textbf{TODO}]
+
+The research on this problem branches according to types of assumptions done on the potentially malicious prover:
+unconditional schemes or cryptographic schemes. Unconditional schemes are secure against any adversary, regardless of their computational power. These schemes make no cryptographic assumptions (e.g. the existence of one-way functions). Cryptographic schemes may require general cryptographic assumptions such as FHE (e.g. \cite{ggp09} ) or more specific ones, such as generalizations of Diffie-Hellman or ``knowledge assumptions" \CN (e.g. \cite{qsp}). Such schemes are secure against any polynomial-time adversary.
+
+In this proposal, we focus on the problem of obtaining expressive delegation schemes (i.e. for general classes of computations) 
+with very efficient verifiers.  Pursuing this goal, we will make assumptions on the adversary.
+% TODO: Say somewhere once and for all what you mean with cryptographic assumptions: i.e. one-way functions or specific hardness assumptions
+We will describe two different types of schemes from two different types of assumptions. Both assumptions allow us to obtain verifiers that, in many circumstances, are more efficient than the ones obtained so far in the  \XXX unconditional and cryptographic research mentioned above.
+% XXX: Maybe you want to talk about changes for the prover's cost, if any? (At a shallow analysis, it seems that we gain in that dimension too)
+% XXX: As a consequence, you may rephrase your goal as obtaining "doubly very efficient proofs"
+
+\subsubsection{Adversaries with Incentives: Rationality}
+
+% TODO: Give names to subsubsections maybe?
+% XXX: Maybe just replace sections with chapters?
+
+% What do we mean by this assumption?
+In this work, we shall use rationality in the decision theoretic sense:
+adversaries are agents that will act maximizing a certain utility function.
+We will assume that the verifier will reward the prover for its services;
+the prover will make sure to obtain the maximum reward possible.
+We will not make assume the verifier to act honestly.
+
+% How to exploit this assumption?
+We know a potentially untruthful prover will not act in any other way. How to leverage this?
+Our goal is to make the verifier confident that the result of a computation is correct.
+We will do that in the following way.
+The prover and the verifier will interact with each other, with
+the verifier ``challenging'' the prover.
+The verifier will then use the prover's responses to (probabilistically) decide its reward.
+Thus, the reward is a function of the transcript of the interaction between prover and verifier.
+As protocol designers, we will make sure that (in expectation) the reward of the prover is maximized
+for the honest prover, i.e. the prover that answers truthfully and follows the protocol.
+
+The security notion sketched above is formalized under the notion of \textit{rational proofs} \CN.
+
+% What do we gain by such an assumption?
+Delegation schemes based on rational proofs are very \textit{simple}, \textit{extremely efficient}
+and for that do not require any hardness or cryptographic assumption\footnote{Some work \CN combined cryptography and rational proofs. In such \textit{rational arguments} the prover is assumed to be rational \textit{and} having limited computational power. Their round and communication complexity can be significantly lower than their information-theoretic counterparts. See \ref{sec:related-work} \XXX for more details. }. 
+In particular, they achieve low communication and number of rounds and a \textit{strongly sublinear} (polylogarihtmic) verification time. In fact, the verifier --- assumed to have oracle access to the input --- could need sample as few as $O(1)$ input bits to compute the prover's reward.
+
+
+% When can we afford such an assumption?
+% pay-per-compute
+Why can we afford to assume that our adversaries are rational? 
+One typical context when this may be reasonable is in the context of cloud computing and pay-per-computation. 
+% XXX: Say why it's intuitive that such parties may not be malicious, but simply negligent.
+% XXX: Also mention in relation to this how "the cost of cheating" is then important and how it should be modeled.
+In this case, rewards are directly related to the sums of money exchanged for the computation. 
+Notice that right now, several commercial cloud computing services \XXX (Amazon, Microsoft Azure, Google, IBM?) follow
+an approach based on "amount of time and resources". The concept of "being payed more or less according to the verification of the computation" is not a common payment model. \XXX
+% Q: A natural question is, where is verifiable computation used currently?
+
+% Volunteer computing
+Another context is that of volunteer computing. \XXX (Examples?)
+Here the reward for workers (provers) is some form of score. In turn, this score can at times (\XXX When?) exchanged
+monetarily or provide someone with status/ranking. In this context we can assume that the users of the system are either honest or interested in exploiting the system for their own return.
+
+% NOTE: Here is a question for Itai: how does one find out if these application domains satisfy the requirements?
+
+% Cryptocurrencies (TODO)
+A final potential application domain is that of cryptocurrencies \CN. A description of cryptocurrencies is out of the scope of this document. We will assume the reader is familiar with the basics of blockchains\footnote{See \CN for further details.}. In the following observations we will assume the existence of \textit{publicly verifiable rational proofs/arguments}, i.e. rational protocol that can be verified by any party, not necessarily by the verifier for which the proof is intended. 
+% Explain connections between how transactions are verified and public verifiability
+
+% Applications to mining
+A first application is mining. A miner is usually rewarded a fee after completing two tasks: verifying that the transactions in a new block are legitimate and completing a proof of work, usually in the form of finding a hash preimage of a string with a specific prefix. Other miners in turn invest computational resources verifying that these two tasks were accomplished correctly. This can be computationally intensive. If the checks miners usually carry out admitted non-interactive publicly verifiable rational proofs, they could simply verify those. This could lead  enormous savings in computational resources. Utility-maximizing blockchain users who are trying to arrive first mining a new block 
+Some further observations are in place. The approach alone would not protect against malicious miners whose goal is to disrupt the network. It is unclear how the incentives of miners would change as a consequence. Incentives to accurate verification in the blockchain may benefit from this approach, as it may solve the \textit{verifier's dilemma}(\cite{luu2015demystifying}). The verifier's dilemma is the observation that miners have incentive to skip the verification of expensive transactions to gain a competitive advantage in the race for the next block. We leave more sophisticated security and game-theoretic analysis that would shed light on this as an open problem.
+
+% Applications to verifiable computation
+% TODO: We could do unexpensive (computationally)
+
+
+\subsubsection{Adversaries with Limited Parallel Time}
+
+
+% What do we mean by this assumption?
+
+% How to exploit this assumption?
+
+% What do we gain by such an assumption?
+
+% When can we afford such an assumption?
+
+\subsection{Rational Proofs: problem statement}
+
+\subsection{Fine-Grained DoC: problem statement}
+
+% TODO: Comparison between the "more efficient" schemes you get with your FG stuff and with what already exists
+
+
+\subsection{Organization}
+\textbf{TODO...}
