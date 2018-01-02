@@ -1,0 +1,24 @@
+
+Let us now define the {\sf profit} of the Prover as the difference between the reward paid by the verifier and the cost incurred by the Prover to compute $f$ and engage in the protocol. 
+As already pointed out in \cite{am1,rosen} the definition of Rational Proof is sufficiently robust to also maximize the {\sf profit} of the honest prover and not the reward. Indeed consider the case of a "lazy" prover $\disP$ that does not evaluate the function: even if 
+$\disP$ collects a "small" reward, his total profit might still be higher than the profit of the honest prover $P$. 
+
+Set $R(x)=\expRewProtHon$, $\tilde{R}(x)=\expRewProtDis$ and $C(x)$ [resp. $\tilde{C}(x)$] the cost for $P$ [resp. $\disP$] to engage in the protocol. Then we want
+\[ R(x)-C(x) \geq \tilde{R}(x)-\tilde{C}(x) \; \Longrightarrow \; 
+\delta_{\disP}(x) \geq C(x) -\tilde{C}(x) \]
+In general this is not true (see for example the previous protocol), but it is always possible to change the reward by a multiplier $M$. Note that if $M \geq C(x)/\delta_{\disP}(x)$ then we have that 
+\[ M(R(x) - \tilde{R}(x)) \geq C(x) \geq C(x) - \tilde{C}(x) \]
+as desired. Therefore by using the multiplier $M$ in the reward, the honest prover 
+$P$ maximizes its profit against all provers $\disP$ except those for which $\delta_{\disP}(x) \leq C(x)/M$, i.e. those who report the incorrect result with a "small" probability $\epsilon_{\disP}(x) \leq \frac{C(x)}{M \Delta(x)}$. 
+
+We note that $M$ might be bounded from above, by budget considerations (i.e. the need to keep the total reward $MR(x) \leq B$ for some budget $B$). This point out to the importance of a large reward gap $\Delta(x)$ since the larger $\Delta(x)$ is, the smaller the probability of a cheating prover $\disP$ to report an incorrect result must be, in order for $\disP$ to achieve an higher profit than $P$. 
+
+\smallskip
+\noindent
+{\sc Example.} In the above protocol we can assume that the cost of the honest prover is $C(x)=n$, and we know that $\Delta(x)=n^2$. Therefore the profit of the honest prover is maximized against all the provers that report an incorrect result with probability larger than $n^3/M$, which can be made sufficiently small by choosing the appropriate multiplier. 
+
+
+\begin{myrem}
+\label{rem:asy}
+{\em If we are interested in an asymptotic treatment, it is important to notice that as long as $\Delta(x) \geq 1/{\sf poly}(|x|)$ then it is possible to keep a polynomial reward budget, and maximize the honest prover profit against all provers who cheat with a substantial probability $\epsilon_{\disP} \geq 1/{\sf poly'}(|x|)$.}
+\end{myrem}

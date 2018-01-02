@@ -1,0 +1,33 @@
+
+\section{Profit vs. Reward}
+\input{rp/profit.tex}
+
+\section{Sequential Composition}
+We now present the main results of our work. First we informally describe our notion of sequential composition of 
+rational proof, via a motivating example and show that the protocols in \cite{am,am1,rosen} do not satisfy it. Then we present our definition of sequential rational proofs, and a protocol that achieves it for circuits of bounded depth. 
+
+
+\subsection{Motivating Example}
+\input{rp/counterexample.tex}
+
+\subsection{Sequentially Composable Rational Proofs}
+\input{rp/seq_rps.tex}
+
+\subsection{Sequential Rational Proofs in the PCP model}
+\input{rp/pcp_rp.tex}
+
+\subsection{Sequential Composition and the Unique Inner State Assumption}
+\label{sec:uisa}
+\input{rp/inner_state_assumption.tex}
+
+\section{Our Protocol}
+\input{rp/our_protocol.tex}
+
+\section{Results for FFT circuits}
+
+In this section we apply the previous results to the problem of computing FFT circuits, and by extension to polynomial evaluations. 
+\input{rp/FFT.tex}
+
+\subsection{Mixed Strategies for Verification}
+
+\input{rp/FFT-mixed-strategy}

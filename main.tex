@@ -1,5 +1,5 @@
-
-\documentclass[11pt]{article}
+\documentclass[12pt]{tufte-book}
+%\documentclass[11pt]{tufte-book}
 \usepackage{times}
 \usepackage{url}
 \usepackage{latexsym}
@@ -14,10 +14,11 @@
 \usepackage{verbatim}
 \usepackage{accents}
 \usepackage{blindtext}
+\usepackage{hyphenat}
 \usepackage{comment}
 \usepackage{complexity}
 \usepackage{framed}
-\usepackage[usenames, dvipsnames]{color}
+%s\usepackage[usenames, dvipsnames]{color}
 \usepackage{fancyhdr}
 \usepackage[normalem]{ulem}
 %\setlength\titlebox{6.5cm}    % You can expand the title box if you
@@ -26,18 +27,23 @@
 \DeclareMathOperator*{\argmin}{arg\,min}
 \DeclareMathOperator*{\argmax}{arg\,max}
 
-\title{Proposal}
+\hyphenation{Verifiable}
+
+\title{Rational and Bounded Adversaries in Verifiable Computation}
+
 
 \author{Matteo Campanelli}
   
 \date{}
 
+\newtheorem{remark}{Remark}
+
 \begin{document}
 \maketitle
 
-\abstract{
-This is a proposal.
-}
+%\abstract{
+%This is a proposal.
+%}
 
 \tableofcontents
 
@@ -47,30 +53,36 @@ This is a proposal.
 
 
 % Introduction/Motivation:
-\section{Introduction}
+\chapter{Introduction}
+
 \input{introduction.tex}
 
 
 % Rational Proofs: Preliminaries
-\section{Background on Rational Proofs}
+\chapter{Background on Rational Proofs}
+
 \input{rp-background.tex}
 
 
-% Rational Proofs:  Sequential Composability
-\section{Sequentially Composable Rational Proofs}
-\input{rp-sequential.tex}
-
-
 % Rational Proofs: Rational Proofs for Space-Bounded Computations
-\section{Rational Proofs for Space Bounded Computation}
+\chapter{Rational Proofs for Space Bounded Computation}
+
 \input{rp-space-bounded.tex}
 
+
+% Rational Proofs:  Sequential Composability
+\chapter{Sequentially Composable Rational Proofs}
+
+\input{rp-sequential.tex}
+
 %  FG FHE
-\section{Fine-Grained Somewhat Homomorphic Encryption}
+\chapter{Fine-Grained Somewhat Homomorphic Encryption}
+
 \input{fg-fhe.tex}
 
 %  FG DoC
-\section{Fine-Grained Delegation of Computation}
+\chapter{Fine-Grained Delegation of Computation}
+
 \input{fg-doc.tex}
 
 
