@@ -1,13 +1,12 @@
-\label{sec:our-protocol}
-
 We now present a protocol that works for functions $f: \binstring^n \to \binstring^n$ expressed by an arithmetic circuit $\cal C$ of size $C$ and depth $d$ and fan-in 2, given as a common input to both Prover and Verifier together with the input $x$. 
 
 Intuitively the idea is for the Prover to provide the Verifier with the output value $y$ and its two "children" $y_L,y_R$ in the gate, i.e. the two input values of the last output gate $G$. The Verifier checks that $G(y_L,y_R)=y$, and then asks the Prover to verify that $y_L$ or $y_R$ (chosen a random) is correct, by 
 recursing on the above test. The protocol description follows. 
 
-\smallskip
-\noindent
+%\smallskip
+%\noindent
 
+\begin{framed}
 \begin{enumerate}
 \item The Prover evaluates the circuit on $x$ and send the output value $y_1$ to the
 Verifier. 
@@ -32,7 +31,7 @@ $Round(i+1, g^b_{i+1}, z^b_i)$ where $g^b_{i+1}$ is the child gate of $g_i$ whos
 $z^b_{i}$.
 \end{itemize}
 \end{enumerate}
-
+\end{framed}
 
 \subsection{Efficiency} 
 % Rounds
@@ -54,10 +53,10 @@ Thus the Verifier runs in $O(r d\cdot T(n))$ with $r=O(\log C)$.
 \subsection{Proofs of (stand-alone) Rationality}
 \label{sec:proof-stand-alone}
 
-\begin{mythm}
+\begin{theorem}
 \label{thm:rp}
 The protocol in Section~\ref{sec:our-protocol} for $r=1$ is a Rational Proof according to Def.~\ref{def:RP-delta}.
-\end{mythm}
+\end{theorem}
 We prove the above theorem by showing that for every input $x$ the reward gap $\Delta(x)$ is positive. 
 
 \begin{proof}
@@ -101,12 +100,12 @@ gap is $\Delta(x) = 2^{-d}R$ (see Remark~\ref{rem:match} below to explain the eq
 \end{proof}
 
 The following useful corollary follows from the proof above.
-\begin{mycorollary}
+\begin{corollary}
 	\label{cor:repetitions}
 	If the protocol described in Section~\ref{sec:our-protocol} is repeated $r \geq 1$ times a prover can cheat with probability at most $(1-2^{-d})^r$. 
-\end{mycorollary}
+\end{corollary}
 
-\begin{myrem}
+\begin{remark}
 \label{rem:match}
 {\em 
 We point out that one can always build a prover strategy 
@@ -114,25 +113,25 @@ $P^*$ which always answers incorrectly and achieves exactly the reward
 $R^*=R(1-2^{-d})$. This prover outputs an incorrect 
 $\claimedy$ and then computes one of the subcircuits that results in one of the input values (so that at least one of the inputs is correct). This will allow him to recursively answer with values $z^0_i$ and $z^1_i$ where one of the two is correct, and therefore be caught only with probability $2^{-d}$.
 }
-\end{myrem}
+\end{remark}
 
-\begin{myrem}
+\begin{remark}
 \label{rem:logd}
 {\em 
 In order to have a non-negligible reward gap (see Remark~\ref{rem:asy}) we need
 to limit ourselves to circuits of depth $d=O(\log n)$. 
 }
-\end{myrem}
+\end{remark}
 
 \subsection{Proof of Sequential Composability}
 \label{sec:proof-comp}
 
-\subsubsection{General sufficient conditions for sequential composability}
+\newthought{General sufficient conditions for sequential composability}
 
-\begin{mylemma}
+\begin{lemma}
 	Let $\cal{C}$ be a circuit of depth $d$. If the $(C,\epsilon)$ Unique Inner State Assumption (see Assumption~\ref{assump:uisa}) holds for the function $f$ computed by $\cal C$, and input distribution $\cal D$, then the protocol presented above with $r$ repetitions is a $k\epsilon R$-sequentially composable Rational Proof for $\cal{C}$ for $\cal D$ if the following inequality holds 
 	$$ (1-2^{-d})^r \leq \frac{1}{C} $$
-\end{mylemma}
+\end{lemma}
 \begin{proof}
 	Let $\gamma=\frac{\tilde{C}}{C}$. 
 Consider $x \in \cal D$ and prover $\disP$ which invests effort $\tilde{C}\leq C$. Under Assumption~\ref{assump:uisa}, $\disP$ gives the correct outputs
@@ -149,7 +148,7 @@ sections we discuss two approaches that will allows us to prove sequential compo
 
 % Repetitions
 
-\subsubsection{Limiting the strategy of the prover: Non-adaptive Provers}
+\newthought{Limiting the strategy of the prover: Non-adaptive Provers}
 
 \smallskip
 \noindent
@@ -174,11 +173,11 @@ Consider a prover $\disP$ with effort budget $\tilde{C} < C$. A \emph{DFS} (for 
 \end{itemize} 
 \end{itemize}
 
-\begin{mylemma}[Advantage of a DFS prover]
+\begin{lemma}[Advantage of a DFS prover]
 \label{lem:DFS}
 In one repetition of the protocol above, a DFS prover with effort budget $\tilde{C}$ investment has probability of cheating $\tilde{p}_{DFS}$ defined by 
 $$ \tilde{p}_{FS} \leq 1 - 2^{-d_{DFS}}$$
-\end{mylemma}
+\end{lemma}
 
 The proof of Lemma~\ref{lem:DFS} follows easily from the proof of the stand-alone rationality of our protocol (see Theorem~\ref{thm:rp}). 
 
@@ -199,11 +198,11 @@ The interaction of a BFS prover with $V$ throughout the protocol resembles that 
 \end{itemize}
 As before, it is not hard to see that the probability of successful cheating by a BFS prover can be bounded as follows: 
 
-\begin{mylemma}[Advantage of a BFS prover]
+\begin{lemma}[Advantage of a BFS prover]
 \label{lem:BFS}
 	In one repetition of the protocol above, a BFS prover with effort budget $\tilde{C}$ has probability of cheating $\tilde{p}_{BFS}$ bounded by
 	$$ \tilde{p} \leq 1 - 2^{-d_{BFS}}$$
-\end{mylemma}
+\end{lemma}
 %\begin{proof}
 %	The proof proceeds analogously to that of Theorem \ref{thm:rp}, considering any subcircuit rooted at height $\deltaBfsInv+1$ instead of the whole circuit.
 %\end{proof}
@@ -219,14 +218,14 @@ The interaction with $V$ of such a prover is analogous to that of a a BFS/DFS pr
 
 The proof of the following Lemma is a generalization of the proof of security of our scheme. Once the "verification path" chosen by the Verifier enters a fully computed subcircuit at height $i$ (which happens with probability $\Pi_i^{\circNA}$), the probability of success of the Prover is bounded by $(1 - 2^{-i})$
 
-\begin{mylemma}[Advantage of a non adaptive prover]
+\begin{lemma}[Advantage of a non adaptive prover]
 \label{lem:gen-adv}
 	In one repetition of the protocol above, a generic prover with effort budget $\tilde{C}$ used to compute a collection $\circNA$ of subcircuits, has probability of cheating $\tilde{p}_{\circNA}$ bounded by
 	$$ \tilde{p}_{\circNA} \leq \sum_{i=0}^{d} \Pi_i (1 - 2^{-i})$$
 	where $\Pi_i$-s are defined as in Definition \ref{def:exp-path}.
-\end{mylemma}
+\end{lemma}
 
-\subsubsection{Limiting the class of functions: Regular Circuits}
+\newthought{Limiting the class of functions: Regular Circuits}
 
 
 \smallskip
@@ -251,11 +250,11 @@ the next section we show examples of interesting functions that admit regular ci
 
 The following lemma states that, in regular circuits, we can bound the advantage of any prover investing $\tilde{C}$ by looking at the advantage of a BFS prover with the same investment.
 
-\begin{mylemma}[A bound for provers' advantage in regular circuits]
+\begin{lemma}[A bound for provers' advantage in regular circuits]
 	\label{lemma:bfs-bound-reg}
 	Let $\disP$ be a prover investing $\tilde{C}$. Let $\cal C$ be the circuit being computed and $\delta=d_{BFS}({\cal C},\tilde{C})$. In one repetition of the  		protocol above, the advantage of $\disP$ is bounded by 
 	$$ \tilde{p} \leq \tilde{p}_{BFS} = 1 - 2^{-\delta}$$ 
-\end{mylemma}
+\end{lemma}
 
  \begin{proof}
 Let $\circNA$ be the family of subcircuits compued by $\disP$ with effort $\tilde{C}$. As pointed out above the probability of success for $\disP$ is 
@@ -280,12 +279,12 @@ Note that $\tilde{p}'$ increases if $j > k$ which means that it's better to take
 
 The above Lemma, therefore, yields the following 
 
-\begin{mythm}
+\begin{theorem}
 \label{thm:reg-circ}
 Let $\cal{C}$ be a regular circuit of size $C$. If the $(C,\epsilon)$ Unique Inner State Assumption (see Assumption~\ref{assump:uisa}) holds for the function $f$ computed by $\cal C$, and input distribution $\cal D$, then the protocol presented above with $r$ repetitions is a $k\epsilon R$-sequentially composable Rational Proof for $\cal{C}$ for $\cal D$ if the prover follows a non-adaptive strategy and the following inequality holds for all $\tilde{C}$ 
 	$$ (1-2^{-\delta})^r \leq \frac{\tilde{C}}{C} $$
 where $\delta=d_{BFS}({\cal C},\tilde{C})$.
-\end{mythm}
+\end{theorem}
 
 \begin{proof}
 	Let $\gamma=\frac{\tilde{C}}{C}$. 

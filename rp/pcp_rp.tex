@@ -29,11 +29,12 @@ input wires of $g$; the verifier checks that $\alpha_{g_{out}} = g(\alpha_{g_L},
 The Verifier pays $R$ if both checks are satisfied, otherwise it pays $0$.
 \end{enumerate}
 
-\begin{mythm}[\cite{am1}]
+\XXX \textbf{Next Theorem Should Cite Azar-Micali!} %[\cite{am1}]
+\begin{theorem}
 The protocol above is a rational proof for any boolean function in $
 P^{||NP}$, the class of all languages decidable by a polynomial time machine 
 that can make non-adaptive queries to $NP$.
-\end{mythm}
+\end{theorem}
 
 We will now show  a cost model where the rational proof above is sequentially 
 composable.
@@ -45,10 +46,10 @@ where $\tilde s$ is the number of gates written by the dishonest prover.
 Observe that in this model a dishonest prover may not write all the $S$ 
 gates, and that not all of the $\tilde{s}$ gates have to be correct. Let $\sigma \leq \tilde{s}$ the number of correct gates written by $\disP$. Then 
 
-\begin{mythm}
+\begin{theorem}
 In the cost model above the PCP protocol protocol in \cite{am1} is sequentially 
 composable.
-\end{mythm}
+\end{theorem}
 \begin{proof}
 Observe that the probability $\pDisR$ that $\disP\neq P$ earns $R$ is such that
 $$ \pDisR = \frac{\sigma}{S} \leq \frac{\tilde s}{S} = \frac{\tilde C}{C} $$
