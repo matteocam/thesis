@@ -1,4 +1,4 @@
-\documentclass{tufte-book}
+\documentclass[nobib]{tufte-book}
 %\documentclass[11pt]{tufte-book}
 \usepackage{times}
 \usepackage{url}
@@ -18,6 +18,7 @@
 \usepackage{comment}
 \usepackage{complexity}
 \usepackage{framed}
+\usepackage{csquotes}
 %s\usepackage[usenames, dvipsnames]{color}
 \usepackage{fancyhdr}
 \usepackage[normalem]{ulem}
@@ -27,9 +28,10 @@
 \DeclareMathOperator*{\argmin}{arg\,min}
 \DeclareMathOperator*{\argmax}{arg\,max}
 
-\hyphenation{Verifiable}
+\hyphenation{Efficient}
+\hyphenation{Computation}
 
-\title{Rational and Bounded Adversaries in Verifiable Computation}
+\title{Rationality and \\ \noindent Efficient Verifiable Computation}
 
 
 \author{Matteo Campanelli}
@@ -59,7 +61,7 @@
 
 
 % Rational Proofs: Preliminaries
-\chapter{Background on Rational Proofs}
+\chapter{Preliminaries and  Definitions}
 
 \input{rp-background.tex}
 
@@ -75,15 +77,13 @@
 
 \input{rp-sequential.tex}
 
+%  FG DoC
+\chapter{Fine-Grained Verifiable Computation}
+\input{fg-doc.tex}
+
 %  FG FHE
 \chapter{Fine-Grained Somewhat Homomorphic Encryption}
-
 \input{fg-fhe.tex}
-
-%  FG DoC
-\chapter{Fine-Grained Delegation of Computation}
-
-\input{fg-doc.tex}
 
 
 

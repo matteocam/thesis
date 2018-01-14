@@ -1,0 +1,59 @@
+% -- Motivating Example -- i.e. why would we care?
+% Nowadays a lot of computational resources are available. Yet, not evenly so.
+% XXX: More about the transition back to "mainframe"-like era through cloud computing
+
+Imagine this situation.
+You are a researcher in a biological lab, you have plenty of data and a clear scientific hypothesis you want to test on them. All you need to test such hypothesis is running a program you wrote. Problem: the computers in your lab will take weeks to run it (the bliss and the curse of big data). If you had a large number of powerful CPUs, a parallel version of the program you wrote would run in only a few hours --- right on time for you to submit your findings for the next conference deadline.
+
+Cloud computing solves a part of the problem above. If you cannot \textit{physically} run a program (or store data) on a computer you own, have someone ``rent'' you a computer (or \textit{many} computers) on which to run it. Let (say) Amazon EC2 \footnote{Amazon Elastic Cloud: https://aws.amazon.com/ec2/} run your beautiful code for you and write your papers with the results it will return. So far, so good. But there is a new problem now, a problem that intuitively has to do with \textit{trust}. 
+What guarantees do you have on whether they actually ran your program? What guarantees do you have on how reliable the execution was? What guarantees do you have on whether anybody or anything compromised the execution? At times little, or none. 
+
+This new problem we are facing can be summarized as follows: how can we \textit{verify} that an untrusted computer executed a program correctly just as if our local machine\footnote{Assuming our local machine is \textit{reliable} and \textit{uncompromised}.} would have executed it? 
+% -- Connection of the example to wider research --
+This question is at the core of the field of \textit{Verifiable Computation} (VC). The goal of VC is, informally, to provide \textit{efficient} methods to verify that a computation we \textit{delegate} is executed ``correctly''. It is important to stress that these methods should be efficient. Part of the reason being a very simple one: we do not have the resources to run our program ourselves. When I receive the alleged results from EC2, I will have to verify them through my \textit{limited} local machine\footnote{This trivially excludes re-executing the program ourselves. But couldn't we just ask a third party to run our program again? Here the question is again: with what guarantees? Plus, how do we know the two parties are not colluding with one another?} 
+VC is a practical problem that has extremely benefited from a theoretical analysis through the lenses and the tools of computational complexity and cryptography. The range and the scope of these results can roughly be located on two dimensions: efficiency and ``extent'' of guarantees. Efficiency can be described in terms of: the running times of the Delegator and the Worker\footnote{In our example, respectively the lab's computer and the cloud.} and the amount of communication required. The other dimension deals with what type of guarantees the methods provide and under what assumptions. This is related to a classical dichotomy in cryptography, e.g. is an encryption scheme provably secure against \textit{any} adversary (no matter their computational resources) or only against \textit{efficient} adversaries\footnote{Usually modeled as probabilist Turing machines (also denoted as PPTs, for Probabilistic Polynomial Time).} running in polynomial time? These two notions are respectively known as \textit{information-theoretic} (or \textit{unconditional}) security and \textit{computational} security. Analogously, a delegator which verifies a computation can obtain either type of security guarantee. 
+
+% An intuition on rationality
+\newthought{Our Model: Rational Workers}
+In this dissertation proposal we will slightly diverge from the types of security guarantees outlined above. Recall that in cloud computing, computation is rented from far away servers. This suggests an alternative approach: assume that the worker is economically motivated and seeks to maximize a monetary reward. In other words, we assume that the worker is \textit{rational}. Notice that we are still not trusting the worker. However, we diverge from unconditional and computational security guarantees which model a worker's behavior respectively as an arbitrary computable function and an arbitrary function computable by a PPT. In fact we will assume an utility function $u: \bits \to \reals$ which takes as input the ``interaction'' between the worker and the delegator. One way of thinking of this utility function is as the payment (or \textit{reward}) that the worker obtains by carrying out the computation for the delegator. Once fixed $u$, the worker's behavior as an arbitrary computable function that maximizes this utility function in expectation.
+
+
+Once we assume the cloud is rational, we can reduce our security guarantee to the following condition:
+\begin{displayquote}
+	Any cheating worker will obtain a lower utility (in expectation) than an honest worker.
+\end{displayquote}
+ where by ``honest'' worker we mean one that carries out the computation correctly.
+Our goal now becomes to design a protocol that no worker \textit{is incentivized} to deviate from, i.e. a protocol no \textit{rational worker} will deviate from. 
+
+% == General question we are addressing ==
+
+% -- What are we going to study here specifically --
+\newthought{Our Research Problem: Efficient Verifiable Computation}
+
+% -- Why non cryptography
+\newthought{A Design Constraint: Non-Cryptographic Protocols}
+
+% == A framework: rational proofs ==
+\subsection{Rational Proofs}
+
+% -- Stress important features of rational proofs: low cc, rounds and verifier's time
+
+% == Q1: Expressivity of Rational Proofs ==
+\newthought{Research Question 1: Expressivity}
+
+% -- Our results --
+
+% == Q2: Multiple Delegations == 
+
+% -- Our results --
+
+% == Transition to FG ==
+
+% -- A limitation of our approach: the inner state assumption --
+
+% -- One way to get beyond that: FG schemes --
+
+% == Fine-Grained Homomorphic encryption as a basic tool to get to delegation schemes ==
+
+% == Results on non-interactive Delegation schemes ==
+
