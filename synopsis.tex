@@ -2,8 +2,10 @@
 % Nowadays a lot of computational resources are available. Yet, not evenly so.
 % XXX: More about the transition back to "mainframe"-like era through cloud computing
 
+\section{Setting the Scene}
+
 Imagine the following situation.
-You are a researcher in a biological lab with plenty of data. You just formulated a clear scientific hypothesis and all you need to test it is to run a program you wrote. Problem is the any of the ordinary computers in your lab may take weeks to execute it (the bliss and the curse of big data). If you had a large number of powerful CPUs, a parallel version of the program you wrote would run in only a few hours --- right on time to submit your findings by the next conference deadline.
+You are a researcher in a biological lab with plenty of data. You just formulated a clear scientific hypothesis and all you need to test it is to run a program you wrote. Problem is that any of the ordinary computers in your lab may take weeks to execute it (the bliss and the curse of big data). If you had a large number of powerful CPUs, a parallel version of the program you wrote would run in only a few hours --- right on time to submit your findings by the next conference deadline.
 
 This scenario is the poster boy for cloud computing. If we cannot run a program (or store data) on a \textit{local} computer we can directly control, someone can ``rent'' us a machine (or \textit{many} machines) on which to run it on demand. Let us have (e.g.) Amazon EC2 \footnote{Amazon Elastic Cloud: https://aws.amazon.com/ec2/} run our beautiful code for us, then let us fill the tables in our paper with the returned output. This is extremely helpful, but now we are facing a new issue: \textit{trust}. 
 What guarantees do we have on whether the cloud did actually run our program? What guarantees do we have on how reliable the execution was? And what guarantees do we have on whether no attacker compromised that execution? Possibly little, or none.
@@ -20,7 +22,7 @@ VC is a practical problem but has extremely benefited from a theoretical analysi
 
 % An intuition on rationality
 \newthought{Our Model: Rational Workers}
-In this dissertation proposal we will slightly diverge from the types of security guarantees outlined above. Recall that in cloud computing, computation is \textit{rented} from far away servers. This suggests an alternative approach: assume that the worker is \textit{economically motivated} and seeks to maximize a monetary reward. In other words, assume it is \textit{rational}. Notice that we are still not trusting the worker and we are not assume it will behave arbitrarily maliciously. Thus we diverge from the unconditional and computational security guarantees sketched above. In fact these model a worker's behavior respectively as an arbitrary computable function and an arbitrary function computable by a PPT. In contrast we will assume an utility function $u: \bits \to \reals$ which takes as input the ``interaction'' between the worker and the delegator. One way of thinking of this utility function is as the payment (or \textit{reward}) that the worker obtains by carrying out the computation for the delegator. Once fixed $u$, the worker's behavior as an arbitrary computable function that maximizes this utility function in expectation.
+In this dissertation proposal we will slightly diverge from the types of security guarantees outlined above. Recall that in cloud computing, computation is \textit{rented} from far away servers. This suggests an alternative approach: assume that the worker is \textit{economically motivated} and seeks to maximize a monetary reward. In other words, assume it is \textit{rational}. Notice that we are still not trusting the worker and we are not assuming it will behave arbitrarily maliciously either. Thus we diverge from the unconditional and computational security guarantees sketched above. In fact these model a worker's behavior respectively as an arbitrary computable function and an arbitrary function computable by a PPT. In contrast we will assume a utility function $u: \bits \to \reals$ which takes as input the ``interaction'' between the worker and the delegator. One way of thinking of this utility function is as the payment (or \textit{reward}) that the worker obtains by carrying out the computation for the delegator. Once fixed $u$, the worker's behavior as an arbitrary computable function that maximizes this utility function in expectation.
 
 
 Once we assume the cloud is rational, we can reduce our security guarantee to the following condition:
@@ -49,18 +51,20 @@ The motivation for this design choice is two-fold. From a theoretical perspectiv
 
 In the second part of this work we will make use of tools from ``fine-grained'' cryptography~\cite{fgcrypto}. Loosely speaking, the term refers to cryptographic primitives (e.g. public-key encryption or pseudo-random functions) that are secure against a limited class of adversaries (e.g. circuits of constant depth) and whose security is unconditional (no assumptions are required) or based on very mild worst-case assumptions. This does not contradict our design criteria above as: \textit{(i)} fine-grained primitives may exist even in a world  where one-way functions are impossible to achieve; \textit{(ii)} the constructions for these primitives are extremely inexpensive, for example not requiring even integer addition.
 
-
 % == A framework: rational proofs ==
-\subsection{Rational Proofs}
+\section{Complete Results}
 
+The results in this section appeared in~$\cite{cg15}$ and~$\cite{cg17}$.
+
+\newthought{Rational Proofs}
 Part of our verification schemes will be designed within the framework of \textit{rational proofs}~\cite{am}. Like the better known \textit{interactive proofs}~\cite{gmr}, rational proofs involve two parties, a \textit{prover} and a \textit{verifier}\footnote{The prover and verifier correspond respectively to the worker and the delegator of verifiable computation}, who talk back and forth. The prover is trying to convince the verifier that a certain theorem is true. At the end of the protocol the verifier will look at the transcript of her interaction with the prover and then decide how much to reward him.
 By definition, rational proofs satisfy our goal above: a verifier will pay (in expectation) more for a ``correct proof'' than for an incorrect one. It follows immediately that a utility-maximizing prover would act honestly.
 % -- Stress important features of rational proofs: low cc, rounds and verifier's time
-So far, rational proofs offered simple and surprisingly efficient delegation schemes without cryptographic assumptions \cite{am1,ratargs,ratsumchecks}: a verifier provided random access to its input may have to only sample a constant number of input bits and run in polylogarithmic time. We provide a formal definition of rational proofs in \ref{sec:definitions}.
+So far, rational proofs offered simple and surprisingly efficient delegation schemes without cryptographic assumptions \cite{am1,ratargs,ratsumchecks}: a verifier provided random access to its input may have to only sample a constant number of input bits and run in polylogarithmic time. For  a formal definition of rational proofs the reader is referred to \cite{cg15}.
 
 % == Q1: Expressivity of Rational Proofs ==
 \newthought{The Expressivity of Efficient Rational Proofs}
-Ideally we would like to be able to delegate any feasible computation, i.e. $\BPP$ and $\P$, or any computation that can be efficiently  \textit{verified} in the classical sense, i.e. $\NP$. Currently however we do not have \textit{efficient}\footnote{The work in \cite{am} describes rational proofs with relatively high budget and verification time for large complexity classes, e.g. $\#\P$.} rational proofs that include any of these important complexity classes in their entirety. The largest practical class admitting efficient rational proofs with low budget is $\NC$, the class of parallelizable languages. The construction is due to~\cite{rationalsumchecks} and based on the celebrated interactive proofs for muggles\cite{muggles}.
+Ideally we would like to be able to delegate any feasible computation, i.e. $\BPP$ and $\P$, or any computation that can be efficiently  \textit{verified} in the classical sense, i.e. $\NP$. Currently however we do not have \textit{efficient}\footnote{The work in \cite{am} describes rational proofs with relatively high budget and verification time for large complexity classes, e.g. $\#\P$.} rational proofs that include any of these important complexity classes in their entirety. The largest practical class admitting efficient rational proofs with low budget is $\NC$, the class of parallelizable languages. The construction is due to~\cite{ratsumchecks} and based on the celebrated interactive proofs for muggles\cite{muggles}.
 
 \begin{question}
 	Can we obtain efficient rational proofs for $\P, \BPP$ and $\NP$?
@@ -104,9 +108,9 @@ Let us observe that after running the protocol for both $x_1$ and $x_2$ the dele
 \[
 	2(\disR - \disCost) <  R_h - \cost_h
 \]
-Notice that we assumed that costs and reward are \textit{additive} throughout multiple delegation. We call the property of a protocol being a rational throughout multiple delegation \textit{sequential composability}\footnote{The name refers to composition in cryptographic protocol literature to model a type of multiple invocations. At the same time the adjective ``sequential'' may be misleading in this case: in our model this ``sequential'' composition of rational proofs could as well be parallel and still be invariant.}.
+Notice that we assumed that costs and reward are \textit{additive} throughout multiple delegation. We call \textit{sequential composability} the property of a protocol ensuring that honesty is rational throughout multiple delegation \footnote{The name refers to composition in cryptographic protocol literature to model a type of multiple invocations. At the same time the adjective ``sequential'' may be misleading in this case: in our model this ``sequential'' composition of rational proofs could as well be parallel and still convey the same notion.}.
 
-\begin{question}
+\begin{question}\label{q:seq-comp}
 	Are rational proofs guaranteed to be sequentially composable, i.e. to incentivize honesty throughout multiple delegations?
 \end{question}
 
@@ -124,8 +128,8 @@ We formalize the notion of multiple delegation for rational proof and provide a 
 In~\cite{cg15} we design sequentially composable rational proofs for arithmetic circuits of logarithmic depth that are sufficiently ``regular'' (see~\cite{cg15} for a formal definition of regularity).
 
 % -- Our results --
-\begin{result}[Sequentially Composable Rational Proofs for Logarithmic depth Circuits~\cite{cg15}]
-	Under certain cost assumptions and structure assumptions, arithmetic circuits with depth $d = O(\log(n))$ admit rational proofs:
+\begin{result}[Sequentially Composable Rational Proofs for Logarithmic depth Circuits~\cite{cg15}]\label{res:sq1}
+	Under certain cost and structure assumptions, arithmetic circuits with depth $d = O(\log(n))$ admit rational proofs:
 	\begin{itemize}
 		\item that are sequentially composable;
 		\item with $O(d)$ rounds of communication and $O(d \log(n))$ total bits exchanged;
@@ -133,7 +137,7 @@ In~\cite{cg15} we design sequentially composable rational proofs for arithmetic 
 	\end{itemize}
 \end{result}
 
-\begin{result}[Sequentially Composable Rational Proofs for Space-Bounded Computations~\cite{cg17}]
+\begin{result}[Sequentially Composable Rational Proofs for Space-Bounded Computations~\cite{cg17}]\label{res:sq2}
 	Under certain cost assumptions the protocol of Result~\ref{ref:space-bounded} is sequentially composable.
 \end{result}
 
@@ -159,7 +163,7 @@ in a way similar the honest prover. Therefore, we need assumptions on how likely
 Finally, the notion and the assumptions of cost should be with respect to a distribution of inputs. We need to be able to talk about the \emph{typical} cost of an input since some inputs may have different hardness and thus costs. 
 
 \newcommand{\NoFLAVA}{\textsf{ NoFLAVA }}
-What type of assumptions did we make in the results above (Results~\ref{} and~ref{})? The two assumptions are relatively abstract and similar in fashion, but they refer to two different models of computations, respectively (arithmetic) circuits and Turing Machines. In the remainder of this section we will try and provide some model-agnostic intuitions on those assumptions, which, for lack of a better name, will collectively refer  to as ``No Free Lunch Assumption For Verifiable Answers'' (from now on, \NoFLAVA for short). For details refer to the original papers,~\cite{cg15} and~\cite{cg17} where this assumption is referred respectively as ``Unique Inner State Assumption'' and ''Hardness of State Guessing Assumption''.
+What type of assumptions did we make in the results above (Results~\ref{res:sq1} and~\ref{res:sq2})? The two assumptions are relatively abstract and similar in fashion, but they refer to two different models of computations, respectively (arithmetic) circuits and Turing Machines. In the remainder of this section we will try and provide some model-agnostic intuitions on those assumptions, which, for lack of a better name, will collectively refer  to as ``No Free Lunch Assumption For Verifiable Answers'' (from now on, \NoFLAVA for short). For details refer to the original papers,~\cite{cg15} and~\cite{cg17} where this assumption is referred respectively as ``Unique Inner State Assumption'' and ''Hardness of State Guessing Assumption''.
 
 One semi-formal way to summarize \NoFLAVA is the following: 
 \begin{displayquote}
@@ -172,17 +176,18 @@ Here is a function where \NoFLAVA holds \textit{when the inputs are uniformly di
 Let $\F$ be a finite field of any size. Let $\alpha_i \in \F$ for $i \in \nrange$ and define $f_{\alpha_1,\dots,\alpha_n}~:~\F^n \to \F^n$ as
 $f_{\alpha_1,\dots,\alpha_n}(x_1,\dots,x_n) := (x_1+\alpha_1,\dots,x_n+\alpha_n)$.
 Now, assume it costs a unitary operation to jointly read a single input component and compute the corresponding output component. Also assume that outputting anything at component $i$ without reading $x_i$ is completely free. The probability of a worker investing cost $\cost$ to output $f_{\alpha_1,\dots,\alpha_n}(x_1,\dots,x_n)$ is then lower than $\frac{\cost}{n}$. It is easy to see $f_{\alpha_1,\dots,\alpha_n}$ satisfies \NoFLAVA under the uniform distribution and the cost model above.
+Finally $f_{\alpha_1,\dots,\alpha_n}$ enjoys one more property implicitly required $\NoFLAVA$ in~\cite{cg15} and ~\cite{cg17}: \textit{non amortizability}. Intuitively, a worker cannot reuse resources across computations. If the (possibly expected) cost of computing $f$ on a single instance is $\cost$, then the cost for a batch evaluation of $m$ instances has to be roughly $m \cost$.
 
 % How to use \NoFLAVA?
 % Possibility 1: directly
 One way the results of sequential composability in~\cite{cg15} and~\cite{cg17} can be really applicable is to find functions, distributions and cost models for which some variant of \NoFLAVA holds (e.g.$f_{\alpha_1,\dots,\alpha_n}$ above). 
-Obviously this assumption cannot hold for languages or functions on fields that are too small. The probability of error would not enough.
+Obviously, this assumption cannot hold for languages or for functions with small ranges: the probability of error would be too little.
 % Hard to identify such functions and maybe it does not apply for many of them
 It is not clear to this author how such functions can be identified. Some work in this direction can be found in~\cite{fghardness} 
 and~\cite{fggr}, notice however that the approaches in those works are for specific functions.
 % Brittle: may be too tied to the model of computation
 There is another reasons it is unlikely our protocols may be useful if applied ''directly`` to specific functions to which \NoFLAVA may hold. 
-The approach may too brittle since the assumptions on cost would be very dependent on the cost model (see example on the cost of sorting integers). This limitation could be partially overcome if we had a theory of relations between different cost models. Such a theory should  provide insights similar how computational complexity connects hardness in different models of computation. However, given how fine-grained in  flavor the notion of cost is in our protocols, this author finds it unlikely a \textit{general} and \textit{generally useful} version of this theory would come about.
+The approach may too brittle since the assumptions on cost would be \textit{very dependent on the cost model} (see example on the cost of sorting integers above). This limitation could be partially overcome if we had a theory of relations among different cost models. Such a theory should  provide insights similar how computational complexity connects hardness in different models of computation. However, given how fine-grained in  flavor the notion of cost is in our protocols, this author finds it unlikely a \textit{general} and \textit{generally useful} version of this theory would come about.
 
 Given the limitations above, we argue instead that the results in ~\cite{cg15} and~\cite{cg17} should be used ``indirectly'' in the following sense. In fact, these protocols, would be useful immediately for a large class of functions if we had a result morally equivalent to the following:
 \begin{displayquote}
@@ -197,11 +202,12 @@ as promising approaches in this direction\footnote{For example, the randomized e
 
 In the remainder of this proposal we  will use another approach to achieve sequential composability that bypasses many of the limitations of \NoFLAVA applied to our protocols.
 
+\section{Results in Progress}
 % -- One way to get beyond that: FG schemes --
 
 % == Transition to FG ==
 \newthought{Fine-Grained Cryptography and Verifiable Computation}
-What if, given an arbitrary distribution of inputs and an arbitrary computation, we could somehow enforce it to be hard for a worker to be lazy? Heading in this direction we shall use tools from the recently emerging field of fine-grained cryptography~\cite{fgcrypto}\footnote{Notice that none of the assumptions from these works imply the existence of one-way functions in the standard sense.}. A fine-grained cryptographic scheme, intuitively, is a scheme that is secure only against adversaries belonging to certain complexity classes, for example all adversaries running in time $\lambda^2$ for a security parameter $\lambda$. Unless stated otherwise, from now on we will focus on fine-grained adversaries with limited circuit depth under a widely-believed separation assumption\footnote{The assumption is implied by $L \not = \NC^1$ and will be described in later sections.}.
+What if, given an arbitrary distribution of inputs and an arbitrary computation, we could somehow enforce it to be hard for a worker to be lazy? Heading in this direction we shall use tools from the recently emerging field of fine-grained cryptography~\cite{fgcrypto}\footnote{Notice that none of the assumptions from these works imply the existence of one-way functions in the standard sense.}. A fine-grained cryptographic scheme, intuitively, is a scheme that is secure only against adversaries belonging to certain complexity classes, for example all adversaries running in time $\lambda^2$ for a security parameter $\lambda$. Unless stated otherwise, from now on we will focus on fine-grained adversaries with limited circuit depth under a widely-believed separation assumption\footnote{The assumption is implied by $L \not = \NC^1$.}.
 
 % == Fine-Grained Homomorphic encryption as a basic tool to get to delegation schemes ==
 There are  at least two ways to leverage fine-grained cryptography for rational verifiable computation:
@@ -209,7 +215,10 @@ There are  at least two ways to leverage fine-grained cryptography for rational 
 	\item Consider a function $f$ and an input distribution where \NoFLAVA does not necessarily hold. We could hope to build a compiler that, given as input, e.g. a circuit $\circuit$, it converts it to a circuit $\circuit'$ where the assumption holds.
 	This is similar in spirit to the ``indirect approach'' outlined above. %One way to think about this approach is by ensuring that every gate $g \in \circuit$ is replaced with a proof-of-useful work~\cite{upow} for $g$.
 	% NB: Could we use randomized encodings for similar ideas?
-	\item As an alternative we could actually build a delegation scheme that is secure against fine-grained adversaries. As we will show in ~\ref{sec:fg-rp} this would be a sequentially composable rational proof\footnote{Under certain cost assumptions.}.
+	\item As an alternative we could actually build a delegation scheme that is secure against fine-grained adversaries. We can think of the resulting fine-grained scheme as a sequentially composable rational proof. In fact, suppose that any prover making the verifier accept\footnote{with high probability.} an incorrect answer had to run in time $n^{2+\epsilon}$ with $\epsilon > 0$. If we assume cost equals running time and that the honest prover's running time is $n^2$, then it rational to be honest. 
+	%and if the fine-grained definition of security is robust enough this provides 
+	%robust sequential composability. For example 	
+%	can think of this would be a sequentially composable rational proof\footnote{Under certain cost assumptions.}.
 \end{enumerate}
 
 The results described in the remained of this document will follow the second approach.
@@ -255,4 +264,11 @@ As a stepping stone  for Result~\ref{res:delegation} we  also show how to transf
 		\item If $f \in \ACzts$ then we can evaluate $f$ in $\ACzt$ and decrypt\footnote{With negligible error probability} the result in $\TC^0$.
 	\end{itemize}
 \end{result}
+
+\subsection{A Timeline}
+In this proposal we gave an overview of results that are both complete and in progress.
+It is this candidate's goal to have a complete thesis dissertation by the end of May 2018.
+This will include complete proofs of the partial results above and a formalization of cost assumptions.
+During this time, if possible, we will also approach some of the open problems left by our work mentioned here and
+the still unexplored implications of our partial results.
 
