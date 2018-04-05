@@ -11,11 +11,11 @@ probability negligibly close to $\gamma$ (since
 a party can always have a "mixed" strategy in which with probability $\gamma$ it runs the correct computation and with probability $1-\gamma$ does 
 something else, like guessing at random). 
 
-\begin{myassump}
+\begin{assumption}
 \label{assump:uisa}
 We say that the {\em ($C$,$\epsilon$)-Unique Inner State Assumption} holds for a function $f$ and a distribution $\cal D$ if for any algorithm $\disP$ with
 cost $\tilde{C}=\gamma C$, the probability that on input $x \in {\cal D}$, $\disP$ outputs $f(x)$ is at most $\gamma+(1-\gamma)\epsilon$. 
-\end{myassump}
+\end{assumption}
 
 Note that the assumption implicitly assumes a "large" output space for $f$ (since a random guess of the output of $f$ will be correct with probability 
 $2^{-n}$ where $n$ is the binary length of $f(x)$). 

@@ -1,26 +1,46 @@
 % Theorems
 
 
-\newtheorem{definition}{Definition}
-\newtheorem{lemma}{Lemma}
-\newtheorem{claim}{Claim}
-\newtheorem{theorem}{Theorem}
-\newtheorem{assumption}{Assumption}
-\newtheorem{property}{Property}
+\newtheoremstyle{exampstyle}
+{5pt} % Space above
+{0pt} % Space below
+{} % Body font
+{} % Indent amount
+{\bfseries} % Theorem head font
+{.} % Punctuation after theorem head
+{.5em} % Space after theorem head
+{} % Theorem head spec (can be left empty, meaning `normal')
+
+\theoremstyle{exampstyle}% default 
+\newtheorem{theorem}{Theorem}[section] 
+\newtheorem{lemma}[theorem]{Lemma} 
+\newtheorem{proposition}[theorem]{Proposition} 
+\newtheorem{property}[theorem]{Property}
+\newtheorem{corollary}[theorem]{Corollary} 
+
+\theoremstyle{definition} 
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\newtheorem{assumption}[theorem]{Assumption}
+\newtheorem{example}[theorem]{Example}
+%\newtheorem{exer}[theorem]{Exercise}
 \newtheorem{question}{Question}
-\newtheorem{result}{Result}[question]
+\theoremstyle{plain}
 \newtheorem{resultprogress}{Result (in progress)}[question]
-\newtheorem{corollary}{Corollary}
-\newtheorem{remark}{Remark}
+
+\theoremstyle{definition} 
+\newtheorem{remark}{Remark} 
 
 
 
 
-\def\mydef{definition}
-\def\mythm{theorem}
-\def\mylemma{lemma}
-\def\mycorollary{corollary}
-\def\myassump{assumption}
+
+%\def\definition{definition}
+%\def\theorem{theorem}
+%\def\lemma{lemma}
+%\def\corollary{corollary}
+%\def\assumption{assumption}
+%\def{\remark}{remark}
   
 % Tau
 \newcommand{\Tau}{\mathcal{T}}
@@ -30,12 +50,12 @@
 \newcommand{\ubar}[1]{\uline{#1}}
 
 % Theorems
-%\newtheorem{mydef}{Definition}
-%\newtheorem{mylemma}{Lemma}
+%\newtheorem{definition}{Definition}
+%\newtheorem{lemma}{Lemma}
 %\newtheorem{mytheorem}{Theorem}
-%\newtheorem{mycorollary}{Corollary}
+%\newtheorem{corollary}{Corollary}
 
-\newtheorem{myrem}{Remark}
+
 
 % New complexity classes
 %\newclass{\DTISP}{DTISP}
@@ -271,15 +291,15 @@
 \newcommand{\HEpEval}{\function{HE'.Eval}}
 
 \def\A{\mathbf{A}}
-\def\v{\vec{v}}
-\def\a{\vec{a}}
+\def\v{\vect{v}}
+\def\a{\vect{a}}
 \def\Sum{\mathlarger{\sum}}
 \def\kl{\k_{\ell}}
 \def\klp{\k_{\ell+1}}
 
 
-\def\Dl{\mathcal{D}^{\text{f}}_{\lambda}}
-\def\MD{\M^{\mathcal{\text{f}}}}
+\def\Dl{\mathcal{D}^{\func{f}}_{\lambda}}
+\def\MD{\M^{\mathcal{\func{f}}}}
 \def\Mkg{\M^{\text{kg}}}
 
 % == END Homomorphic Encryption ==
@@ -290,9 +310,9 @@
 \def\hH{\mathcal{H}}
 \def\hHz{\hH^{0}}
 
-\def\valpha{\vec{\alpha}}
-\def\valphakg{\valpha^{\text{kg}}}
-\def\valphaD{\valpha^{\text{f}}}
+\def\valpha{\pmb{\alpha}}
+\def\valphakg{\valpha^{\func{kg}}}
+\def\valphaD{\valpha^{\func{f}}}
 \def\hEnc{\function{E}}
 % == END proof security HE (crypto 2018) ==
 
@@ -313,8 +333,8 @@
 \newcommand{\hatF}{\hat{f}}
 
 \def\zero{\bar{0}}
-\def\raux{\vec{r}_{\text{aux}}}
-\newcommand{\hatraux}{\vec{\hat{r}}_{\text{aux}}}
+\def\raux{\vect{r}_{\text{aux}}}
+\newcommand{\hatraux}{\vect{\hat{r}}_{\text{aux}}}
 
 \newcommand{\hatzpi}[1]{\hat{z}_{\pi(#1)}}
 

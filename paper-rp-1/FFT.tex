@@ -13,11 +13,11 @@ Moreover the circuit is regular, according to Definition~\ref{def:reg-circ}.
 %Verifier running in time $O(T\log n)$ where $T$ is the  uniformity parameter for the circuit.
 
 % Seq. composability for this circuit
-\begin{mythm}
+\begin{theorem}
 Under the $(C,\epsilon)$-unique inner state assumption for input distribution $\cal D$,
 the protocol in Section \ref{sec:our-protocol}, when repeated $r = O(1)$ times, yields sequentially composable rational proofs for the FFT, under input 
 distribution $\cal D$ and assuming non-adaptive prover strategies. 
-\end{mythm}
+\end{theorem}
 \begin{proof}
 Since the circuit is regular we can prove sequential composability by invoking Theorem~\ref{thm:reg-circ} and proving that for $r = O(1)$, 
 the following inequality holds 

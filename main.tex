@@ -1,9 +1,37 @@
 % -*- Mode:TeX -*-
 
 
-\documentclass[nobib]{tufte-book}
+\documentclass[justified,nobib]{tufte-book}
 
 %\input{FG-VC/llncs.cls}
+
+\usepackage{geometry, setspace, graphicx}
+\usepackage{enumerate, amssymb}
+%\onehalfspacing % XXX
+
+\hypersetup{colorlinks}
+\setcounter{secnumdepth}{1} 
+% turn on numbering for parts and chapters 
+
+\usepackage{amsthm, amsmath, amssymb}
+\usepackage{setspace, graphicx, enumerate}
+
+
+% For nicely typeset tabular material
+\usepackage{booktabs}
+
+% For graphics / images
+\usepackage{graphicx}
+\usepackage{fancyvrb}
+\fvset{fontsize=\normalsize}
+\usepackage{xspace}
+
+\usepackage{units}
+
+
+% AMS Theorem Setup
+% User Macro Setup
+\usepackage{hyperref}
 
 \usepackage{lgrind}
 \usepackage{graphicx}
@@ -104,7 +132,7 @@ keys]{cryptocode}
 	\fancyhead[RO]{\smallcaps\quad\thepage}%
 }
 
-\usepackage[parfill]{parskip}
+%\usepackage[parfill]{parskip}
 
 % remove paragraph indentation
 \makeatletter
@@ -145,13 +173,15 @@ keys]{cryptocode}
 %\DeclareMathOperator*{\polylog}{polylog}
 %\DeclareMathOperator*{\reward}{reward}
 
-\renewcommand{\subsubsection}[1]{\newthought[#1]}
+\renewenvironment{proof}{\noindent{\bf \textit{Proof}}\hspace*{0.5em}}{\qed\bigskip}
 
-
+\def\subsubsection{\newthought}
 
 \input{mycommands}
 
 \begin{document}
+	
+
 
 \include{cover}
 % Some departments (e.g. 5) require an additional signature page.  See
@@ -163,6 +193,7 @@ keys]{cryptocode}
 \pagestyle{fancy}
 
 \chapter{Rational Proofs for subclasses of $\P$}
+
 \include{paper-rp-1/paper}
 
 \chapter{Fine-Grained Verifiable Computation}

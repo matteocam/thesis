@@ -2,7 +2,7 @@
 In the following we will adopt a "concrete-security" version of the "asymptotic" definitions and theorems in \cite{am1,rosen}. We assume the reader is familiar with the notion of interactive proofs \cite{gmr}. 
 
 \noindent
-\begin{mydef}[Rational Proof]
+\begin{definition}[Rational Proof]
 \label{def:RP-delta}
 \label{def:RP}
 A function $f:$ $\binstring^n$ $\to$ $\binstring^n$ admits a rational proof if there exists an interactive proof $(P,V)$ and a randomized reward function
@@ -17,7 +17,7 @@ $\rew : \binstrings \to \posreals$ such that
 $ \expRewProtDis + \delta_{\disP}(x) \leq \expRewProtHon. $
 \end{enumerate}
 The expectations and the probabilities are taken over the random coins of the prover and verifier.
-\end{mydef} 
+\end{definition} 
 
 \noindent
 Let $\epsilon_{\disP} = \Pr[\out((P,V)(x)) \neq f(x)]$. 

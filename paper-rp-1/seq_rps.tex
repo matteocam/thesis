@@ -10,20 +10,20 @@ the possibility that the reward of a dishonest prover can be "negligibly" larger
 "hardwired" inputs are selected by $\cal D$).
 
 \noindent
-\begin{mydef}[Sequential Rational Proof]
+\begin{definition}[Sequential Rational Proof]
 \label{def:SRP}
 A rational proof $(P,V)$ for a function $f:$ $\binstring^n$ $\to$ 
 $\binstring^n$ is $\epsilon$-{\sf sequentially composable} for an input distribution $\cal D$, if for every prover $\disP$, 
 and every sequence of inputs 
 $x,x_1,\ldots,x_k \in {\cal D}$ such that $C(x) \geq \sum_{i=1}^k 
 \tilde{C}(x_i)$ we have that $\sum_{i}\tilde{R}(x_i) - R \leq \epsilon$.
-\end{mydef}
+\end{definition}
 
 % Some properties of Sequential Rational Proofs
 \noindent
 A few sufficient conditions for sequential composability follow.
 
-\begin{mylemma}
+\begin{lemma}
 \label{lemma:cost-rew-ratios}
 % Rew ratio ineq. implies SRP
 Let $(P,V)$ be a rational proof.
@@ -34,7 +34,7 @@ $\disP\neq
 P$ and input $x\in {\cal D}$:
 \[ \frac{\tilde{R}(x)}{R} \leq \frac{\tilde{C}(x)}{C} + \epsilon\]
 then $(P,V)$ is $kR\epsilon$-sequentially composable for $\cal D$
-\end{mylemma}
+\end{lemma}
 \begin{proof}
 It suffices to observe that, for any $k$ inputs $x_1,...,x_k$, the inequality 
 above 
@@ -48,7 +48,7 @@ as
 in Definition \ref{def:SRP}.
 \end{proof}
 
-\begin{mycorollary}
+\begin{corollary}
 \label{cor:prob}
 Let $(P,V)$ and $\rew$ be respectively an interactive proof and a reward 
 function as in 
@@ -57,7 +57,7 @@ some constant $R$, let $\pDisR = \Pr[\rew((\disP,V)(x)) = R]$. If for $x \in {\c
 $$  \pDisR \leq \frac{\tilde{C}(x)}{C} + \epsilon $$
 then $(P,V)$ is $kR\epsilon$-sequentially composable for $\cal D$. 
 % If rew can be only R or 0 then the sufficient condition is on the probability
-\end{mycorollary}
+\end{corollary}
 \begin{proof}
 Observe that $\tilde{R}(x) = \pDisR\cdot R$ and then apply Lemma 
 \ref{lemma:cost-rew-ratios}.
