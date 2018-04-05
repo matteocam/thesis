@@ -6,7 +6,7 @@
 We start by recalling the public key encryption from \cite{fgcrypto} which is 
 secure against adversaries in $\mathsf{NC}^1$. 
 
-\input{pke-dvv16}
+\input{FG-VC/pke-dvv16}
  
 \subsection{Leveled Homomorphic Encryption for $\ACztq$ Functions Secure against $\NC^1$}
 \label{sec:leveled-he-simple}
@@ -118,7 +118,7 @@ where in the third and fourth equality we used respectively Eq. \ref{he-keys-inv
 The scheme $\HE$ is $\text{CPA}$ secure against $\NC^1$ adversaries (Definition \ref{def:cpa-he}) under the assumption $\fgAssump$.
 \end{theorem} 
 \begin{proof}
-\input{proof-security-he}
+\input{FG-VC/proof-security-he}
 \end{proof}
 
 \subsection{Efficiency and Homomorphic Properties of Our Scheme}
@@ -140,4 +140,4 @@ Let $\ACztcm$ the family of circuits in $\ACzt$ with constant multiplicative dep
 The scheme $\HE$ is leveled $\ACztcm$-homomorphic. Key generation, encryption, decryption and evaluation are all computable in $\ACztcm$. 
 \end{theorem}
 
-\input{he-variation}
+\input{FG-VC/he-variation}
