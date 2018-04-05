@@ -41,7 +41,7 @@ The verifiable computation scheme $\tVC$ in Figure \ref{fig:reusable-transform} 
 \end{corollary}
 \begin{proof}
 The completeness of the scheme above follows directly from the completeness of $\VC$ and the homomorphic properties of $\HE$.
-Notice that we can use $\HEEval$ to homomorphically compute $\VCCompute$ as the latter carries out a computation in $\ACztcm$ (although it is \textit{approximating} a computation in $\ACztq$). \qed
+Notice that we can use $\HEEval$ to homomorphically compute $\VCCompute$ as the latter carries out a computation in $\ACztcm$ (although it is \textit{approximating} a computation in $\ACztq$). 
 \end{proof}
 
 \begin{remark}[Efficiency of $\tVC$]
@@ -89,7 +89,7 @@ Therefore (by Lemma \ref{lemma:hyb-arg}), there exists $j \in [L]$ such that $A^
 }
 Consider the following $\NC^1$ adversary $\advcpa$ which receives in input a ``challenge'' public key $\pk^*$. $\advcpa$ will interact with $\adv^*$ simulating $H^{(j)}$ until receiving input query $x_{j}$.
 At this point it will compute $q_j$ from $\VCPG(x_j)$ and send to the CPA challenger (see Remark \ref{rem:cpa-multiple}) $q_j$ and $\zero$, receiving back an encryption $c^*$ of either message under the public key $\pk^*$. $\advcpa$ will now send $(\pk^*, c^*)$ to $\advstar$ and continue simulating $H^{(j)}$ till the end of the experiment.
-The adversary $\advcpa$ will check whether $\advstar$ cheated successfully at the end of the experiment and output (in the multiple-message CPA experiment) $1$ if that is the case and $0$ otherwise. This would allow $\advcpa$ to have a noticeable advantage in the experiment thus breaking the semantic security of $\HE$. \qed
+The adversary $\advcpa$ will check whether $\advstar$ cheated successfully at the end of the experiment and output (in the multiple-message CPA experiment) $1$ if that is the case and $0$ otherwise. This would allow $\advcpa$ to have a noticeable advantage in the experiment thus breaking the semantic security of $\HE$. 
 \end{proof}
 
 % \begin{remark}

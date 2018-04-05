@@ -22,13 +22,13 @@ Let $f_i : \bit^{\function{lg}(l)} \to \bit^l$ be the function that computes the
 where $[i-1]_2$ is the binary representation of $i-1$ and $\function{eq}$ returns 1 if its two inputs (each of lenght $\function{lg}(l)$) are equal.
 The function $f_i$ is clearly in $\ACzt$.
 % First, for each $i$, we generate the vector of hamming weight $1$ describing $\pi(i)$ by mapping 
-\qed
+
 \end{proof}
 
 The following is an adaptation of the one-time secure delegation scheme from \cite{ckv10}. We make non-black box use of our homomorphic encryption scheme $\HEp$ (Section \ref{sec:beyond-cm}) with soundness parameter $s= \lambda$. Notice that. during the preprocessing phase, we fix the ``auxiliary randomness'' for $\EvalApprox$ (and thus for $\HEpEval$) once and for all. We will use that same randomness for all the input instances. This choice does not affect the security of the construction.
 We remind the reader that we will simplify notation by considering the evaluation key of our somewhat homomorphic encryption scheme as part of its public key.
 
-If $x$ is a vector of bits $x_1, \gets, x_n$, below we will denote with $\HEpEnc(x)$ the concatenation of the bit by bit ciphertexts $\HEpEnc(x_1), \dots, \HEpEnc(x_n)$. We denote by $\HEpEnc(\zero)$ the concatenation of $n$ encryptions of $0$, $\HEpEnc(0)$.
+If $x$ is a vector of bits $x_1, \dots, x_n$, below we will denote with $\HEpEnc(x)$ the concatenation of the bit by bit ciphertexts $\HEpEnc(x_1), \dots, \HEpEnc(x_n)$. We denote by $\HEpEnc(\zero)$ the concatenation of $n$ encryptions of $0$, $\HEpEnc(0)$.
 
 % \item Compute $\hatraux \gets \SampleAuxRandomness_s(\pk, F)$;
 % \item Compute $\vec{c} \gets \EvalApprox_s(\pk, F, \hatraux)$;
@@ -84,7 +84,7 @@ The verifiable computation scheme $\VC$ in Figure \ref{fig:one-time} has overwhe
 \end{lemma}
 \begin{proof}
 The proof is straightforward and stems directly from the homomorphic properties of $\HEp$ (Theorem \ref{thm:hep-homomorphic}).
-In fact, by construction and by definition of $\HEp$ (Section \ref{sec:beyond-cm}), the distribution of the $\hatw_i$-s is identical to $\HEpEval_{\pk}(F, \hatr_i)$. Analogously, the distribution of $\hat{y}_i$-s is identical to $\HEpEval_{\pk}(F, \hat{z}_i)$. \qed
+In fact, by construction and by definition of $\HEp$ (Section \ref{sec:beyond-cm}), the distribution of the $\hatw_i$-s is identical to $\HEpEval_{\pk}(F, \hatr_i)$. Analogously, the distribution of $\hat{y}_i$-s is identical to $\HEpEval_{\pk}(F, \hat{z}_i)$. 
 \end{proof}
 
 
@@ -128,7 +128,7 @@ p = \Pr[\advstar \text{ is correct on } (\hatzpi{1},\dots,\hatzpi{t}) \text{ and
 \]
 where the $\hatzpi{i}$-s are defined as in Figure \ref{fig:one-time}.
 Because of Lemma \ref{lemma:perm-sampling} that the distribution of $\pi$ is statistically indistinguishable from that of a uniformly random permutation. Also, observe that the answers $\hat{y}_i$ of the adversary are independent of $\pi$.
-We can then conclude that $p \leq \frac{1}{\binom{2t} {t}} + \negl(t)$, which concludes the security analysis. \qed
+We can then conclude that $p \leq \frac{1}{\binom{2t} {t}} + \negl(t)$, which concludes the security analysis. 
 % TODO: define z as in the other case
 
 
