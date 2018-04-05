@@ -1,0 +1,87 @@
+%\include{pke_preliminaries.tex}
+
+\subsubsection{Somewhat Homomorphic Encryption}
+A public-key encryption scheme is said to be homomorphic if there is an 
+additional algorithm $\mathsf{Eval}$ which takes a input the public key $\pk$, 
+the representation of a function $f:\bit^l\rightarrow\bit$ and a set of $l$ ciphertexts $c_1,\ldots,c_l$, and outputs a ciphertext $c_f$. 
+%$\HE = (\HEKeygen, \HEEnc, \HEDec, \HEEval)$ is a public-key encryption scheme 
+%with a few additions. It is a quadruple of algorithms which operate as follow:
+%\begin{itemize}
+%\item \textbf{Key Generation.} The algorithm $(\pk,\evk,\sk)\leftarrow$ %\HEKeygen$(1^{\lambda})$ takes a unary representation of the security parameter 
+%and outputs a public key encryption key $\pk$, a public evaluation key $\evk$ and 
+%a secret decryption key $\sk$.
+%\item \textbf{Encryption.} The algorithm $c\leftarrow$ \HEEnc$_{\pk}(\mu)$ 
+%operates exactly as $\PKEEnc$.
+%\item \textbf{Decryption.} The algorithm $\mu^*\leftarrow$ \HEDec$_{\sk}(c)$ 
+%operates exactly as $\PKEDec$.
+%\item \textbf{Homomorphic Evaluation} The algorithm $c_{f}\leftarrow$ 
+%$\HEEval}_{\pk}(f,c_1,\ldots,c_l)$ takes the evaluation key $\evk$, a function 
+%$f:\bit^l\rightarrow\bit$ and a set of $l$ ciphertexts $c_1,\ldots,c_l$, and 
+%outputs a ciphertext $c_f$. 
+
+% It must be the case that:
+% \begin{equation}
+% \mathrm{\HEDec}_{\sk}(c_f) = f(\mathrm{\HEDec}_{\sk}(c_1),\ldots,\mathrm{\HEDec}_{\sk}(c_l))
+% \end{equation}
+% with probability $\geq 1- \gamma(\lambda)$. 
+%\end{itemize}
+
+
+%A homomorphic encryption scheme is said to be secure if it meets the following 
+%notion of semantic security:
+
+%\begin{definition}[CPA Security for HE]\label{def:cpa-he}
+%A scheme $\HE$ is IND-CPA secure if for an infinite $\Lambda \subseteq \naturals$ 
+%we have
+%$$ (\pk,\evk,\mathrm{\HEEnc}_{\pk}(0)) \lind (\pk,\evk,\mathrm{\HEEnc}_{\pk}(1)) $$
+%where $(\pk,\evk,\sk)\leftarrow$ \HEKeygen($1^{\lambda}$).
+%\end{definition}
+
+\newcommand{\cclass}{\mathcal{C}}
+We proceed to define the homomorphism property. The next notion of $\cclass$-homomorphism is sometimes also referred to as ``somewhat homomorphism''.
+
+\begin{definition}[$\cclass$-homomorphism]
+Let $\cclass$ be a class of functions (together with their respective representations).
+An encryption scheme $\PKE$ is $\cclass$-homomorphic (or, homomorphic for the class $\cclass$) if for every function $f_\lambda$ where  $f_\lambda \in \mathcal{F} \funfam{f} \in \cclass$ and respective inputs $\mu_1,\dots,\mu_l \in \bit$ (where $l = l(\lambda)$), it holds that if 
+$(\pk, \sk) \gets \PKEKeygen(1^{\lambda})$ and $c_i \gets \PKEEnc_{\pk}(\mu_i)$
+then 
+\[
+    \Pr[\PKEDec_{\sk}(\Eval_{\pk}(F, c_1,\dots, c_l)) \not = F(\mu_1,\dots,\mu_l)] = \negl(\lambda),
+    % Note: this definition is not infinitely-often, but for large enough values. It's correct this way.
+\]
+\end{definition}
+
+
+%As pointed out in~\cite{fhe-lwe}, there are two important properties that the 
+%above definition does not require. First, it does not require that the ciphertexts
+%$c_i$ are decryptable themselves, only that they become
+%decryptable after homomorphic evaluation. Finally, it does not require that the 
+%output of $\HEEval$
+%can undergo additional homomorphic evaluation.
+
+
+% \begin{definition}[CPA Security for HE]\label{def:cpa-he}
+% A scheme \textnormal{\HE} is IND-CPA secure if, for any polynomial time adversary $\mathcal{A}$, there exists a negligible function $\mu(\cdot)$ such that 
+% \begin{equation}
+% \mathrm{Adv}_{\mathrm{CPA}}[\mathcal{A}] \EqDef  
+% |\Pr[\mathcal{A}(\pk,\evk,\mathrm{\HEEnc}_{\pk}(0)) = 1] - 
+% \Pr[\mathcal{A}(\pk,\evk,\mathrm{\HEEnc}_{\pk}(1)) = 1]|=\mu(\lambda)
+% \end{equation}
+% where $(\pk,\evk,\sk)\leftarrow$ \textnormal{\HEKeygen}($1^{\lambda}$). We further say that a scheme \textnormal{\HE} has CPA security $\delta$ for some negligible function $\delta(\cdot)$ if the above indistinguishability gap $\mu(\lambda)$ is smaller than $\delta(\lambda)^{\Omega(1)}$. 
+% \end{definition}
+
+As usual we require the scheme to be non-trivial by requiring that the output 
+of $\mathsf{Eval}$ is compact:
+\begin{definition}[\bfseries Compactness]\label{def:compact}
+A homomorphic encryption scheme $\PKE$ is compact if there exists a polynomial $s$ in $\lambda$ such that the output length of $\mathsf{Eval}$ is at most $s(\lambda)$ bits long (regardless of the function $f$ being computed or the number of inputs). 
+\end{definition}
+
+
+\begin{definition}
+\label{def:leveled}
+Let $\cclass = \funfam{\cclass}$ of arithmetic circuits in $\GF(2)$. A scheme 
+$\PKE$ is leveled  $\cclass$-homomorphic if it takes $1^L$ as additional input in 
+key generation, and can only evaluate depth-$L$ arithmetic circuits from 
+$\cclass$. The bound $s(\lambda)$ on the ciphertext must remain independent of 
+$L$.
+\end{definition}

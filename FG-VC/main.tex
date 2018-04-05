@@ -1,0 +1,171 @@
+\documentclass[envcountsect]{llncs}
+%%%%%
+
+\usepackage{amsmath,amssymb}
+\usepackage{mathtools}
+\usepackage{bm}
+\usepackage{complexity}
+\usepackage[
+	n,
+	operators,
+	advantage,
+	sets,
+	adversary,
+	landau,
+	probability,
+	notions,	
+	logic,
+	ff,
+	mm,
+	primitives,
+	events,
+	complexity,
+	asymptotics,
+	keys]{cryptocode}
+\newcommand{\vect}[1]{\mathbf{#1}}
+\newcommand{\mat}[1]{\MakeUppercase{\vect{#1}}}
+\newcommand{\Group}{\ensuremath{\mathbb{G}}}
+\newcommand{\powervect}[2][n]{\vect{#2}^{#1}}
+\newcommand{\commitment}{\ensuremath{\mathbf{com}}}
+
+\newcommand{\Ints}{\ensuremath{\mathbb{Z}_p}}
+\newcommand{\IntsStar}{\ensuremath{\mathbb{Z}^\star_p}}
+\newcommand{\dotprod}[2]{\langle#1,#2\rangle}
+\newcommand{\matprod}[2]{#1\cdot #2}
+\newcommand{\IsEqual}{\overset{?}{=}}
+\newcommand{\gen}[1]{#1}
+\newcommand{\com}[1]{\MakeUppercase{#1}}
+\newcommand{\Left}[1][n^\prime]{[:#1]}
+\newcommand{\Right}[1][n^\prime]{[#1:]}
+\newcommand{\Relation}[3]{\{(#1;#2): #3\}}
+
+
+
+%%%%
+
+\usepackage{fancyhdr} 
+\usepackage{amsfonts}
+\usepackage{multicol}
+\usepackage{framed} 
+\usepackage{array} 
+\usepackage{graphicx} 
+\usepackage{graphics}
+\usepackage{mathtools} 
+\usepackage{tikz} 
+\usepackage{verbatim}
+\usepackage{float}
+\usepackage{bm}
+\usepackage{comment}
+\usepackage{relsize}
+%\usepackage[section]{placeins}
+
+\usepackage[utf8]{inputenc}
+
+\usepackage{adjustbox}
+\newcommand{\headrow}[1]{\multicolumn{1}{c}{\adjustbox{angle=45,lap=\width-0.5em}{#1}}}
+
+% = = = Table bullets: \full and \prt (full and part)
+
+\newcommand{\full}{$\bullet$}
+\newcommand{\prt}{$\circ$}
+
+\newcommand{\fulltext}{\CIRCLE}
+\newcommand{\prttext}{\LEFTcircle}
+
+\newcommand{\fulltable}{$\tiny{\CIRCLE}$}
+\newcommand{\prttable}{$\tiny{\LEFTcircle}$}
+
+\newcommand{\matteo}[1]{{\color{red}{#1 -- MC}}}
+
+
+\newcommand{\rosario}[1]{{\color{green}{#1 -- RG}}}
+
+
+
+
+\pagenumbering{arabic}
+\pagestyle{plain}
+
+%\newcommand{\hi}[1]{\textcolor{red}{#1}}
+
+%\newcommand{\qed}{\hfill \rule{7pt}{7pt}}
+
+%\newenvironment{proof}{\noindent{\bf Proof}\hspace*{1em}}{\qed\bigskip}
+
+
+%\newcommand{\ceil}[1]{\left\lceil #1 \right\rceil}
+% \begin{comment}
+
+% \newcommand{\bitset}{\{0,1\}}
+
+% \newcommand{\ignore}[1]{}
+% \def\eqdef{:=}
+% \def\eps{\epsilon}
+% \def\GG{\mathbb{G}}
+% \def\pk{{\sf pk}}
+% \def\F{{\cal F}}
+% \def\P{{\cal P}}
+% \def\I{{\cal I}}
+% \def\A{{\cal A}}
+% \def\D{{\cal D}}
+% \def\hD{\hat{{\cal D}}}
+% \def\sk{{\sf sk}}
+% \def\gen{\mathsf{Gen}}
+% \def\cfgen{\mathsf{CFGen}}
+% \def\sig{\mathsf{Sig}}
+% \def\ver{\mathsf{Ver}}
+% \def\negl{{\sf negl}}
+% \def\gets{\leftarrow}
+% %\newcommand{\vect}[1]{\left\langle{#1}\right\rangle}
+% \newcommand{\jac}[2]{\left( \frac{#1}{#2} \right)}
+
+% \end{comment}
+\newtheorem{assump}{Assumption}
+%\newtheorem{theorem}{Theorem}
+%\newtheorem{lemma}{Lemma}
+%\newtheorem{corollary}{Corollary}
+%\newcommand\textline[5][t]{%
+%  \par\smallskip\noindent\parbox[#1]{.333\textwidth}{\raggedright\text{}#2}%
+%  \parbox[#1]{.333\textwidth}{\centering#4}%
+%  \parbox[#1]{.333\textwidth}{\raggedleft\texttt{#5}}\par\smallskip%
+%}
+
+\newcommand*{\trightarrow}[1]{\xrightarrow{\mathmakebox[5cm]{#1}}}
+\newcommand*{\tleftarrow}[1]{\xleftarrow{\mathmakebox[5cm]{#1}}}
+
+
+
+
+\title{Fine-Grained Secure Computation}
+\author{Matteo Campanelli and Rosario Gennaro}
+\institute{The City College of New York\\
+{\tt matteo.campanelli@gmail.com} and {\tt rosario@ccny.cuny.edu}
+%\\PLEASE DO NOT DISTRIBUTE
+}
+%\date{PLEASE DO NOT DISTRIBUTE}
+\date{}
+\begin{document}
+
+\input{mycommands}
+
+\maketitle
+\begin{abstract}
+  This paper initiates a study of {\em Fine Grained Secure Computation}: i.e. 
+  the construction of {\em secure computation primitives} against ``moderately complex" adversaries. We present definitions and constructions for Fully Homomorphic Encryption and Verifiable Computation secure against (\textit{non-uniform}) $\mathsf{NC}^1$ adversaries. We also present two application scenarios for our model: \textit{(i)} hardware chips that prove their own correctness, and \textit{(ii)} protocols against rational adversaries potentially relevant to the {\em Verifier's Dilemma} in smart-contracts transactions such as Ethereum. 
+\end{abstract}
+
+\input{introduction}
+
+\input{preliminaries}
+
+\input{HE}
+
+\input{VC}
+
+
+
+
+\bibliographystyle{alpha}
+\bibliography{crypto,references}
+
+\end{document}

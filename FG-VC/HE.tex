@@ -1,0 +1,143 @@
+\section{Fine-Grained SHE}
+\label{sec:he}
+\label{sec:HE}
+
+%\subsection{A Public-Key Encryption Scheme Secure Against $\NC^1$ adversaries %\cite{fgcrypto}}
+We start by recalling the public key encryption from \cite{fgcrypto} which is 
+secure against adversaries in $\mathsf{NC}^1$. 
+
+\input{pke-dvv16}
+ 
+\subsection{Leveled Homomorphic Encryption for $\ACztq$ Functions Secure against $\NC^1$}
+\label{sec:leveled-he-simple}
+%XXX: Can I  use such title even if it's only a subset of $\AC^0[2]$
+ % We show how to adapt the relinearization technique from BV13
+ 
+ % -- description of the scheme --
+
+%To highlight what elements are elements in $\GF(2)$, in this section we will 
+We denote by $\vec{x}[i]$ the $i$-th bit of a vector of bits $\vec{x}$ . Below, the scheme $\PKE = (\PKEKeygen,\PKEEnc, \PKEDec)$ is the one defined in Figure \ref{fig:pke-dvv16}.
+% Here is the way we redefine keygen and how we define eval.
+%\begin{figure}
+%\label{fig:he-scheme}
+%\begin{framed}
+
+Our SHE scheme is defined by the following four algorithms: 
+\begin{itemize}
+\item $\HEKeygen_{\sk}(\unlambda, L):$ For key generation, sample $L+1$ key pairs
+ $(\M_0, \k_0),\dots,\M_0, \k_L) \gets \PKEKeygen(\unlambda)$, and compute, for all $\ell \in \{0, \dots, L-1\}$, $i,j \in [\lambda]$, the value
+\[ % XXX: See if something needs to become a vector
+    \vec{a}_{\ell,i,j} \gets \PKEEnc_{\M_{\ell+1}}(\k_{\ell}[i]\cdot \k_{\ell}[j]) \in \lambdabits
+\]
+We define $\A \eqdef \{ a_{\ell,i,j} \}_{\ell,i,j}$ to be the set of all these values.
+t then outputs the secret key $\sk = \k_L$, and the public key 
+$\pk= (\M_0, \A)$. In the following we call $\evk = \A$ the evaluation key.
+
+We point out a property that will be useful later: by the definition above, for all $\ell \in \{0, \dots, L-1 \}$ we have
+\begin{align}
+\label{he-keys-invariant}
+\inprod{\klp}{\a_{\ell+1,i,j}} = \kl[i] \cdot \kl[j]\,.
+\end{align}
+
+\item $\HEEnc_{\pk}(\mu)):$
+Recall that $\pk = \M_0$. To encrypt a message $\mu$ we compute 
+$\v \gets \PKEEnc_{\M_0}(\mu)$. The output ciphertext contains $\v$ in addition to 
+a ``level tag'', an index in $\{0, \dots, L \}$ denoting the ``multiplicative depth'' of the generated ciphertext. The encryption algorithm outputs $c \eqdef (\v, 0)$.
+
+\item $\HEDec_{\k_L}(c):$ To decrypt a ciphertext\footnote{We are only requiring to decrypt ciphertexts that are output by $\HEEval(\cdots)$} $c = (\v,L)$ compute $\PKEDec_{\k_L}(\v)$, i.e.
+\[
+\inprod{\k_L}{\v}
+\]
+
+\item $\HEEval_{\evk}(f, c_1,\dots,c_t):$ where $F : \bit^t \to \bit$: We require that $f$ is represented as an arithmetic circuit in $\GF(2)$ with addition gates  of unbounded fan-in and multiplication gates of fan-in 2. We also require the circuit to be \textit{layered}, i.e. the set of gates can be partitioned in subsets (layers) such that wires are always between adjacent layers. Each layer should be composed homogeneously either of addition or multiplication gates. Finally, we require that the number of multiplications layers (i.e. the multiplicative depth) of $f$ is $L$.
+
+We homomorphically evaluate $f$ gate by gate. We will show how to perform multiplication (resp. addition) of two (resp. many) ciphertexts. Carrying out this procedure recursively, we can homomorphically compute any circuit $f$ of multiplicative depth $L$.
+\subsubsection{Ciphertext structure during evaluation.} During the homomorphic evaluation a ciphertext will be of the form $c = (\v, \ell)$ where $\ell$ is the ``level tag'' mentioned above. At any point of the evaluation we will have that $\ell$ is between $0$ (for fresh ciphertexts at the input layer) and $L$ (at the output layer). We define homomorphic evaluation only among ciphertexts at the same level. Since our circuit is layered we will not have to worry about homomorphic evaluation occurring among ciphertexts at different levels. 
+Consistently with the fact a level tag represents the multiplicative depth of a ciphertext, addition gates will keep the level of ciphertexts unchanged, whereas multiplication gates will increase it by one.
+% say about the invariant
+Finally, we will keep the invariant that the output of each gate evaluation $c = (\v, \ell)$ is such that
+\begin{align}
+\label{he-invariant}
+\inprod{\k_{\ell}}{\v} = \mu
+\end{align}
+where $\mu$ is the correct plaintext output of the gate.
+
+
+\subsubsection{Homomorphic Evaluation of gates:}
+\begin{itemize}
+\item \textit{Addition gates.}
+Homomorphic evaluation of an addition gates on inputs $c_1,\dots,c_t$ where $c_i = (\v_i, \ell)$ is performed by outputting
+\[
+ c_{\text{add}} = (\v_{\text{add}}, \ell) \eqdef \Big( \Sum_{i} \v_i, \ell \Big)
+\]
+
+Informally, one can see that
+\[
+\inprod{\k_{\ell}}{\v_{\text{add}}} =  \inprod{\k_{\ell}}{\Sum_i\v_i} = \Sum_i\inprod{\k_{\ell}}{\v_i} = \Sum_i \mu_i
+\]
+where $\mu_i$ is the plaintext corresponding to $\v_i$. This satisfies the invariant in Eq. \ref{he-invariant}.
+
+\item \textit{Multiplication gates.}
+We show how to multiply ciphertexts $c, c'$ where $c = (\v, \ell)$ and $c' = (\v', \ell)$ to obtain an output ciphertext $c_{\text{mult}} = (\v_{\text{mult}}, \ell+1)$.
+
+The homomorphic multiplication algorithm will set
+\[
+\v_{\text{mult}} \eqdef \Sum_{i,j \in [\lambda]} h_{i,j}\cdot \a_{\ell+1,i,j}
+\]
+where $h_{i,j} = \v[i] \cdot \v'[j]$ for $i,j \in [\lambda]$.
+
+
+The final output ciphertext will be
+\[
+c_{\text{mult}} \eqdef (\v_{\text{mult}}, \ell+1).
+\]
+
+This satisfies the invariant in Eq. \ref{he-invariant} as
+\begin{align*}
+ \inprod{\klp}{\v_{\text{mult}}} &=  \inprod{\klp}{\Sum_{i,j \in [\lambda]} h_{i,j}\cdot \a_{\ell+1,i,j}} \\
+                                &= \Sum_{i,j \in [\lambda]} ( h_{i,j} \cdot \inprod{\klp}{\a_{\ell+1,i,j}} )\\
+                                &=\Sum_{i,j \in [\lambda]} ( h_{i,j} \cdot \kl[i]\cdot\kl[j] )\\
+                                &= \Sum_{i,j \in [\lambda]} ( \v[i] \cdot \v'[j] \cdot \kl[i]\cdot\kl[j] )\\
+                                &= \Big(\Sum_{i \in [\lambda]} \v[i] \cdot \kl[i]\Big)\cdot\Big(\Sum_{j \in [\lambda]} \v'[j] \cdot \kl[j]\Big)\\
+                                &= \inprod{\kl}{\v}\cdot\inprod{\kl}{\v'}\\
+                                &= \mu \cdot \mu'
+\end{align*}
+
+where in the third and fourth equality we used respectively Eq. \ref{he-keys-invariant} and the definition of $h_{i,j}$, and $\mu, \mu'$ are the plaintexts corresponding to $\v$ $\v'$ respectively.
+
+\end{itemize}
+\end{itemize}
+
+%\end{framed}
+%\caption{Leveled Homomorphic Construction}
+%\end{figure}
+
+\subsection{Security Analysis}
+
+\begin{theorem}[Security]
+The scheme $\HE$ is $\text{CPA}$ secure against $\NC^1$ adversaries (Definition \ref{def:cpa-he}) under the assumption $\fgAssump$.
+\end{theorem} 
+\begin{proof}
+\input{proof-security-he}
+\end{proof}
+
+\subsection{Efficiency and Homomorphic Properties of Our Scheme}
+
+Our scheme is secure against adversaries in the class $\NC^1$. This implies that we can run $\HEEval$ only on functions $f$ that are in $\NC^1$, otherwise the evaluator would be able to break the semantic security of the scheme.
+However we have to ensure that the \textit{whole} homomorphic evaluation stays in $\NC^1$. The problem is that homomorphically evaluating $f$ has an overhead with respect to the "plain" evaluation of $f$. Therefore, we need to determine 
+for which functions $f$, we can guarantee that 
+%the fact that $F$ is in $\NC^1$ may not be a guarantee for 
+$\HEEval(F, \dots)$ will stay in $\NC^1$. 
+%We now proceed to analyze for which classes of functions this is the case.
+
+In terms of circuit depth, the main overhead when evaluating $f$ homomorphically is given by the multiplication gates (addition, on the other hand, is ``for free'' --- see definition of $\HEEval$ above). A single homomorphic multiplication can be performed by a depth two $\ACzt$ circuit, but this requires depth $\Omega(\log(n))$ with a circuit of fan-in two. Therefore, a circuit for $f$ with $\omega(1)$ multiplicative depth would require an evaluation of $\omega(\log(n))$ depth, which would be out of $\NC^1$. On the other hand, observe that for any function $f$ in $\ACzt$ with constant multiplicative depth, the evaluation stays in $\ACzt$. This because there is a constant number (depth) of homomorphic multiplications each requiring an $\ACzt$ computation. 
+
+We can now state the following result, derived from the observations above and the fact that the invariant in Eq. \ref{he-invariant} is preserved throughout homomorphic evaluation.
+
+\begin{theorem}
+\label{thm:he-homomorphic}
+Let $\ACztcm$ the family of circuits in $\ACzt$ with constant multiplicative depth.
+The scheme $\HE$ is leveled $\ACztcm$-homomorphic. Key generation, encryption, decryption and evaluation are all computable in $\ACztcm$. 
+\end{theorem}
+
+\input{he-variation}

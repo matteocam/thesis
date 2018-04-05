@@ -1,0 +1,192 @@
+% We now describe our model for delegation of computation against bounded adversaries. We follow the description in \cite{ckv10} of delegation schemes against polynomial time adversaries. % XXX: check sentence
+In a {\em Verifiable Computation} scheme a Client uses an untrusted server to compute a function $f$ over an input $x$. The goal is to prevent the Client from accepting an incorrect value $y'\neq f(x)$. We require that the Client's cost of running this protocol be smaller than the cost of computing the function on his own. The following definition is from \cite{ggp10} which allows the client to run a possibly expensive pre-processing step. 
+
+\begin{definition}[Verifiable Computation Scheme]
+
+A \emph{verifiable computation scheme} $\VC =
+(\VCKG,\VCPG,\VCCompute,\VCVerif)$ consists of the four
+algorithms defined below.  
+
+\begin{enumerate}
+\item $\VCKG(f, 1^\lambda) \to (\pkW, \skD)$: 
+      Based on the security parameter $\lambda$, the randomized \emph{key generation} 
+      algorithm generates a public key that encodes the target function $F$, 
+      which is used by the Server to compute $F$. It also 
+      computes a matching secret key, which is kept private by the Client. 
+
+\item $\VCPG_{\skD}(x) \to (\qx,\sx)$:
+      The \emph{problem generation} algorithm uses the secret key $\skD$ to encode the 
+      function input $x$ as a public query $\qx$ which is given to the Server
+      to compute with, and a secret value $\sx$ 
+      which is kept private by the Client. 
+
+\item $\VCCompute_{\pkW}(\qx) \to \ax$: 
+      Using the Client's public key and the encoded input, the Server  \emph{computes} 
+      an encoded version of the function's output $y = F(x)$. 
+
+\item $\VCVerif_{\skD}(\sx,\ax) \to y\mbox{ }\cup \{ \fail \}$:
+      Using the secret key $\skD$ and the secret ``decoding'' $\sx$, the 
+      \emph{verification} algorithm converts the worker's encoded output into 
+      the output of the function, e.g., $y = f(x)$ or outputs $\fail$ indicating
+      that $\ax$ does not represent the valid output of $F$ on $x$.
+\end{enumerate}      
+% A delegation scheme is an interactive protocol $\Del =  \DW$ between a delegator $\D$ and a worker $\W$ with the following structure:
+
+%  \begin{enumerate}
+%      \item The scheme \Del~consists of two stages: an offline/preprocessing stage and an online stage. The offline stage is executed once before the online stage, whereas the online stage can be executed many times. 
+%      \item In the offline stage, both the delegator $\D$ and the worker $\W$ receive a security parameter $\lambda$ and a function $F : \bit^n \to \bit^m $, represented by a boolean circuit $C$. At the end of the interaction, the delegator $\D$ decides whether to accept or reject. If $\D$ accepts, then $\D$ outputs a secret key $\skD$ and a public key $\pkW$. We will denote this by $(\skD, \pkW) = \DW(F, 1^{\lambda})$. We will use the notation $C, n \text{ and } m$ as the circuit and parameters associated with $F$ throughout the paper, and we will often omit the security parameter from the notation.
+%      \item In the online stage, both parties receive $F, 1^{\lambda}$, and an input $x \in \bit^n$, and execute a one round communication protocol. Namely, $\D$ sends $q = \D(F, x, \skD)$ to $\W$, and then $\W$ sends 
+%      $a = \W(F, x, \pkW, q)$ to $\D$. Then the delegator $\D$ either accepts or rejects. If $\D$ accepts, then $\D$ also generates a private output
+%      $y = \D(F, x,\skD, q, a) \in \bit^m$, which is supposed to be $F(x)$.
+%      For simplicity, we will omit the function $F$ and the security parameter from the input of the online stage.
+%       \end{enumerate}
+\end{definition}     
+   
+     
+
+\noindent
+The scheme should be complete, i.e. an honest Server should (almost) always return the correct value. 
+\begin{definition}{Completeness}
+\label{def:vc-completeness}
+A delegation scheme $\VC = (\VCKG,\VCPG,\VCCompute,\VCVerif)$ has \textit{overwhelming completeness} for a class of functions $\mathcal{C}$ if  there is a function $\nu(n) = \negl(\lambda)$ such that for infinitely many values of $\lambda$, if $f_\lambda \in \mathcal{F} \in \mathcal{C}$, then for all 
+inputs $x$ 
+%for every function F and every $x \in \bit^n$, 
+the following holds with probability at least $1-\nu(n)$:  
+  $(\pkW, \skD) \gets \VCKG(f_\lambda, \lambda)$
+$(\qx,\sx) \gets \VCPG_{\skD}(x)$ and 
+  $\ax \gets \VCCompute_{\pkW}(\qx)$ then $y=f_{\lambda}(x) \gets \VCVerif_{\skD}(\sx,\ax)$.
+\end{definition}
+
+
+
+
+% \begin{center}
+% \fbox{\pseudocode[syntaxhighlight=auto]%[syntaxhighlight=auto,head=$\function{Exp}^{\text{Verif}}_{\adv}(F, \lambda)$]
+% {%
+%       (\pkW, \skD) \sample \Doffline (F, \lambda) \\
+%      (\hatx, \hata) \sample \adv^{\Donline(\skD, \cdot, \cdot)}(\pkW) \\
+%      return \Dverif(\skD, \hatq, \hata) }}
+% \end{center}
+
+
+
+% \pseudocode[syntaxhighlight=auto]{$Exp^{\text{Verif}}_{\adv}$}{
+%     $(\pkW, \skD)$ \sample \kgen $(\lambda)$ \\
+%     $(\hatq, \hata)$ \sample $\adv^{\Donline(\skD, \cdot, \cdot)}(\pkW)$ \\
+%     \pcreturn $\DVerif(\skD, \hatq, \hata)$ }
+
+% \begin{comment}
+% \begin{definition}{Security Game for Delegation Schemes}
+% Let $\Del = \DW$ be a delegation scheme and $\lambda \in \mathbb{N}$ be the security parameter. The security game $\Gvc(\lambda)$ for $\Del$ is the following game played by a worker strategy $\Wstar$.
+% \begin{itemize}
+% \item The game starts with the offline stage of $\Del$, and is followed by many rounds of the online stage.
+% % NB: it is the worker choosing the function F.
+% \item $\Wstar(1^{\lambda})$ first chooses the delegation function $F$ and then $\D$ and $\Wstar$ interact in the offline stage of $\Del$ with input $F$.
+% \item At the beginning of each round of the online stage (indexed by $l$), $\Wstar$ can either terminate the game or choose an input $x_l \in \bit^n$. If the game is not terminated, $\D$ and $\Wstar$ interact in the online stage of $\Del$ on input $x_l$.
+% \item Whenever the delegator $\D$ rejects, the game terminates.
+% \end{itemize}
+% $\Wstar$ succeeds in the game $\Gvc(\lambda)$ if there exists a round $l$ of the online stage such that $\D$ accepts and outputs a wrong value $y_l \not = F(x_l)$, where $x_l$ is the delegated input chosen by $W^*$.
+% \end{definition}
+% \end{comment}
+
+\def\fnFam{{\cal F}}
+
+% Experiment
+\def\accSet{{\cal I}}
+
+\newcommand{\BatchVCPG}{\function{BatchProbGen}}
+
+\renewcommand{\vec}[1]{\mathbf{#1}}
+
+To define soundness we consider an adversary who plays the role of a malicious Server who tries to convince the Client of an incorrect output $y \neq f(x)$. The adversary is allowed to run the protocol on inputs of her choice, i.e. see the {\em queries} $q_{x_i}$ for adversarially chosen $x_{i}$'s before picking an 
+input $x$ and attempt to cheat on that input. 
+Because we are interested in the parallel complexity of the adversary we distinguish between two parameters $l$ and $m$. The adversary is allowed to do $l$ rounds of adaptive queries, and in each round she queries $m$ inputs. Jumping ahead, because our adversaries are restricted to $\mathsf{NC}^1$ circuits, we will have to bound $l$ with a constant, but we will be able to keep $m$ polynomially large. 
+
+%Experiment for soundness below. $\BatchVCPG$ is a batch version of $\VCPG$ that 
+%runs in parallel and returns a possibly polynomial number of outputs of $\VCPG$. %We model an adversary \adv as a tuple of circuits %(\adv^{(1)}_{q},\dots,\adv^{(L)}_{q}, \adv_{resp})$, where the $\adv^{(i)}_{q}$-s %generates the sets of inputs on which to  query the problem generator and the %$\adv_{resp}$ generates a response based on those queries.
+
+% \vspace{2mm}
+% \begin{tabular}{l}
+% \hspace{1mm} Experiment ${\bf Exp}^{\function{Verif}}_{\adv}[\mathcal{VC}, F, \lambda, L]$\\
+% \hspace{7mm} $(\pkW, \skD) \gets \VCKG(F, \lambda)$;\\
+% \hspace{7mm} $\accSet \gets \emptyset$;\\
+
+% \hspace{7mm} For $i=1,\ldots,i=L$;\\
+% \hspace{13mm} $\vec{x}^{(i)} \gets \adv^{(i)}_{q}(\pkW,\accSet)$;\\
+% \hspace{13mm} $(\vec{q}^{(i)},\vec{s}^{(i)}) \gets \BatchVCPG_{\skD}(\vec{x}^{(i)})$;\\
+% \hspace{13mm} $\accSet \gets \accSet \cup \{ \vec{x}^{(i)}, \vec{q}^{(i)} \}$;\\
+% \hspace{7mm} $(i,j,\hat{a}) \gets \adv_{resp}(\pkW, \accSet)$;\\
+% \hspace{7mm} $\hat{y} \gets \VCVerif_{\skD}(s^{(i)}_j,\hat{a})$\\
+% \hspace{7mm} If $\hat{y} \neq \fail$ and $\hat{y} \neq F(x^{i}_j)$, output 1, else 0;\\
+% \end{tabular}
+% \vspace{2mm}
+
+
+\vspace{2mm}
+\begin{tabular}{l}
+\hspace{1mm} Experiment $\expVC{\VC}$\\
+\hspace{7mm} $(\pkW, \skD) \gets \VCKG(f, \lambda)$;\\
+\hspace{7mm} $\accSet \gets \emptyset$;\\
+
+\hspace{7mm} For $i=1,\ldots,i=l$;\\
+\hspace{13mm} $\{ x_{(i-1)m},\dots x_{im-1} \} \gets A_{\lambda}(\pkW,\accSet)$;\\
+\hspace{13mm} $\{(q_{j},s_{j}) : (q_{j},s_{j}) \gets \VCPG_{\skD}(x_j), j \in \{(i-1)m,\dots,im\} \}$\\
+\hspace{13mm} $\accSet \gets \accSet \cup \{ x_{(i-1)m},\dots x_{im-1} \} \cup \{ q_{(i-1)m},\dots q_{im-1} \}$;\\
+\hspace{7mm} $\hat{a} \gets A_{\lambda}(\pkW, \accSet)$;\\
+\hspace{7mm} $\hat{y} \gets \VCVerif_{\skD}(s_{lm},\hat{a})$\\
+\hspace{7mm} If $\hat{y} \neq \fail$ and $\hat{y} \neq f(x_{lm})$, output 1, else 0.\\
+\end{tabular}
+\vspace{2mm}
+
+\begin{remark}
+In the experiment above the adversary "tries to cheat'' on the last input presented in the last round of queries (i.e. $x_lm$). This is without loss of generality. In fact, assume the adversary aimed at cheating on an input
+presented before round $l$, then with one additional round it could present that same input once more as the last of the batch in that round. 
+\end{remark}
+% TODOs here
+%\begin{definition}{One-Time Soundness}
+%\label{def:one-time-sec}
+%\matteo{TODO: soundness one-time defined with m=l=1}\\
+
+%\end{definition}
+
+
+%\begin{definition}{Many-Time Soundness}
+%\label{def:many-times-sec}
+%\matteo{TODO: soundness many-times, defined with $m = \poly(n), l=O(1)$}\\
+%\end{definition}
+%\matteo{TODO: Both definitions of soundness should have the constraint $\sum_i %DEPTH(\adv^{(i)}_{q}) + DEPTH(\adv_{resp}) = O(\log (n))$}
+
+%\begin{remark}
+%\matteo{To be fixed}
+%Our definitions are equivalent to those of \cite{ckv10} if we restrict ourselves 
+%to stateless algorithms (notice that the experiment has state though) and bounded
+%depth. For this reason we impose a constraint on the number of rounds of queries 
+%to $\BatchVCPG$
+%\end{remark}
+
+\begin{definition}[Soundness]
+\label{def:vc-soundness}
+We say that a verifiable computation scheme is $(l,m)$-sound against a class 
+$\mathcal{A}$ of adversaries if there exists a negligible function $\negl(\lambda)$, such that for all $A = \{A_\lambda\}_\lambda \in \mathcal{A}$, and for infinitely many $\lambda$ we have that 
+\[
+\Pr[\expVC{\VC}=1] \leq \negl(\lambda)
+\]
+\end{definition}
+
+Assume the function $f$ 
+we are trying to compute belongs to a class $\mathcal{C}$ which is smaller than 
+$\mathcal{A}$. Then our definition guarantees that the "cost" of cheating is higher than the cost of honestly computing $f$ and engaging in the Verifiable Computation protocol $\mathcal{VC}$. Jumping ahead, our scheme will allow us to compute the class $\mathcal{C}=\mathsf{AC}^0[2]$ against the class of 
+adversaries $\mathcal{A}=\mathsf{NC}^1$.
+
+\medskip
+\noindent
+{\sc Efficiency}
+The last thing to consider is the efficiency of a VC protocol. Here we focus on the time complexity of computing the function $f$. Let $n$ be the number of input bits, and $m$ be the number of output bits, and $S$ be the size of the circuit computing $f$. 
+     \begin{itemize}
+        \item A verifiable computation scheme $\VC$ is \textbf{client-efficient} if circuit sizes of $\VCPG$ and $\VCVerif$ are $o(S)$. We say that it is \textbf{linear-client} if those sizes are $O(\poly(\lambda)(n + m))$. 
+        
+        \item A verifiable computation scheme $\VC$ is \textbf{server-efficient} if the circuit size of $\VCCompute$ is $O(\poly(\lambda)S)$.
+        % \item A verifiable computation scheme $\VC$ has a \textbf{non-interactive} offline stage if $\D$ and $\W$
+        % do not interact at all during the offline stage, and only $\D$ does some computation. Note that if $\Del$ has a non-interactive offline stage, then we can assume w.l.o.g. that $\D$ always accepts in the offline stage.
+     \end{itemize}
+We note that the key generation protocol $\VCKG$ can be expensive, and indeed in our protocol (as in \cite{ggp10,ckv10,aik10}) its cost is the same as computing $f$ -- this is OK as $\VCKG$ is only invoked once per function, and the cost can be amortized over several computations of $f$. 

@@ -1,0 +1,349 @@
+  
+% Tau
+\newcommand{\Tau}{\mathcal{T}}
+
+% underbar
+%\newcommand{\ubar}[1]{\underaccent{\bar}{#1}}
+\newcommand{\ubar}[1]{\uline{#1}}
+
+% Theorems
+%\newtheorem{mydef}{Definition}
+%\newtheorem{mylemma}{Lemma}
+%\newtheorem{mytheorem}{Theorem}
+%\newtheorem{mycorollary}{Corollary}
+
+\newtheorem{myrem}{Remark}
+
+% New complexity classes
+%\newclass{\DTISP}{DTISP}
+\newclass{\NTISP}{NTISP}
+%\newclass{\SC}{SC}
+\newclass{\NSC}{NSC}
+%\newclass{\NC}{NC}
+\newclass{\DRMA}{DRMA}
+\newclass{\MRIP}{MRIP}
+
+% Rational Proofs
+%\newcommand{\A}{Arthur }
+%\newcommand{\M}{Merlin }
+
+\newcommand{\Eval}{\mathsf{Eval}}
+
+\newcommand{\nrange}{[n]}
+
+\newcommand{\claimedy}{\tilde{y}}
+\newcommand{\posreals}{\reals_{\geq 0}}
+
+\newcommand{\cost}{c}
+\newcommand{\disCost}{\tilde{c}}
+
+\newcommand{\costP}{\cost(P,x)}
+\newcommand{\xVec}{\widetilde{X}}
+\newcommand{\costDisPMany}{m\cdot\costDisP}
+\newcommand{\costDisP}{\cost(\disP, x )}
+
+\newcommand{\disP}{\widetilde{P}}
+\newcommand{\disPSm}{\widetilde{P}^*}
+\newcommand{\bfsP}{\widetilde{P}_{BFS}}
+
+\newcommand{\prCh}{p_{cheat}}
+\newcommand{\ratioCosts}{\frac{\cost_H(x)}{\disCLB}}
+
+\newcommand{\function}[1]{\ensuremath{\mathsf{#1}}}
+
+\newcommand{\Size}{\function{Size}}
+\newcommand{\out}{\function{out}}
+\newcommand{\rew}{\function{rew}}
+\newcommand{\profit}{\function{profit}}
+%\newcommand{\poly}{\function{poly}}
+\def\negl{\function{neg}}
+%\newcommand{\reward}{\function{reward}}
+%\newcommand{\log}{\function{log}}
+
+\newcommand{\invPoly}{\frac{1}{\poly}}
+
+\newcommand{\expRewProtDis}{\expectation[\rew((\disP,V)(x))]}
+\newcommand{\expRewProtDisMany}{\expectation[\rew((\disP,V)(\xVec))]}
+\newcommand{\expRewProtHon}{\expectation[\rew((P,V)(x))]}
+\newcommand{\prOutProtDis}{\Pr[\out((\disP,V)(x)) \neq f(x)]}
+\newcommand{\prOutProtDisMany}{\Pr[\out((\disP,V)(\xVec)) \neq f(\xVec)]}
+
+% expected profit variants
+\newcommand{\expProfitProtDis}{\expectation[\profit((\disP,V)(x))]}
+\newcommand{\expProfitProtDisMany}{\expectation[\profit((\disP,V)(\xVec))]}
+\newcommand{\expProfitProtHon}{\expectation[\profit((P,V)(x))]}
+
+\newcommand{\pDisR}{\tilde{p}_x}
+
+\newcommand{\rnd}{\rho}
+
+\newcommand{\PathCheck}{\function{PathCheck}}
+
+\newcommand{\circuit}{\cal{C}}
+
+\newcommand{\circDFS}{\cal{C}_{DFS}}
+\newcommand{\circBFS}{\overline{\cal{C}}_{BFS}}
+\newcommand{\circNA}{\overline{\cal{C}}_{NA}}
+
+\newcommand{\circEval}{\cal{C}_{\mbox{eval}}}
+\newcommand{\circFFT}{\cal{C}_{\mbox{FFT}}}
+\newcommand{\circPow}{\cal{C}_{\mbox{pow}}}
+
+\newcommand{\tildeltaFFT}{\tildelta_{\mbox{FFT}}}
+
+\newcommand{\probCheatFFT}{\tilde{p}_{\mbox{FFT}}}
+\newcommand{\probCheatPow}{\tilde{p}_{\mbox{pow}}}
+
+\newcommand{\tildelta}{\tilde{\delta}}
+\newcommand{\investTildelta}{\tilde{C}_{\tildelta}}
+
+\newcommand{\deltaBfsInv}{\delta_{BFS}(\tilde{C})}
+
+\newcommand{\disR}{\tilde{R}}
+\newcommand{\disRUB}{R'}
+\newcommand{\disCLB}{\cost'}
+
+\newcommand{\rewGapOneTime}{\Delta^{\rew}_{1}}
+\newcommand{\profGapSeq}{\Delta^{\profit}_{\infty}}
+\newcommand{\rewRatio}{\alpha^{\rew}}
+
+% Announced distribution
+\newcommand{\annd}{\hat d}
+% Real distribution
+\newcommand{\reald}{d}
+
+%\newcommand{\expectation}{\mathbb{E}}
+\newcommand{\expectation}{\mathop{\mathbb{E}}}
+
+% Some shortcuts for math symbols
+\newcommand{\binstrings}{\{0, 1\}^{*}}
+\newcommand{\bits}{\{0, 1\}^{*}}
+%\newcommand{\iff}{\Leftrightarrow}
+\newcommand{\bit}{\{0, 1\}}
+\newcommand{\funonstrings}{: \binstrings \to \binstrings}
+
+\newcommand{\naturals}{\mathbb{N}}\label{key}
+\newcommand{\reals}{\mathbb{R}}
+\newcommand{\field}{\mathbb{F}}
+
+\newcommand{\transp}[1]{{#1}^{\intercal}}
+
+
+% Circuit Family
+\newcommand{\circfam}{\{C_n\}_{n=1}^{\infty}}
+\newcommand{\langL}{\mathcal{L}}
+% Interactive Proofs
+\newcommand{\transc}{\mathcal{T}}
+
+\makeatletter
+\newcommand{\verbatimfont}[1]{\def\verbatim@font{#1}}%
+\makeatother
+
+\newclass{\BPTISP}{BPTISP}
+\newclass{\BPNC}{BPNC}
+\newclass{\osDRMA}{osDRMA}
+\newclass{\BPRMA}{BPRMA}
+%\newclass{\BPQP}{BPQP}
+\newclass{\Cclass}{C}
+
+\newcommand{\cb}[1]{\colorbox{BurntOrange}{#1}}
+\newcommand{\CN}{\cb{\textbf{[CN]}}}
+\newcommand{\XXX}{\cb{\textbf{[XXX]}}}
+
+\begin{comment}
+\newtheorem{definition}{Definition}
+\newtheorem{lemma}{Lemma}
+\newtheorem{claim}{Claim}
+\newtheorem{theorem}{Theorem}
+\newtheorem{assumption}{Assumption}
+\newtheorem{property}{Property}
+\newtheorem{question}{Question}
+\newtheorem{result}{Result}[question]
+\newtheorem{resultprogress}{Result (in progress)}[question]
+\newtheorem{corollary}{Corollary}
+\end{comment}
+
+\newcommand{\DOM}{\function{DOM}}
+\newcommand{\F}{\mathbb{F}}
+
+\newcommand{\allhonest}{\function{all\_honest}}
+\def\true{\function{true}}
+\def\false{\function{false}}
+
+\newcommand{\Enc}{\function{Enc}}
+\def\pk{\function{pk}}
+\def\sk{\function{sk}}
+
+ \newcommand{\inprod}[2]{\langle #1 \, , #2 \rangle}
+
+
+%% Shortcuts specific to Composition
+\newcommand{\protOne}{\pi^{f_2}_{1}}
+\newcommand{\protTwo}{\pi_{2}}
+\newcommand{\rewGap}{\Delta}
+\newcommand{\STEP}{STEP}
+
+\newcommand{\disTransc}{\tilde{\Tau}}
+
+
+\newcommand{\eqdef}{\vcentcolon=}
+\newcommand{\binstring}{\{0, 1\}}
+
+\newcommand{\ACzt}{\AC^0[2]}
+\newcommand{\ACztq}{\AC^0_{\text{Q}}[2]}
+\newcommand{\ACztcm}{\AC^0_{\text{CM}}[2]}
+
+\newcommand{\ACzts}{\AC^0[2]^*}
+
+\newcommand{\EqDef}{\stackrel{\mathrm{def}}{=}}
+
+\newcommand{\matr}[1]{\mathbf{#1}}
+
+\newcommand{\unlambda}{1^{\lambda}}
+\newcommand{\lambdabits}{\bit^{\lambda}}
+\newcommand{\GF}{\text{GF}}
+ 
+
+\newcommand{\ens}[1]{\{#1_{\lambda}\}_{\lambda\in\naturals}}
+\newcommand{\funfam}[1]{\{#1_{\lambda}\}_{\lambda\in\naturals}}
+
+\def\lind{\sim_{\Lambda}}
+
+
+% == BEGIN Public-Key Encryption ==
+\newcommand{\PKE}{\function{PKE}}
+\newcommand{\PKEKeygen}{\function{PKE.Keygen}}
+\newcommand{\PKEEnc}{\function{PKE.Enc}}
+\newcommand{\PKEDec}{\function{PKE.Dec}}
+% == END Public-key Encryption ==
+
+% == BEGIN DVV16 ==
+\def\M{\matr{M}}
+\def\Mz{\matr{\hat{M}}_0^{\lambda}}
+\def\Mo{\matr{\hat{M}}_1^{\lambda}}
+
+\newcommand{\KSample}{\function{KSample}}
+
+\def\r{\mathbf{r}}
+\def\k{\mathbf{k}}
+\def\c{\mathbf{c}}
+\def\t{\mathbf{t}}
+
+% == END DVV16 ==
+
+% == BEGIN Homomorphic Encryption ==
+\providecommand{\evk}{\pckeystyle{evk}}
+
+
+\newcommand{\HE}{\function{HE}}
+\newcommand{\HEKeygen}{\function{HE.Keygen}}
+\newcommand{\HEEnc}{\function{HE.Enc}}
+\newcommand{\HEDec}{\function{HE.Dec}}
+\newcommand{\HEEval}{\function{HE.Eval}}
+
+\newcommand{\HEp}{\function{HE'}}
+\newcommand{\HEpKeygen}{\function{HE'.Keygen}}
+\newcommand{\HEpEnc}{\function{HE'.Enc}}
+\newcommand{\HEpDec}{\function{HE'.Dec}}
+\newcommand{\HEpEval}{\function{HE'.Eval}}
+
+\def\A{\mathbf{A}}
+\def\v{\vec{v}}
+\def\a{\vec{a}}
+\def\Sum{\mathlarger{\sum}}
+\def\kl{\k_{\ell}}
+\def\klp{\k_{\ell+1}}
+
+
+\def\Dl{\mathcal{D}^{\text{f}}_{\lambda}}
+\def\MD{\M^{\mathcal{\text{f}}}}
+\def\Mkg{\M^{\text{kg}}}
+
+% == END Homomorphic Encryption ==
+
+% == BEGIN proof security HE (crypto 2018) ==
+\def\hE{\mathcal{E}}
+\def\hEz{\hE^{0}}
+\def\hH{\mathcal{H}}
+\def\hHz{\hH^{0}}
+
+\def\valpha{\vec{\alpha}}
+\def\valphakg{\valpha^{\text{kg}}}
+\def\valphaD{\valpha^{\text{f}}}
+\def\hEnc{\function{E}}
+% == END proof security HE (crypto 2018) ==
+
+% == BEGIN Delegation of Computation ==
+\newcommand{\Del}{\function{Del}}
+\def\D{\function{D}}
+\def\W{\function{W}}
+\newcommand{\DW}{\langle \D, \W \rangle}
+
+\def\skD{\sk_{\D}}
+\def\pkW{\pk_{\W}}
+
+\newcommand{\advstar}{\adv^*}
+
+ 
+\newcommand{\hatr}{\hat{r}}
+\newcommand{\hatw}{\hat{w}}
+\newcommand{\hatF}{\hat{f}}
+
+\def\zero{\bar{0}}
+\def\raux{\vec{r}_{\text{aux}}}
+\newcommand{\hatraux}{\vec{\hat{r}}_{\text{aux}}}
+
+\newcommand{\hatzpi}[1]{\hat{z}_{\pi(#1)}}
+
+\def\Gvc{{\cal G}}
+\def\Wstar{\W^*}
+
+\def\hatx{\hat{x}}
+\newcommand{\hatq}{\hat{q}}
+\newcommand{\hata}{\hat{a}}
+\def\hats{\hat{s}}
+\def\Doffline{\D_{\text{off}}}
+\def\Donline{\D_{\text{on}}}
+\newcommand{\Dverif}{\D_{\text{ver}}}
+
+\newcommand{\VCKG}{\function{VC.KeyGen}}
+\newcommand{\VCPG}{\function{VC.ProbGen}}
+\newcommand{\VCCompute}{\function{VC.Compute}}
+\newcommand{\VCVerif}{\function{VC.Verify}}
+
+\newcommand{\tVCKG}{\function{\overline{VC.KeyGen}}}
+\newcommand{\tVCPG}{\function{\overline{VC.ProbGen}}}
+\newcommand{\tVCCompute}{\function{\overline{VC.Compute}}}
+\newcommand{\tVCVerif}{\function{\overline{VC.Verify}}}
+
+\newcommand{\qx}{q_x}
+\newcommand{\sx}{s_x}
+\newcommand{\ax}{a_x}
+
+\def\fail{\bot}
+
+\def\VC{{\cal VC}}
+\def\tVC{\overline{{\cal VC}}}
+
+
+\newcommand{\expVC}[1]{{\bf Exp}^{\function{Verif}}_{A}[#1, f, \lambda, l,m]}
+\newcommand{\expVCone}[1]{{\bf Exp}^{\function{Verif}}_{A}[#1, f, \lambda, 1,1]}
+\newcommand{\expVCmany}[1]{{\bf Exp}^{\function{Verif}}_{A}[#1, f, \lambda, O(1), \poly(\lambda)]}
+
+
+\newcommand{\hatzpip}[1]{\hat{z}_{\pi'(#1)}}
+\newcommand\given[1][]{\:#1\vert\:}
+
+
+\newcommand{\tpkW}{\pkW}
+\newcommand{\tskD}{\skD}
+\newcommand{\tqx}{\overline{\qx}}
+\newcommand{\tsx}{\overline{\sx}}
+\newcommand{\tax}{\overline{\ax}}
+
+
+% == END Delegation of Computation==
+
+
+\newcommand{\pLpoly}{\oplus \L / \poly}
+\newcommand{\fgAssump}{\pLpoly \subsetneq \NC^1}

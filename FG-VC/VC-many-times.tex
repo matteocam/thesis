@@ -1,0 +1,98 @@
+
+\subsection{A Reusable Verification Scheme}
+\label{sec:vc-many}
+We now describe how to obtain a reusable verification scheme $\tVC$ applying the transformation in \cite{ckv10} from one-time sound verification schemes through fully homomorphic encryption. The core idea behind the transformation in \cite{ckv10} is to encapsulate all the operations of a one-time verifiable computation scheme through homomorphic encryption. We instantiate this transformation with the one-time verifiable construction $\VC$, described in Figure \ref{fig:one-time}, and the simplest of our two somewhat homomorphic encryption schemes, $\HE$ (defined in Section \ref{sec:leveled-he-simple}). 
+
+\begin{figure}
+\begin{framed}
+Let $\VC$ be the verifiable computation scheme defined in Figure \ref{fig:one-time}. The reusable verifiable computation scheme $\tVC = (\tVCKG,\tVCPG,\tVCCompute,\tVCVerif)$ is defined as follows.
+\begin{itemize}
+\item $\tVCKG(1^\lambda, f) \rightarrow (\tpkW, \tskD)$: The key generation stage is the same as in $\VC$.
+\item $\tVCPG_{\tskD}(x) \rightarrow (\tqx, \tsx)$: 
+\begin{enumerate}
+\item $(\qx, \sx) \gets \VCPG_{\skD}(x)$;
+\item Compute a fresh pair of keys $(\pk_x, \sk_x) \gets \HEKeygen(1^\lambda)$;
+\item Compute $\hat{q}_x \gets \HEEnc_{\pk_x}(\qx)$;
+\item $\tqx \gets (\pk_x, \hat{q}_x)$; $\tsx \gets (\sx, \sk_x)$
+% \item Compute $t$ independent encryptions $\hatr_{i+t} = \HEpEnc_{\pk}(x)$ for $i \in [t]$.
+% \item Sample a random permutation $\pi \sample S_{2t}$.
+% \item $\qx \gets (\hatzpi{1},\dots,\hatzpi{2t}) = (\hatr_1,\dots,\hatr_{2t})$; $\sx \gets \pi$
+\end{enumerate}
+\item $\tVCCompute_{\tpkW}(\tqx) \rightarrow \tax$:
+\begin{enumerate}
+\item $\hat{a}_x \gets \HEEval_{\pk_x}(\VCCompute(\cdot, f), \hat{q}_x)$.
+\item $\tax \gets \hat{a}_x$.
+\end{enumerate}
+\item $\tVCVerif_{\tskD}(\tsx, \tax)$:
+\begin{enumerate}
+\item $\ax \gets \HEDec_{\sk_x}(\hat{a}_x)$.
+\item $\function{return}~\VCVerif_{\tskD}(\sx, \ax) $.
+\end{enumerate}
+\end{itemize}
+\end{framed}
+\caption{Transformation from one-time $\cal{VC}$ scheme to a \textit{reusable} $\cal{VC}$ scheme}
+\label{fig:reusable-transform}
+\end{figure}
+
+
+
+\begin{corollary}[Completeness of $\tVC$]
+The verifiable computation scheme $\tVC$ in Figure \ref{fig:reusable-transform} has overwhelming completeness (Definition \ref{def:vc-completeness}) for the class $\ACztq$.
+\end{corollary}
+\begin{proof}
+The completeness of the scheme above follows directly from the completeness of $\VC$ and the homomorphic properties of $\HE$.
+Notice that we can use $\HEEval$ to homomorphically compute $\VCCompute$ as the latter carries out a computation in $\ACztcm$ (although it is \textit{approximating} a computation in $\ACztq$). \qed
+\end{proof}
+
+\begin{remark}[Efficiency of $\tVC$]
+The efficiency of $\tVC$ is analogous to that of $\VC$ with the exception of a circuit size overhead of a factor $O(\lambda)$ on the problem generation and verification algorithms and of $O(\lambda^2)$ for the computation algorithm.
+All algorithms in $\tVC$ are computable by constant depth circuit (of unbounded fan-in) and the depth of the verification algorithm is independent of the function $F$.
+\end{remark}
+
+
+\begin{theorem}
+Under the assumption that $\fgAssump$ the scheme $\tVC$ in Figure \ref{fig:reusable-transform} is $(O(1),\poly(\lambda))$-sound (many-times secure) against $\NC^1$ adversaries whenever t is chosen to be  $\omega(\log(\lambda))$ in the underlying scheme $\VC$. 
+\end{theorem}
+\begin{proof}
+By Lemma \ref{lemma:one-time} there exists an infinite set $\Lambda \subseteq \naturals$ of security parameters for which $\VC$ ``is secure''.
+By the proof of Lemma \ref{lemma:one-time}, this set is also the set of parameters where the somewhat homomorphic encryption scheme $\HE$ ``is secure''.
+We will show that for all values in this same set $\Lambda$, the probability of success of any  $\NC^1$ adversary in $\expVCmany{\tVC}$ is negligible. 
+
+Assume by contradiction there exists an $\NC^1$ adversary $\advstar$ that achieves non-negligible advantage in $\expVCmany{\tVC}$ for some $\lambda \in \Lambda$.
+
+\textbf{Claim: If $\tVC$ is not secure for some $\lambda^* \in \Lambda$ then we can break the one-time security of $\VC$.}
+Let $l = O(1)$ be the number of rounds in the many-time soundness experiment for $\tVC$. Consider the following $\NC^1$ adversary  $\adv_1$ for the experiment $\expVCone{\VC}$:
+\begin{itemize}
+\item $\adv_1$ obtains a pair a public key $\pkW$ and sends it to $\advstar$;
+\item For all rounds $i \in \{1,\dots,l-1 \}$, $\adv_1$ replies to
+$\advstar$ queries by generating a fresh pair of keys $(\pk, \sk)$ and sending back encryptions of $\HEEnc_{\pk}(\zero)$;
+\item At round $l$, $\adv_1$ responds to all input queries but the last one as above. This, by experiment definition,  is the input where $\advstar$ will try to cheat; we denote this input by $x^*$. Now $\adv_1$ sends $x^*$ as the only input query in the one-time security experiment and will receive back $q^*$. It will then obtain a fresh pair of keys $(\pk^*, \sk^*)$ and send $\HEEnc_{\pk^*}(q^*)$ to $\advstar$.
+\item $\advstar$ will respond with $\hata^*$ and $\adv_1$ will send $\HEDec_{\sk^*}(\hata)$ to the challenger for one-time security experiment.
+\end{itemize}
+
+The advantage of $\adv_1$ depends on how likely is  $\advstar$ can successfully cheat in that interaction. Let $p$ be the advantage of $\adv_1$ in the one-time security experiment. Clearly, if $p$ is close to the advantage of $\advstar$ in the many-times security experiment $\adv_1$ breaks the security of the one-time scheme.
+
+\textbf{Claim: the advantage of $\adv_1$ is negligibly close to that of $\advstar$ in the many-time security game for security parameter $\lambda^*$.}
+We can  prove this by relying on the semantic security of the homomorphic encryption and on a hybrid argument.
+% Assume by contradiction that $p$ is noticeably far from the advantage of $\advstar$ in the many-time security game for all but a finite number of values of the security parameter.
+
+Let $L = lm$, the total number of input queries in the many-times security experiment. We now define the hybrids $H^{(j)}$ with $j \in \{0, \dots, L\}$. We define $H^{(0)}$ to be the exactly the many-time security experiment. 
+For $j \in [L]$ we define $H^{(j)}$ to be an experiment where we respond to input queries with $\HEEnc_{\pk_f}(\zero)$  where $\pk_f$ is a fresh public key up to input query $j$ and behaves the many-time security experiment from input query $j+1$ on. Notice that $H^{(L)}$ corresponds to the interaction with $\adv_1$ above.
+
+Denote by $A^{(j)}$ the output distribution of $\advstar$ when interacting with $H^{(j)}$.
+Intuitively, if the advantage of the $\adv_1$ in the one-time experiment is significantly different from the advantage of $\advstar$ in the many-times security games, then $A^{(0)}$ and $A^{(L)}$ are not $\Lambda$-computationally indistinguishable.
+
+Therefore (by Lemma \ref{lemma:hyb-arg}), there exists $j \in [L]$ such that $A^{(j-1)} \not \sim_{\Lambda} A^{(j)}$.
+
+\def\advcpa{\adv_{\text{CPA}}}
+\textbf{Claim: If there exists $j \in [L]$ such that $A^{(j-1)} \not \sim_{\Lambda} A^{(j)}$ then we can break the semantic security of $\HE$.
+}
+Consider the following $\NC^1$ adversary $\advcpa$ which receives in input a ``challenge'' public key $\pk^*$. $\advcpa$ will interact with $\adv^*$ simulating $H^{(j)}$ until receiving input query $x_{j}$.
+At this point it will compute $q_j$ from $\VCPG(x_j)$ and send to the CPA challenger (see Remark \ref{rem:cpa-multiple}) $q_j$ and $\zero$, receiving back an encryption $c^*$ of either message under the public key $\pk^*$. $\advcpa$ will now send $(\pk^*, c^*)$ to $\advstar$ and continue simulating $H^{(j)}$ till the end of the experiment.
+The adversary $\advcpa$ will check whether $\advstar$ cheated successfully at the end of the experiment and output (in the multiple-message CPA experiment) $1$ if that is the case and $0$ otherwise. This would allow $\advcpa$ to have a noticeable advantage in the experiment thus breaking the semantic security of $\HE$. \qed
+\end{proof}
+
+% \begin{remark}
+% On  the complexity of preparing a circuit version of $\HEpEval(\cdot, F)$ in the offline stage.
+% \color{red}{TODO}
+% \end{remark}

@@ -1,0 +1,57 @@
+We are going to prove that there exists infinite $\Lambda \subseteq \naturals$ such that $(\pk,\evk, \HEEnc_{\pk}(0)) \lind (\pk,\evk, \HEEnc_{\pk}(1))$.
+
+When using the notations $\Mkg$ and $\MD$ we will always denote matrices to respectively distributed according to $\Dl$ and  $\mathcal{D}^{\text{kg}}$, where $\Dl$ and $\mathcal{D}^{\text{kg}}$ are the distributions defined in Lemma \ref{lemma:ik00}.
+
+
+
+We will define the (randomized) encoding procedure $\hEnc : \bit^{\lambda \times \lambda} \to \bit{\lambda}$ defined as 
+\[
+    \hEnc(\M, b) = \transp{\r} \M + \transp{(0 \ \dots 0 \ b)} \, ,
+\]
+where $r$ is uniformly distributed in $\bit^{\lambda}$. The functions we will pass to $\hEnc$ will be distributed either according to $\Mkg$ or $\MD$. Notice that: \textit{(i)}  $\hEnc(\Mkg, b)$ is distributed identically to $\HEEnc_{\pk}(b)$; \textit{(ii)} $\hEnc(\MD, b)$ corresponds to the uniform distribution over $\bit^{\lambda}$ because (by Lemma \ref{lemma:ik00}) $\MD$ has full rank and hence $\transp{\r}\MD$ must be uniformly random.
+
+We will denote with $\Mkg_1, \dots, \Mkg_{L}$  the matrices $\M_1, \dots, \M_{\ell}$ used to construct the evaluation key in $\HEKeygen$ (see definition). Recall these matrices are distributed according to $\mathcal{D}^{\text{kg}}$ as in Lemma \ref{lemma:ik00}.
+
+We will also define the following vectors:
+\[
+\valphakg_{\ell} \eqdef \{ \hEnc(\Mkg_{\ell+1}, \kl[i] \cdot \kl[j]) \ | \ i,j \in [\lambda] \} \qquad \valphaD_{\ell} \eqdef \{ \hEnc(\MD_{\ell+1}, \kl[i] \cdot \kl[j]) \ | \ i,j \in [\lambda] \} \, ,
+\]
+where $\kl$ is defined as in $\HEKeygen$ and the matrices in input to $\hEnc$ will be clear from the context. Notice that all the elements of $\valphakg_{\ell}$ are encryptions, whereas all the elements of $\valphaD_{\ell}$ are uniformly distributed.
+
+We will use a standard hybrid argument. Each of our hybrids is parametrized by a bit $b$. This bit informally marks whether the hybrid contains an element indistinguishable from an encryption of $b$.
+\begin{itemize}
+
+\item $\hE^b \eqdef (\Mkg_0, \hEnc(\Mkg_0, b), \valphakg_1, \dots, \valphakg_L) $ where 
+$\Mkg_0$ corresponds to the public key of our scheme.
+%$\Mkg_{\ell}$-s with $\ell \in [L]$ correspond to the elements of the evaluation keys as in the definition of $\HEKeygen$.
+Notice that $\valphakg_{\ell} \equiv \{ \vec{a}_{\ell, i, j} \ | \ i,j \in [\lambda] \}$ where $ \vec{a}_{\ell, i, j}$ is as defined in $\HEKeygen$. This hybrid corresponds to the distribution $(\pk,\evk, \HEEnc_{\pk}(b))$.
+\item $\hH^b_0 \eqdef (\MD_0, \hEnc(\MD, b), \valphakg_1, \dots, \valphakg_L)$. The only difference from $\hE$ is in the first two components where we replaced the actual public key and ciphertext with a full rank matrix distributed according to $\Dl$ and a random vector of bits.
+\item For $\ell \in [L]$ we define
+\[
+\hH^b_{\ell} \eqdef (\MD_0, \hEnc(\MD, b), \valphaD_1, \dots, \valphaD_{\ell}, \valphakg_{\ell+1}, \dots, \valphakg_L) \, .
+\]
+%where $\valphaD_{l} \eqdef \{ \vec{a}_{\ell, i, j} \ | \ i,j \in [\lambda], \r \sample \bit^{\lambda} \}$
+\end{itemize}
+
+We will proceed proving that
+\[
+\hEz \lind \hHz_0 \lind \hHz_1 \lind \dots \lind \hHz_L \lind \hH^1_L \lind \dots \lind \hH^1_1 \lind \hH^1_0 \lind \hE^1
+\]
+through a series of smaller claims. In the remainder of the proof $\Lambda$ refers to the set in Lemma \ref{lemma:ik00}.
+
+\begin{itemize}
+\item $\hEz \lind \hHz_0$: if this were not the case we would be able to distinguish $\Mkg_0$ from $\MD_0$ for some of the values in the set $\Lambda$ thus contradicting Lemma \ref{lemma:ik00}.
+\item $\hHz_{\ell-1} \lind \hHz_{\ell}$ for $\ell \in [L]$: assume by contradiction this statement is false for some $\ell \in [L]$. That is 
+\[
+(\MD_0, \hEnc(\MD_0, b), \valphaD_1, \dots, \valphaD_{\ell-1}, \valphakg_{\ell}, \dots, \valphakg_L) \not \lind 
+(\MD_0, \hEnc(\MD_0, b), \valphaD_1, \dots, \valphaD_{\ell}, \valphakg_{\ell+1}, \dots, \valphakg_L) \, .
+\]
+Recall that, by definition, the elements of $\valphakg_{\ell}$ are all encryptions whereas the elements of $\valphaD_{\ell}$ are all randomly distributed values. This contradicts the the semantic security of the scheme $\PKE$ (by a standard hybrid argument on the number of ciphertexts). 
+%Informally, it is then possible to  define a sub-hybrid that breaks .
+
+
+\item $\hHz_{L} \lind \hH^1_{L}$: the distributions associated to these two hybrids are identical. In fact, notice the only difference between these two hybrids is in the second component: $\hEnc(\MD, 0)$ in $\hHz_{L}$ and $\hEnc(\MD, 1)$ in $\hH^1_{L}$. As observed above $\hEnc(\MD, b)$ is uniformly distributed, which proves the claim.
+\end{itemize}
+
+All the claims above can be proven analogously for  $\hE^1, \hH^1_{0}$  and $\hH^1_{\ell}$-s.
+\qed

@@ -1,0 +1,105 @@
+The scheme is described in Figure \ref{fig:pke-dvv16}. Its security relies on the
+ following result, implicit in \cite{ik00}\footnote{Stated as Lemma 4.3 in \cite{fgcrypto}.}. We will also use this lemma when proving the security of our construction in Section \ref{sec:he}.
+ 
+
+\begin{lemma}[\cite{ik00}]
+\label{lemma:ik00}
+If $\fgAssump$ then there exist distribution $\mathcal{D}^{\text{kg}}_{\lambda}$ over  $\bit^{\lambda \times \lambda}$, distribution $\mathcal{D}^{f}_{\lambda}$ over matrices in $\bit^{\lambda \times \lambda}$ \textit{of full rank}, and infinite set $\Lambda \subseteq \naturals$ such that
+\[
+\Mkg \lind \MD
+\]
+where $\MD \gets \mathcal{D}^{f}_{\lambda}$ and $\Mkg \gets  \mathcal{D}^{\text{kg}}_{\lambda}$.
+\end{lemma}
+
+The following result is central to the correctness of the scheme $\PKE$ 
+in Figure \ref{fig:pke-dvv16} and is implicit in \cite{fgcrypto}.
+
+\begin{lemma}[\cite{fgcrypto}]
+\label{lemma:dvv16-sampling}
+There exists sampling algorithm $\KSample$ such that $(\M, \k) \gets \KSample(\unlambda)$, $\M$ is a matrix distributed according to $\mathcal{D}^{\text{kg}}_{\lambda}$ (as in Lemma \ref{lemma:ik00}), $\k$ is a vector in the kernel of $\M$ and has the form \\$\k = (r_1, \, r_2, \, \dots, \, r_{\lambda-1}, \, 1) \in \bit^{\lambda}$ where $r_i$-s are uniformly distributed bits.
+\end{lemma}
+%  % Matrices for sampling distributions
+%  \def\visMz{
+%  \begin{pmatrix}
+%   0 & \   & \cdots & 0 & 0 \\
+%   1 & 0 & \cdots & \   & 0 \\
+%   0 & 1 & \ddots & \   & \vdots  \\
+%   \vdots  & \ddots  & \ddots & \  & \\
+%   0 & \cdots & 0 & 1 & 0 
+%  \end{pmatrix}}
+
+
+% % Sampling distributions
+% \begin{figure}
+% \label{fig:sampling-dists}
+% \begin{framed}
+% \begin{itemize}
+
+% \item  \matteo{TODO: Find ways to set up matrices correctly}
+
+% \end{itemize}
+% \end{framed}
+% \caption{Sampling Distributions from \cite{ik00}}
+% \end{figure}
+ 
+ 
+ % Definitions 
+% \def\Rone{\mathbf{R}_{1}}
+% \def\Rtwo{\mathbf{R}_{2}}
+
+
+%  \newcommand{\LSamp}{\function{LSamp}}
+%  \newcommand{\RSamp}{\function{RSamp}}
+ 
+ 
+ 
+ % Actual scheme
+\begin{figure}
+\begin{framed}
+% Let $\Mz$ be the $\lambda \times \lambda$ matrix  described in Figure \ref{fig:sampling-dists}.
+\begin{itemize}
+\item $\PKEKeygen_{\sk}(\unlambda):$
+\begin{enumerate}
+% \item Sample $\Rone \gets \LSamp (\unlambda)$ and 
+% $\Rtwo \gets \RSamp(\unlambda)$;
+% \item Let $\k = \transp{(\r \  1)}$ be the last column of $\Rtwo$;
+\item Sample $(\M, \k) \gets \KSample(\unlambda)$;
+\item Output $(\pk = \M, \sk = \k)$.
+\end{enumerate}
+\item $\PKEEnc_{\pk = \M}(\mu)):$
+\begin{enumerate}
+\item Sample $\r \sample \bit^{\lambda}$;
+\item Let $\transp{t} = (0 \ \dots 0 \ 1) \in \bit^{\lambda}$;
+\item Output $\transp{\c} = \transp{\r}  \M + \mu\transp{\t}$.
+\end{enumerate}
+\item $\PKEDec_{\sk = \k }(\c):$
+\begin{enumerate}
+\item Output $\inprod{\k}{\c}$
+\end{enumerate}
+
+\end{itemize}
+\end{framed}
+\caption{PKE construction \cite{fgcrypto}}
+\label{fig:pke-dvv16}
+\end{figure}
+
+
+% % Sampling algorithms
+% \begin{figure}
+% \label{fig:sampling-algs}
+% \begin{framed}
+% \begin{itemize}
+
+% \item  \matteo{TODO}
+
+% \end{itemize}
+% \end{framed}
+% \caption{Sampling Algorithms (\cite{fgcrypto})}
+% \end{figure}
+
+\begin{theorem}[\cite{fgcrypto}]
+Assume $\fgAssump$. Then, the scheme $\PKE = (\PKEKeygen, \PKEEnc, \PKEDec)$ defined in Figure \ref{fig:pke-dvv16} is a Public Key Encryption scheme secure against $\NC^1$ adversaries. All algorithms in the scheme are computable in $\ACzt$.
+\end{theorem}
+
+% To guarantee figures are flushed before the next subsection
+%\clearpage

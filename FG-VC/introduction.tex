@@ -1,0 +1,135 @@
+\section{Introduction}
+
+Historically Cryptography has been used to protect information (either in transit or stored) from unauthorized access. One of the most important developments in Cryptography in the last thirty years, has been the ability to protect non only information but also the {\em computations} that are performed on data that needs to be secure. Starting with the work on secure multiparty computation \cite{mpc}, and continuing with ZK proofs \cite{zk}, and more recently Fully Homomorphic Encryption \cite{gentry}, verifiable outsourcing computation \cite{muggles,ggp10}, SNARKs \cite{qap,snark-linear} and obfuscation \cite{garg2016candidate} we now have cryptographic tools that protect the secrecy and integrity not only of data, but also of the programs which run on that data. 
+
+Another crucial development in Modern Cryptography has been the adoption of a more ``fine-grained" notion of computational hardness and security. The traditional cryptographic approach modeled computational tasks as ``easy" (for the honest parties to perform) and ``hard" (infeasible for the adversary). Yet we have also seen a notion of {\em moderately hard} problems being used to attain certain security properties. The best example of this approach might be the use of moderately hard inversion problems used in blockchain protocols such as Bitcoin. Although present in many works since the inception of Modern Cryptography, this approach was first 
+formalized in a work of Dwork and Naor \cite{dn-spam}. 
+
+In this paper we consider the following model (which can be traced back to the seminal paper by Merkle \cite{merkle} on public key cryptography). Honest parties will run a protocol which will cost\footnote{
+We intentionally refer to it as ``cost" to keep the notion generic. For concreteness one can think of $C$ as the running time required to run the protocol.} 
+them $C$ while an adversary who wants to compromise the security of the protocol will incur a $C'=\omega(C)$ cost. Note that while $C'$ is asymptotically larger than $C$, it might still be a feasible cost to incur -- the only guarantee is that it is 
+substantially larger than the work of the honest parties. For example in Merkle's original proposal for public-key cryptography the honest parties can exchange a key in time $T$ but the adversary can only learn the key in time $T^2$. Other examples include primitives introduced by Cachin and
+Maurer \cite{maurer} and Hastad \cite{H87} where 
+the cost is the space and parallel time complexity of the parties, respectively. 
+
+Recently there has been renewed interest in this model. Degwekar et al. \cite{fgcrypto} show how to construct certain cryptographic 
+primitives in $\NC^1$ [resp. ${\mathsf AC}^0$] which are secure against all adversaries in $\NC^1$ [resp. ${\mathsf AC}^0$]. In conceptually related work Ball et al. \cite{fghardness} present computational problems which are ``moderately hard'' on average, if they are moderately hard in the worst case, a useful property for such problems to be used as cryptographic primitives. 
+
+The goal of this paper is to initiate a study of {\em Fine Grained Secure Computation}. By doing so we connect these two major developments in Modern Cryptography. The question we ask is if it is possible to construct {\em secure computation primitives} that are secure against ``moderately complex" adversaries. We answer this question in the affirmative, by presenting definitions and constructions for the task of Fully Homomorphic Encryption and Verifiable Computation in the fine-grained model. We also present two application scenarios for our model: i) hardware chips that prove their own correctness and ii) protocols against rational adversaries including potential solutions to the {\em Verifier's Dilemma} in smart-contracts transactions such as Ethereum. 
+
+\subsection{Our Results}
+
+Our starting point is the work in \cite{fgcrypto} and specifically their public-key encryption scheme secure against $\NC^1$ circuits. Recall that $\ACzt$ is the class of Boolean circuits with constant depth, unbounded fan-in, 
+augmented with parity gates. If the number of $\function{AND}$ gates of non constant fan-in is constant we say that the circuit belongs to the class $\ACztq \subset \ACzt$.
+
+Our results can be summarized as follows
+\begin{itemize}
+\item We first show that the techniques in \cite{fgcrypto} can be used to build a somewhat homomorphic encryption (SHE) scheme. 
+We note that because honest parties are limited to 
+$\NC^1$ computations, the best we can hope is to have a scheme that is homomorphic for computations in $\NC^1$. However our scheme can only support computations that can be expressed in 
+$\ACztq$. 
+
+\item We then use our SHE scheme, in conjunction with protocols described in \cite{ggp10,ckv10,aik10}, to construct verifiable 
+computation protocols for functions in $\ACztq$, secure and input/output private against any adversary in $\NC^1$.
+
+\end{itemize}
+Our somewhat homomorphic encryption also allows us to obtain the following protocols secure against $\NC^1$ adversaries: \textit{(i)} constant-round 2PC, secure in the presence of semi-honest static adversaries for functions in $\ACztq$; \textit{(ii)} \textit{Private Function Evaluation} in a two party setting for circuits of constant \textit{multiplicative} depth without relying on universal circuits. These results stem from well-known folklore transformations and we do not prove them formally.
+
+The class $\ACztq$ includes many natural and interesting problems such as: fixed precision arithmetic, evaluation of formulas in 3CNF (or $k$CNF for any constant $k$), a representative subset of SQL queries, and S-Boxes~\cite{sboxes} for symmetric key encryption. 
+
+Our results (like \cite{fgcrypto}) hold under the assumption that $\fgAssump$, a widely believed worst-case assumption on separation of complexity classes. Notice that this assumption does not imply the existence of one-way functions (or even $\P \not = \NP$). Thus, our work shows that it is possible to obtain ``advanced'' cryptographic schemes\footnote{Naturally the security guarantees of these schemes are more limited compared to their standard definitions.} such as somewhat homomorphic encryption and verifiable computation even if we do not live in Minicrypt\footnote{This is a reference to Impagliazzo's ``five possible worlds''~\cite{impagliazzo1995personal}.}.
+
+\medskip
+\noindent
+{\sc Comparison with other approaches.}
+One important question is: on what features are our schemes better than ``generic" cryptographic schemes that after all are secure against {\em any} polynomial time  adversary. 
+
+One such feature is the type of assumption one must make to prove security. As we said above, our schemes rely on a very mild worst-case complexity assumption, while cryptographic SHE and VC schemes rely on very specific assumptions, which are much stronger than the above. 
+
+For the case of Verifiable Computation, we also have information-theoretic
+protocols which are secure against {\em any} (possibly computationally unbounded) adversary. For example the ``Muggles'' protocol in \cite{muggles} which 
+can compute any (log-space uniform) $\NC$ function, 
+and is also reasonably efficient
+in practice \cite{CMT}.
+Or, the more recent work \cite{grlocally}, which obtains efficient VC for functions in a subset of $\NC \cap \class{SC}$.
+Compared to these results, one aspect in which our protocol fares better  is that
+our Verifier can be implemented with a constant-depth circuit (in particular in 
+$\mathsf{TC}^0$, see Section \ref{sec:VC}) which is not possible for the Verifier in \cite{muggles,grlocally}. Moreover our protocol is non-interactive (while \cite{muggles,grlocally} requires
+logarithmically many rounds of interaction) and because our protocols work in the ``pre-processing model" we do not require any uniformity or regularity condition on the circuit being outsourced (which are required by \cite{muggles} and \cite{CMT}). 
+
+Interactive proofs (again, we stress, with information-theoretic soundness) with verification in constant depth are discussed in \cite{gghkr07} (where the verifier is in 
+$\mathsf{NC}^0$). We point out that our schemes besides achieving non-interactive constant-depth verification also has a verifier that runs in linear {\em sequential} time on the input/output size (i.e. in $O(\lambda^c(n+m))$ where $\lambda$ is the security parameter, $n$ the input and $m$ the output sizes of the function being outsourced). 
+
+
+\subsection{Overview of our Techniques}
+
+In \cite{fgcrypto} the authors already point out that their scheme is 
+linearly homomorphic. We make use of the {\em re-linearization} technique 
+from \cite{fhe-lwe} to construct a leveled homomorphic encryption. 
+
+Our scheme (as the one in \cite{fgcrypto}) is secure against adversaries in the class of (\textit{non-uniform}) $\NC^1$. This implies that we can only evaluate functions in $\NC^1$ otherwise the evaluator would be able to break the semantic security of the scheme.
+However we have to ensure that the \textit{whole} homomorphic evaluation stays in $\NC^1$. The problem is that homomorphically evaluating a function $f$ might 
+increase the depth of the computation. 
+
+In terms of circuit depth, the main overhead will be (as usual)
+%in the case of homomorphic encryption) 
+the computation of multiplication gates. As we 
+ show in Section \ref{sec:HE} a single homomorphic multiplication can be performed by a depth two $\ACzt$ circuit, but this requires depth $O(\log(n))$ with a circuit of fan-in two. Therefore, a circuit for $f$ with $\omega(1)$ multiplicative depth would require an evaluation of $\omega(\log(n))$ depth, which would be out of $\NC^1$. Therefore our first scheme can only evaluate
+ functions with constant multiplicative depth, as in that case the evaluation stays in $\ACzt$. 
+ 
+We then present a second scheme that extends the class of computable functions 
+to $\ACztq$ by allowing for a negligible error in the correctness of the scheme. We use a result by Razborov \cite{razborov1987lower} on approximating $\ACzt$ circuits with low-degree polynomials -- the correctness of the approximation (appropriately amplified) will be the correctness of our scheme. 
+
+
+
+\subsection{Application Scenarios}
+
+The applications described in this section refer to the problem of Verifying Computation, where a Client outsources an algorithm $f$ and an input $x$ to a Server, who returns a value $y$ and a proof that $y=f(x)$. The security property is that it should be infeasible to convince the verifier to accept $y' \neq f(x)$, and the crucial efficiency property is that verifying the proof should cost less than computing $f$ (since avoiding that cost was the reason the Client hired the Server to compute $f$). 
+
+\medskip
+\noindent
+{\sc Hardware Chips That Prove Their Own Correctness}
+Verifiable Computation (VC) can be used to verify the execution of hardware chips designed by untrusted manufacturers. One could envision chips that provide (efficient) \emph{proofs of their correctness} for every input-output computation they perform. These proofs must be  \emph{efficiently verified} in less time and energy than it takes to re-execute the computation itself. 
+
+When working in hardware, however, one may not need the full power of cryptographic protection against {\em any} malicious attacks since one could bound the computational power of the malicious chip. The bound could be obtained by making (reasonable and evidence-based) assumptions on how much computational power can fit in a given chip area. For example one could safely assume that a malicious chip can perform at most a constant factor more work than the original function because of the basic physics of the size and power constraints. In other words, if $C$ is the cost of the honest Server in a VC protocol, then in this model the adversary is limited to $O(C)$-cost computations, and therefore a protocol that guarantees that succesful cheating strategies require $\omega(C)$ cost, will suffice. This is exactly the model in our paper. Our results will apply to the case in which we define the cost as the depth (i.e. the parallel time complexity) of the computation implemented in the chip. 
+
+\medskip
+\noindent
+{\sc Rational Proofs.}
+The problem above is related to the notion of composable Rational Proofs defined in \cite{cg15}. In a Rational Proof (introduced by Azar and Micali~\cite{am,am1}), given a function $f$ and an input $x$, the Server returns the value $y=f(x)$, and (possibly) some auxiliary information, to the Client. The Client in turn 
+pays the Server for its work with a reward based on the transcript exchanged with the server and some randomness chosen by the client.  The crucial 
+property is that this reward is maximized in expectation when the server 
+returns the correct value $y$. Clearly a {\em rational} prover who is only interested 
+in maximizing his reward, will always answer correctly. 
+
+The authors of \cite{cg15} 
+show however that the definition of Rational Proofs in \cite{am,am1} does not satisfy a basic compositional property needed for the case in which many computations are outsourced to many servers who compete with each other for rewards (e.g. the case of volunteer computations \cite{seti}). 
+A ``rational proof" for the single-proof setting may no longer be rational when a large number of ``computation problems" are outsourced. %  Assume that solving each problem takes time $T$. Then in a time interval of length $T$, the honest prover can only solve and receive the reward for a single problem. On the other hand a dishonest prover, can answer up to $T$ problems, for example by answering at random, a strategy that takes $O(1)$ time. 
+If one can produce $T$ ``random guesses" to problems in the time it takes to solve 1 problem correctly,  it may be preferable to guess! That's because even if each individual reward for an incorrect answer is lower than the reward for a correct answer, the total reward of $T$ incorrect answers might be higher (and this is indeed the case for some of the protocols presented in \cite{am,am1}). 
+
+The question (only partially answered in \cite{cg15,cg17} for a limited class of computations) is to design protocols where the reward is strictly connected, not just to the correctness of the result, but to the amount of work done by the prover. Consider for example a protocol where the prover collects the reward only if he produces a proof of correctness of the result. Assume that the cost to  produce a valid proof for an incorrect result, is higher than just computing the correct result and the correct proof. Then obviously a rational prover will always answer correctly, because the above strategy of fast incorrect answers will not work anymore. 
+
+While the application is different, the goal is the same as in the previous verifiable hardware scenario. 
+
+\medskip
+\noindent
+{\sc The Verifier's Dilemma.}
+In blockchain systems such as Ethereum, transactions can be expressed by arbitrary programs. To add a transaction to a block miners have to verify its validity, which could be too costly if the program is too complex. This creates the so-called {\em Verifier's Dilemma}~\cite{luu2015demystifying}: given a costly valid transaction $Tr$ a miner who spends time verifying it is at a disadvantage over a miner who does not verify it and accept it ``uncritically" since the latter will produce a valid block faster and claim the reward. On the other hand if the transaction is invalid, accepting it without verifying it first will lead to the rejection of the entire block by the blockchain and a waste of work by the uncritical miner.
+The solution is to require efficiently verifiable proofs of validity for transactions, an approach already pursued by various startups in the Ethereum ecosystem (e.g. TrueBit\footnote{TrueBit: \textit{https://truebit.io/}}). We note that it suffices for these proofs to satisfy the condition above: i.e. we do not need the full power of information-theoretic or cryptographic security but it is enough to guarantee that to produce a proof of correctness for a false transaction is more costly than producing a valid transaction and its correct proof, which is exactly the model we are proposing. 
+
+
+\subsection{Future Directions}
+
+Our work opens up many interesting future directions. 
+
+First of all, it would be nice to extend our results to the case where cost is the actual running time, rather than ``parallel running time"/``circuit depth" as in our model. The techniques in \cite{fghardness} (which presents problems conjectured to have $\Omega(n^2)$ complexity on the average), if not even the original work of Merkle \cite{merkle}, might be useful in building a verifiable computation scheme where if computing the function takes time $T$, then producing a false proof of correctness would have to take $\Omega(T^2)$. 
+
+For the specifics of our constructions it would be nice to ``close the gap" between what we can achieve and the complexity assumption: our schemes can only compute $\ACztq$ against adversaries in $\NC^1$, and ideally we would like to be able to compute all of $\NC^1$ (or at the very least all of $\ACzt$). 
+
+Finally, to apply these schemes in practice it is important to have tight concrete security reductions and a proof-of-concept implementations. 
+
+
+%\subsection{Other Related Work}
+
+%\input{rel_work.tex}
+

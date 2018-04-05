@@ -1,0 +1,93 @@
+\subsection{Beyond Constant Multiplicative Depth}
+\label{sec:beyond-cm}
+
+In the previous section we saw how our scheme is homomorphic for a class of constant-depth, unbounded fan-in arithmetic circuits in $\GF(2)$ with \textit{constant multiplicative depth}, i.e. polynomials in $\GF(2)$ of constant degree. We now show how to overcome this limitation by slightly changing our scheme and using a result (implicit in \cite{razborov1987lower}) on approximating $\ACzt$ circuits with low-degree polynomials.
+
+\begin{definition}[Quasi-Constant Multiplicative Depth]
+\label{def:quasi-constant}
+Let $C \in \ACzt$ be a circuit. Let $S$ be the number of $\function{AND}$ gates of non constant fan-in. If $S = O(1)$ we say that $C$ has quasi-constant multiplicative depth. We denote with $\ACztq$ the class of circuits with such property.
+\end{definition}
+
+\begin{lemma}[\cite{razborov1987lower}]
+\label{lemma:razborov}
+Let $C$ be an $\ACztq$ circuit of depth $d$. Then there exists a randomized circuit $C' \in \ACztcm$ such that, for all x,
+\[
+\Pr[C'(x) \not = C(x)] \leq \epsilon \, ,
+\]
+where $\epsilon = O(1)$. The circuit $C'$ uses $O(n)$ random bits and its representation can be computed in $\NC^1$ from a representation of $C$.
+%\matteo{TODO: Check if representation can be computed in AC0.}
+\end{lemma}
+
+Below is a variation of our homomorphic scheme that can evaluate all circuits in $\ACztq$ in $\NC^1$. This time, in order to evaluate circuit $C$, we perform several homomorphic evaluations of the randomized circuit $C'$ (as in Lemma \ref{lemma:razborov}). To obtain the plaintext output of $C$ we can decrypt all the ciphertext outputs and take the majority result. Notice that this scheme is still compact.
+As we use a randomized approach to evaluate $F$, the scheme $\HEp$ will be implicitly parametrized by a soundness parameter $s$. Intuitively, the probability of a function $F$ being evaluated incorrectly will be upper bounded by $2^{-s}$.
+
+%To simplify notation, in the following paragraphs and in Section \ref{sec:vc} we 
+%will slightly abuse the syntax for homomorphic encryption schemes and consider 
+%both the public key and evaluation key as part of $\pk$.
+
+
+
+\def\GenApproxFun{\function{GenApproxFun}}
+\def\SampleAuxRandomness{\function{SampleAuxRandomness}}
+\def\EvalApprox{\function{EvalApprox}}
+
+We define the following auxiliary functions for our scheme:
+\begin{definition}[Auxiliary Functions for $\HEp$]
+\label{def:aux-he-fns}
+\item Let $f: \bit^t \to \bit$ be represented as an arithmetic circuit as in $\HE$ and $\pk$ a public key for the scheme $\HE$ that includes the evaluation key. Let $s$ be a soundness parameter.
+We denote by  $f'$ the randomized function approximating $f$ as in Lemma \ref{lemma:razborov}; let $t' = O(t)$ be the number of additional random bits $f'$ will take in input.
+\begin{itemize}
+\item $\GenApproxFun(f):$
+\begin{enumerate}
+\item Computes and returns the representation of the approximating function $f'$.
+\end{enumerate}
+\item $\SampleAuxRandomness_s(\pk, f'):$
+\begin{enumerate}
+\item We assume  $f'$ is the randomized function approximating $f$ as in Lemma \ref{lemma:razborov}; let $t' = O(t)$ be the number of additional random bits $f'$ will take in input.
+\item Sample $s\cdot t'$ random bits $r^{(1)}_1,\dots,r^{(1)}_{t'}, \dots, r^{(s)}_1,\dots,r^{(s)}_{t'}$;
+\item Compute $\hatraux \eqdef \{  \hat{r}^{(i)}_j \ | \ \hat{r}^{(i)}_j \gets \HEEnc_{\pk}(r^{(i)}_j), i \in [s], j \in [t'] \} $;
+\item Output $\hatraux$.
+\end{enumerate}
+\medskip
+\item $\EvalApprox_s(\pk, f', c_1,\dots,c_t, \hatraux):$
+\begin{enumerate}
+\item Let $\hatraux = \{  \hat{r}^{(i)}_j \ | \  i \in [s], j \in [t'] \} $.
+\item For $i \in [s]$, compute $c^{\text{out}}_i \gets \HEEval_{\evk}(f', c_1, \dots c_t, \hat{r}^{(i)}_1, \dots, \hat{r}^{(i)}_{t'})$ .
+\item Output $\vec{c} = (c^{\text{out}}_1, \dots, c^{\text{out}}_{s})$
+\end{enumerate}
+
+\end{itemize}
+\end{definition}
+
+\bigskip
+
+The new scheme $\HEp$ with soundness parameter $s$ follows.
+\begin{framed}
+\begin{itemize}
+\item Key generation and encryption are the same as in  $\HE$.
+\item $\HEpEval_{\pk}(f, c_1,\dots,c_t)$:
+\begin{enumerate}
+\item Compute $f' \gets \GenApproxFun(f)$;
+\item Compute $\hatraux \gets \SampleAuxRandomness_s(\pk, f')$;
+\item Compute $\vec{c} \gets \EvalApprox_s(\pk, f', c_1,\dots, c_t, \hatraux)$;
+\item Output $\vec{c} = (c^{\text{out}}_1, \dots, c^{\text{out}}_{s})$.
+\end{enumerate}
+\item $\HEpDec_{\sk}(\vec{c})$:
+\begin{enumerate}
+\item Decrypt all $c^{\text{out}}_i$-s in $\vec{c}$ and output the majority bit.
+\end{enumerate}
+\end{itemize}
+\end{framed}
+% \newcommand{\MACz}{\class{MAC}_0}
+% In the theorem below, the complexity class $\MACz$ refers to the 
+
+\begin{remark}
+Given in input a function $f$ not necessarily of constant multiplicative depth,  $\GenApproxFun$ returns a function $f'$ of constant multiplicative depth that approximates it.
+As stated in Lemma \ref{lemma:razborov}, $\GenApproxFun$ is computable in uniform $\NC^1$. Notice that this is the only component of $\HEpEval$ that is not computable in $\ACztcm$. In fact, $\SampleAuxRandomness$ is clearly in $\ACztcm$ and $\EvalApprox$ makes parallel invocations to $\HEEval$ which is computable in $\ACztcm$ when provided in input a function in $\ACztcm$ (Theorem \ref{thm:he-homomorphic}). This fact will be useful when showing the completeness of our verifiable computation schemes in Section \ref{sec:vc}.
+\end{remark}
+
+\begin{theorem}
+\label{thm:hep-homomorphic}
+Let $\ACztq$ the family of circuits in $\ACzt$ with quasi-constant multiplicative depth as in Definition \ref{def:quasi-constant}.
+The scheme $\HEp$ above with soundness parameter $s = \Omega(\lambda)$ is leveled $\ACztq$-homomorphic. Key generation and encryption can be computed in $\ACzt$. Evaluation is computable in (uniform) $\NC^1$. Decryption is computable in $\ACzt$ with a single, unbounded fan-in majority gate at the root.
+\end{theorem}

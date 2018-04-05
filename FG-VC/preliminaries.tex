@@ -1,0 +1,98 @@
+\section{Preliminaries}
+\label{sec:prelim}
+
+%This section presents all the necessary definitions. 
+
+%\subsection{Adversaries and Circuit Families}
+
+%\subsection{Security Definitions}
+
+For a distribution $D$, we denote by $x \gets D$ the fact that $x$ is being sample according to $D$.
+We remind the reader that an ensemble $\mathcal{X} = \ens{X}$ is a family of  probability distributions over a family of domains $\mathcal{D}=\ens{D}$. We say two ensembles $\mathcal{D} = \ens{D}$ and $\mathcal{D}' = \ens{D'}$ are statistically indistinguishable if $\frac{1}{2}\Sum_x |D(x)-D'(x)| < \negl(\lambda)$. 
+Finally, we note that all arithmetic computations (such as sums, inner product, matrix products, etc.) in this work will be over $\GF(2)$ unless specified otherwise.
+
+\begin{definition}[Function Family]
+A {\em function family} is a family of (possibly randomized) functions $F = \funfam{f}$, where for each $\lambda$, $f_{\lambda}$ has domain $D^f_{\lambda}$ and co-domain $R^f_{\lambda}$. A {\em class} $\mathcal{C}$ 
+is a collection of function families. 
+\end{definition}
+In most of our constructions $D^f_{\lambda}=\{0,1\}^{d_\lambda^f}$ and $R^f_{\lambda}=\{0,1\}^{r_\lambda^f}$ for sequences $\{d_\lambda^f\}_\lambda$, 
+$\{d_\lambda^f\}_\lambda$. 
+
+In the rest of the paper we will focus on the class of $\mathcal{C}=\mathsf{NC}^1$ of functions for which there is a polynomial $p(\cdot)$ and a constant $c$ such that for each $\lambda$, the function $f_\lambda$ can be computed by a Boolean (randomized) fan-in 2, circuit of size $p(\lambda)$ and depth $c \log(\lambda)$. In the formal statements of our results we will also use the following classes: $\AC^0$, the class of functions of polynomial size and constant depth with $\function{AND}, \function{OR}$ and $\function{NOT}$ gates with unbounded fan-in; $\ACzt$, the class of functions of polynomial size and constant depth with $\function{AND}, \function{OR}, \function{NOT}$ and $\function{PARITY}$ gates with unbounded fan-in; $\TC^0$, the class of functions of polynomial size and constant depth with $\function{AND}, \function{OR}, \function{NOT}$ and $\function{MAJORITY}$ gates with unbounded fan-in.
+Given a function $f$, we define \textit{multiplicative depth} of $f$ as the degree of the lowest-degree polynomial in $\GF(2)$ that evaluates to $f$.
+
+\medskip
+\noindent
+{\sc Limited Adversaries.}
+We define adversaries also as families of randomized algorithms $\{A_\lambda\}_\lambda$, 
+one for each security parameter (note that this is a non-uniform notion of security). We denote
+the class of adversaries we consider as $\mathcal{A}$, and in the rest of the
+paper we will also restrict $\mathcal{A}$ to $\mathsf{NC}^1$.
+
+
+\medskip
+\noindent
+{\sc Infinitely-Often Security.}
+We now move to define security against all adversaries $\{A_\lambda\}_\lambda$ that belong to a class $\mathcal{A}$. 
+
+%We note that the statement $\{A_\lambda\}_\lambda \notin \mathcal{C}$ implies 
+%that for all $\{g_\lambda\}_\lambda \in \mathcal{C}$ there exists an infinite 
+%number of values $\lambda$ such that $A_\lambda \neq g_\lambda$. Therefore we 
+%will use this "infintely often" notion of security, which states that for all 
+%adversaries outside of our permitted class our security property holds 
+%infinitely often (i.e. for an infinite sequence of security parameters rather 
+%than for every sufficiently large security parameter\footnote{
+%As in \cite{dvv17} if we make the stronger assumption that $A_\lambda \neq 
+%g_\lambda$ for all sufficiently large $\lambda$ then we would be able to 
+%obtain the standard notion of security for all sufficiently large security 
+%parameters.}
+%). 
+
+Our results achieve an "infinitely often" notion of security, which states that for all adversaries outside of our permitted class $\mathcal{A}$ our security property holds infinitely often (i.e. for an infinite sequence of security parameters rather than for every sufficiently large security parameter. We 
+inherit this limitation from the techniques of \cite{fgcrypto}. 
+
+\begin{definition}[Infinitely-Often Computational Indistinguishability]
+Let $\mathcal{X} = \ens{X}$ Let $\mathcal{Y} = \ens{Y}$ be ensembles over the same domain family, $\mathcal{A}$ a class of adversaries, and $\Lambda$ an infinite subset of $\naturals$. 
+We say that $\mathcal{X}$ and $\mathcal{Y}$ are infinitely often computational indistinguishable with respect to set $\Lambda$ and the class $\mathcal{A}$,
+denoted by
+$\mathcal{X} \sim_{\Lambda,\mathcal{A}} \mathcal{Y}$
+if there exists a negligible function $\nu$ such that for any $\lambda \in \Lambda$ and for any adversary $A=\{A_\lambda\}_\lambda \in \mathcal{A}$
+\[
+| \Pr[A_{\lambda}(X_{\lambda}) = 1] - \Pr[A_{\lambda}(Y_{\lambda}) = 1]| < \nu(\lambda)
+\]
+\end{definition}
+When $\mathcal{A} = \NC^1$ we will keep it implicit and use the notation $\mathcal{X} \sim_{\Lambda} \mathcal{Y}$ and say that $\mathcal{X} \text{ and } \mathcal{Y}$ are $\Lambda$-computationally indistinguishable.
+
+
+% \begin{remark}{On proofs of security for infinitely many values of $\lambda$}
+% As standard practice in cryptography we will use reduction-based proofs. These will have a slightly different flavor than usual as our security notion is for infinitely many values of the security parameter (rather than the standard asymptotic notion). However, this does not change the essence of the usual logic.
+% Suppose you want to prove that $Y$ is (infinitely many times) secure based on the assumption that $X$ is secure. 
+% To proceed by contradiction you will assume there exist an adversary $\adv_Y$ and $\lambda^*$ such that for all values of $\lambda > \lambda^*$ the advantage of $\adv_Y$ is 
+% \end{remark}
+
+In our proofs we will use the following facts on infinitely-often computationally indistinguishable ensembles. We skip their proof as, except for a few technicalities, it is analogous to the corresponding properties for standard computational indistinguishability\footnote{We refer the reader to \cite{goldreich2009foundations1}.}.
+
+\begin{lemma}[Facts on $\Lambda$-Computational Indistinguishability]
+\label{lemma:hyb-arg}
+\label{lemma:facts-lind}
+\begin{itemize}
+\item \textbf{Transitivity:}
+Let $m = \poly(\lambda)$ and $\mathcal{X}^{(j)}$ with $j \in \{0,\dots,m \} $ be ensembles.
+If for all $j \in [m]$ $\mathcal{X}^{(j-1)} \lind \mathcal{X}^{(j)}$, then $\mathcal{X}^{(0)} \lind \mathcal{X}^{(m)}$.
+\item \textbf{Weaker than statistical indistinguishability:} Let $\mathcal{X}, \mathcal{Y}$ be statistically indistinguishable ensembles. Then $\mathcal{X} \lind \mathcal{Y}$ for any infinite $\Lambda \subseteq \naturals$
+\item \textbf{Closure under $\NC^1$:}  Let $\mathcal{X}, \mathcal{Y}$ be ensembles and $\funfam{f} \in \NC^1$. If $\mathcal{X} \lind \mathcal{Y}$ for some $\Lambda$ then 
+$f_{\lambda}(\mathcal{X}) \lind f_{\lambda}(\mathcal{Y})$.
+\end{itemize}
+\end{lemma}
+
+
+%\subsection{Fine-Grained Encryption}
+
+\input{pke_preliminaries}
+
+\input{he_preliminaries}
+
+\subsection{Verifiable Computation}
+\input{vc_preliminaries}
+
+%\subsection{Fine-Grained Two-Party Computation}

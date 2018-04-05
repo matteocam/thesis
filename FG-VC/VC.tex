@@ -1,0 +1,23 @@
+\section{Fine-Grained Verifiable Computation}
+\label{sec:vc}
+\label{sec:VC}
+
+
+In this section we describe our private verifiable computation scheme.
+Our constructions are heavily based on the techniques in \cite{ckv10} to obtain (reusable) verifiable computation from fully homomorphic encryption.
+In order to guarantee that these techniques also work within $\NC^1$  we prove that: \textit{(i)} the constructions can be computed in low-depth; \textit{(ii)} the reductions in the security proofs can be carried out in low-depth.
+
+\medskip
+\noindent{\sc The Scheme from \cite{ckv10}.}
+To derive Verifiable Computation from Homomorphic Encryption, \cite{ckv10} follows this approach. The Client, in the expensive preprocessing phase, selects a random input $r$, encrypts it $c_r=E(r)$ and homomorphically compute $c_{f(r)}$ an encryption of $f(r)$. During the online phase, the Client, on input $x$, computes $c_x=E(x)$ and submits
+the ciphertexts $c_x,c_r$ in random order to the Server, who homomorphically compute 
+$c_{f(r)}=E(f(r))$ and $c_{f(x)}=E(f(x))$ and returns them to the Client. The Client given the message $c_0,c_1$ from the Server, checks that $c_b=c_{f(r)}$ (for the appropriate bit $b$) and if so accepts $y=D(c_{f(x)})$ as $y=f(x)$. The semantic security of $E$ guarantees that this protocol has soundness error $1/2$ (which can be reduced by parallel repetition). This scheme is however one-time, as a malicious server can figure out 
+which one is the test ciphertext $c_{f(r)}$ if it is used again. 
+
+To make this scheme ``many time secure", \cite{ckv10} uses the paradigm introduced in 
+\cite{ggp10} of running the 1-time scheme ``under the covers" of a different
+homomorphic encryption key each time. 
+
+\input{VC-one-time}
+
+\input{VC-many-times}

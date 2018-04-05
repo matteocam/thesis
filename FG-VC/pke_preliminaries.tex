@@ -1,0 +1,23 @@
+\subsection{Public-Key Encryption}
+A public-key encryption scheme \\
+$\PKE = (\PKEKeygen, \PKEEnc, \PKEDec)$ is a triple of algorithms which operate as follow:
+\begin{itemize}
+\item \textbf{Key Generation.} The algorithm $(\pk,\sk)\leftarrow$ \PKEKeygen$(1^{\lambda})$ takes a unary representation of the security parameter and outputs a public key encryption key $\pk$ and a secret decryption key $\sk$.
+\item \textbf{Encryption.} The algorithm $c\leftarrow$ \PKEEnc$_{\pk}(\mu)$ takes the public key $\pk$ and a single bit message $\mu\in\bit$ and outputs a ciphertext $c$. The notation \PKEEnc$_{\pk}(\mu;r)$ will be used to represent the encryption of a bit $\mu$ using randomness $r$. 
+\item \textbf{Decryption.} The algorithm $\mu^*\leftarrow$ \PKEDec$_{\sk}(c)$ takes the secret key $\sk$ and a ciphertext $c$ and outputs a message $\mu^*\in\bit$. 
+\end{itemize}
+Obviously we require that $\mu=$\PKEDec$_{\sk}($\PKEEnc$_{\pk}(\mu))$
+
+\begin{definition}[CPA Security for PKE]
+\label{def:cpa-pke}
+\label{def:cpa-he}
+A scheme $\PKE$ is IND-CPA secure if for an infinite $\Lambda \subseteq \naturals$ we have
+$$ (\pk,\PKEEnc_{\pk}(0)) \lind (\pk,\PKEEnc_{\pk}(1)) $$
+where $(\pk,\sk)\leftarrow$ \PKEKeygen($1^{\lambda}$).
+\end{definition}
+
+\begin{remark}[Security for Multiple Messages]
+\label{rem:cpa-multiple}
+Notice that by a standard hybrid argument and Lemma \ref{lemma:hyb-arg} we can prove that any scheme secure according to Definition \ref{def:cpa-pke} is also secure for multiple messages (i.e. the two sequences of encryptions bit by bit of two bit strings are computationally indistinguishable).
+We will use this fact in the proofs in Section $\ref{sec:vc}$, but we do not provide the formal definition for this type of security. We refer the reader to 5.4.2 in~\cite{goldreich2009foundations2}.
+\end{remark}
