@@ -32,6 +32,50 @@
 \usepackage{verbatim}
 \setkeys{Gin}{width=\linewidth,totalheight=\textheight,keepaspectratio}
 
+\usepackage{amsmath,amssymb}
+\usepackage{mathtools}
+\usepackage{bm}
+\usepackage{complexity}
+\usepackage[
+n,
+operators,
+advantage,
+sets,
+adversary,
+landau,
+probability,
+notions,	
+logic,
+ff,
+mm,
+primitives,
+events,
+complexity,
+asymptotics,
+keys]{cryptocode}
+
+
+\usepackage{fancyhdr} 
+\usepackage{amsfonts}
+\usepackage{multicol}
+\usepackage{framed} 
+\usepackage{array} 
+\usepackage{graphicx} 
+\usepackage{graphics}
+\usepackage{mathtools} 
+\usepackage{tikz} 
+\usepackage{verbatim}
+\usepackage{float}
+\usepackage{bm}
+\usepackage{comment}
+\usepackage{relsize}
+%\usepackage[section]{placeins}
+
+\usepackage[utf8]{inputenc}
+
+\usepackage{adjustbox}
+
+
 %% These have been added at the request of the MIT Libraries, because
 %% some PDF conversions mess up the ligatures.  -LB, 1/22/2014
 \usepackage{fancyvrb}
@@ -93,12 +137,16 @@
 %\geometry{showframe}
 
 % Math Operators
-\DeclareMathOperator*{\argmin}{arg\,min}
-\DeclareMathOperator*{\argmax}{arg\,max}
-\DeclareMathOperator*{\polylog}{polylog}
-\DeclareMathOperator*{\reward}{reward}
+%\DeclareMathOperator*{\argmin}{arg\,min}
+%\DeclareMathOperator*{\argmax}{arg\,max}
+%\DeclareMathOperator*{\polylog}{polylog}
+%\DeclareMathOperator*{\reward}{reward}
 
 \renewcommand{\subsubsection}[1]{\newthought[#1]}
+
+
+
+\input{mycommands}
 
 \begin{document}
 
@@ -114,9 +162,8 @@
 \chapter{Rational Proofs for subclasses of $\P$}
 \include{paper-rp-1/paper}
 
-\chapter{Rational Proofs}
-\include{paper-rp-1/paper}
-
+\chapter{Fine-Grained Verifiable Computation}
+\include{FG-VC/main}
 
 \appendix
 \include{appa}
