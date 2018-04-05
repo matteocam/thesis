@@ -1,0 +1,34 @@
+
+One of the typical uses of the FFT is to change representation for polynomials. Given a polynomial $P(x)$ of degree $n-1$ we can represent it 
+as a vector of $n$ coefficients $[a_0,\ldots,a_{n-1}]$ or as a vector of $n$ points $[P(\omega_0),\ldots,P(\omega_{n-1})]$. If $\omega_i$ are the 
+complext $n$-root of unity, the FFT is the algorithm that goes from one representation to the other in $O(n \log n)$ time, rather than the obvious $O(n^2)$. 
+
+In this section we consider the following problem: given two  polynomial $P,Q$ of degree $n-1$ in point representation, compute the inner 
+product of the coefficients of $P,Q$. A fan-in two circuit computing this function could be built as follows:
+\begin{itemize}
+\item two parallel FFT subcircuits computing the coefficient representation of $P,Q$ ($\log n$-depth and $n \log n)$ size total for the 2 circuits) ;
+\item a subcircuit where at the first level the $i$-degree coefficients are multiplied with each other, and then all these products are added by a binary tree of
+additions $O(\log n)$-depth and $O(n)$ size);
+\end{itemize}
+Note that this circuit is regular, and has depth $2 \log n +1$ and size $n \log n + n + 1$
+
+Consider a prover $\disP$ who pays $\tilde{C}  < n \log n$ effort. Then, since the BFS strategy is optimal, the probability of convincing the Verifier of a wrong result of the FFT is $(1-2^{-\tilde{d}})^r$ where 
+$\tilde{d}=c\log n$ with $c \leq 1$ . Note also that 
+$\frac{\tilde{C}}{C} < 1$. Therefore with $r=O(n^c)$ repetitions, the probability of
+success can be made smaller than $\frac{\tilde{C}}{C}$. The Verifier's complexity is $O(n^c \log n) = o(n \log n)$. 
+
+
+\bigskip
+\noindent
+If $\tilde{C} \geq n \log n$ the analysis above fails since $\tilde{d} > \log n$. Here we observe that in order for $\disP$ to earn a larger reward than $P$, 
+it must be that $P$ has run at least  $k=O(\log n)$ executions (since it is possible to find $k+1$ inputs such that $(k+1)\tilde{C} \leq k C$ only if $k> \log n$).
+In this case we can use a "mixed" strategy for verification:
+\begin{itemize}
+\item The Verifier pays the Prover only after $k$ executions. Each execution is verified as above (with $n^c$ repetitions); 
+\item Additionally the Verifier uses the "check by re-execution" (from Section~\ref{sec:uisa}) strategy every $k$ executions (verifiying one execution by
+recomputing it);
+\item The Verifier pays $R$ if all the checks are satisfied, $0$ otherwise;
+\item The Verifier's complexity is $O(k n^c \log n + n \log n) = o(k n \log n)$ -- the latter being the complexity of computing $k$ instances. 
+\end{itemize}
+ 
+

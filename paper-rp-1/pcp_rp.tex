@@ -1,0 +1,65 @@
+\begin{comment}
+In this subsection we:
+- describe PCP's protocol by AM
+- describe certain assumptions on cost
+- we prove that it is a Sequential Rational Proofs
+\end{comment}
+
+We now describe a rational proof appeared in \cite{am1} and prove that is sequentially composable.
+The protocol assumes the existence of a trusted memory storage to which both 
+Prover and Verifier have access, to realize the so-called "PCP" (Probabilistically Checkable Proof) model. In this model, the Prover 
+writes a very long proof of correctness, that the verifier checks only in a few randomly selected position. The trusted memory is needed to 
+make sure that the prover is "committed" to the proof before the verifier starts querying it. 
+% say that it is for logical circuits
+% say about the abuse of notation in the theorem
+
+The following protocol for proofs on a binary logical circuit $\cal C$ 
+appeared  in  \cite{am1}. The Prover writes all the (alleged) values $\alpha_w$ for every wire in $w \in {\cal C}$, 
+on the trusted memory location. The Verifier 
+samples a single randome gate value to check its correctness and determines the reward accordingly:
+\begin{enumerate}
+\item The Prover writes the vector $\{ \alpha_w\}_{w \in {\cal C}}$
+\item The Verifier samples a random gate $g \in \cal C$.
+\begin{itemize}
+\item  The Verifier reads $\alpha_{g_{out}}, \alpha_{g_L}, \alpha_{g_R}$, with $g_{out}, g_L, g_R$ being respectively the output, left and right 
+input wires of $g$; the verifier checks that $\alpha_{g_{out}} = g(\alpha_{g_L}, 
+\alpha_{g_R})$;
+\item If $g$ in an input gate the Verifier also checks that  $\alpha_{g_L}, \alpha_{g_R}$ correspond to the correct input values;
+\end{itemize}
+The Verifier pays $R$ if both checks are satisfied, otherwise it pays $0$.
+\end{enumerate}
+
+\begin{mythm}[\cite{am1}]
+The protocol above is a rational proof for any boolean function in $
+P^{||NP}$, the class of all languages decidable by a polynomial time machine 
+that can make non-adaptive queries to $NP$.
+\end{mythm}
+
+We will now show  a cost model where the rational proof above is sequentially 
+composable.
+We will assume that the cost for any prover is given by the number of gates he 
+writes. Thus, for any input 
+$x$, the costs for honest and dishonest provers are 
+respectively $C(x) = S$, where $S = |\cal C|$, and $\tilde{C}(x) = \tilde{s}$ 
+where $\tilde s$ is the number of gates written by the dishonest prover.
+Observe that in this model a dishonest prover may not write all the $S$ 
+gates, and that not all of the $\tilde{s}$ gates have to be correct. Let $\sigma \leq \tilde{s}$ the number of correct gates written by $\disP$. Then 
+
+\begin{mythm}
+In the cost model above the PCP protocol protocol in \cite{am1} is sequentially 
+composable.
+\end{mythm}
+\begin{proof}
+Observe that the probability $\pDisR$ that $\disP\neq P$ earns $R$ is such that
+$$ \pDisR = \frac{\sigma}{S} \leq \frac{\tilde s}{S} = \frac{\tilde C}{C} $$
+Applying Corollary \ref{cor:prob} completes the proof.
+\end{proof}
+
+The above cost model, basically says that the cost of writing down a gate dominates everything else, in particular the cost of {\em computing} that gate. 
+In other cost models a proof of sequential composition may not 
+be as straightforward. Assume, for example, that the honest prover pays $\$1$ to
+compute the value of a single gate while writing down that gate is "free". Now $\pDisR$ is still equal to $\frac{\sigma}{S}$ but to 
+prove that this is smaller than $\frac{\tilde C}{C}$ we need some additional assumption that limits the ability for $\disP$ to "guess" the 
+right value of a gate without computing it (which we will discuss in the next Section). 
+
+

@@ -1,0 +1,298 @@
+\label{sec:our-protocol}
+
+We now present a protocol that works for functions $f: \binstring^n \to \binstring^n$ expressed by an arithmetic circuit $\cal C$ of size $C$ and depth $d$ and fan-in 2, given as a common input to both Prover and Verifier together with the input $x$. 
+
+Intuitively the idea is for the Prover to provide the Verifier with the output value $y$ and its two "children" $y_L,y_R$ in the gate, i.e. the two input values of the last output gate $G$. The Verifier checks that $G(y_L,y_R)=y$, and then asks the Prover to verify that $y_L$ or $y_R$ (chosen a random) is correct, by 
+recursing on the above test. The protocol description follows. 
+
+\smallskip
+\noindent
+
+\begin{enumerate}
+\item The Prover evaluates the circuit on $x$ and send the output value $y_1$ to the
+Verifier. 
+
+\item {\bf Repeat $r$ times:} The Verifier identifies the root gate $g_1$ and 
+then invokes $Round(1,g_1, y_1)$,
+\end{enumerate}
+where the procedure $Round(i, g_i, y_i)$ is defined for $1 \leq i \leq d$ as 
+follows:
+\begin{enumerate}
+\item The Prover sends the value of the input wires $z^0_i$ and $z^1_i$ of $g_i$ to the Verifier.  
+
+\item The Verifiers performs the following 
+\begin{itemize}
+\item Check that $y_i$ is the result of the operation of gate $g_i$ on inputs 
+$z^0_i$ and $z^1_i$. If not \textbf{STOP} and pay a reward of $0$.
+\item If $i = d$ (i.e. if the inputs to $g_i$ are input wires), check that 
+the values of $z^0_i$ and $z^1_i$ are equal to the corresponding bits of $x$. Pay
+reward $R$ to Merlin if this is the case, nothing otherwise.
+\item If $i < d$, choose a random bit $b$, send it to Merlin and invoke 
+$Round(i+1, g^b_{i+1}, z^b_i)$ where $g^b_{i+1}$ is the child gate of $g_i$ whose output is
+$z^b_{i}$.
+\end{itemize}
+\end{enumerate}
+
+
+\subsection{Efficiency} 
+% Rounds
+The protocol runs at most in $d$ rounds.
+% Communication Complexity
+In each round, the Prover sends a constant number of bits representing the values 
+of specific input and output wires; The Verifier sends at most one bit per round, 
+the choice of the child gate. Thus the communication complexity is $O(d)$ bits.
+
+The computation of the Verifier in each round is: (i) computing the result of a gate 
+and checking for bit equality; (ii) sampling a child.
+Gate operations and equality are $O(1)$ per round.
+We assume our circuits are $T$-uniform, which allows the Verifier to select the correct gate in time $T(n)$ \footnote{
+We point out that the Prover can provide the Verifier with the requested gate and then the Verifier can use the uniformity of the circuit to check that the Prover has given him the correct gate in time $O(T(n))$) at each level in $O(T(n))$. }
+Thus the Verifier runs in $O(r d\cdot T(n))$ with $r=O(\log C)$.
+
+
+
+\subsection{Proofs of (stand-alone) Rationality}
+\label{sec:proof-stand-alone}
+
+\begin{mythm}
+\label{thm:rp}
+The protocol in Section~\ref{sec:our-protocol} for $r=1$ is a Rational Proof according to Def.~\ref{def:RP-delta}.
+\end{mythm}
+We prove the above theorem by showing that for every input $x$ the reward gap $\Delta(x)$ is positive. 
+
+\begin{proof}
+Let $\disP$ a prover that always reports $\claimedy \neq y_1 = f(x)$ at Round 1. 
+
+Let us proceed by induction on the depth $d$ of the circuit.
+If $d = 1$ then there is no possibility for $\disP$ to cheat successfully, and its 
+reward is $0$. 
+
+Assume $d > 1$. We can think of the binary circuit $\cal C$ as composed by two 
+subcircuits ${\cal C}_L$ and ${\cal C}_R$ and the output gate $g_1$ such that
+$f(x) = g_1({\cal C}_L(x), {\cal C}_R(x))$. The respective depths $d_L, d_R$ of these 
+subcircuits are such that $0 \leq d_L, d_R \leq d-1$ and $max(d_L,d_R)=d-1$. After sending 
+$\claimedy$, 
+the protocol requires that
+$\disP$ sends output values for $C_L(x)$ and
+$C_R(x)$; let us denote these claimed values respectively with $\claimedy_L$ 
+and  $\claimedy_R$. 
+Notice that at least one of these alleged values will be different from the 
+respective correct subcircuit output: if it were otherwise, $V$ would 
+reject immediately as $g(\claimedy_L, \claimedy_R) = f(x) \neq \claimedy$.
+Thus at most one of the two values $\claimedy_L$, $\claimedy_R$ is equal 
+to the output of the corresponding subcircuit.
+The probability that the $\disP$ cheats successfully is:
+\begin{align}
+\Pr[\mbox{V accepts}] & \leq 
+\frac{1}{2}\cdot(\Pr[\mbox{V accepts on } C_L] + \Pr[\mbox{V accepts on } C_R]) 
+\label{ineq:RP-formula-vs-circuit}
+\\
+& \leq \frac{1}{2}\cdot(1-2^{-\max(d_L, d_R)}) + \frac{1}{2} 
+\label{ineq:RP-ind-hyp-bound} \\
+& \leq \frac{1}{2}\cdot(1-2^{-d+1}) + \frac{1}{2} \\
+& = 1 - 2^{-d}
+\end{align}
+At line \ref{ineq:RP-ind-hyp-bound} we used the inductive hypothesis and the 
+fact 
+that all probabilities are at most $1$.
+
+Therefore the expected reward of $\disP$ is $\tilde{R} \leq R(1-2^{-d})$ and the reward 
+gap is $\Delta(x) = 2^{-d}R$ (see Remark~\ref{rem:match} below to explain the equality). 
+\end{proof}
+
+The following useful corollary follows from the proof above.
+\begin{mycorollary}
+	\label{cor:repetitions}
+	If the protocol described in Section~\ref{sec:our-protocol} is repeated $r \geq 1$ times a prover can cheat with probability at most $(1-2^{-d})^r$. 
+\end{mycorollary}
+
+\begin{myrem}
+\label{rem:match}
+{\em 
+We point out that one can always build a prover strategy 
+$P^*$ which always answers incorrectly and achieves exactly the reward 
+$R^*=R(1-2^{-d})$. This prover outputs an incorrect 
+$\claimedy$ and then computes one of the subcircuits that results in one of the input values (so that at least one of the inputs is correct). This will allow him to recursively answer with values $z^0_i$ and $z^1_i$ where one of the two is correct, and therefore be caught only with probability $2^{-d}$.
+}
+\end{myrem}
+
+\begin{myrem}
+\label{rem:logd}
+{\em 
+In order to have a non-negligible reward gap (see Remark~\ref{rem:asy}) we need
+to limit ourselves to circuits of depth $d=O(\log n)$. 
+}
+\end{myrem}
+
+\subsection{Proof of Sequential Composability}
+\label{sec:proof-comp}
+
+\subsubsection{General sufficient conditions for sequential composability}
+
+\begin{mylemma}
+	Let $\cal{C}$ be a circuit of depth $d$. If the $(C,\epsilon)$ Unique Inner State Assumption (see Assumption~\ref{assump:uisa}) holds for the function $f$ computed by $\cal C$, and input distribution $\cal D$, then the protocol presented above with $r$ repetitions is a $k\epsilon R$-sequentially composable Rational Proof for $\cal{C}$ for $\cal D$ if the following inequality holds 
+	$$ (1-2^{-d})^r \leq \frac{1}{C} $$
+\end{mylemma}
+\begin{proof}
+	Let $\gamma=\frac{\tilde{C}}{C}$. 
+Consider $x \in \cal D$ and prover $\disP$ which invests effort $\tilde{C}\leq C$. Under Assumption~\ref{assump:uisa}, $\disP$ gives the correct outputs
+with probability $\gamma+\epsilon$ -- assume that in this case $\disP$ collects the reward $R$. If $\disP$ gives an incorrect output we know (following Corollary \ref{cor:repetitions}) that he collects the reward 
+$R$ with probability at most $(1-2^{-d})^r$ which by hypothesis is less than $\gamma$. So either way we have that $\tilde{R} \leq (\gamma + \epsilon)R$ 
+and therefore applying Lemma~\ref{lemma:cost-rew-ratios} concludes the proof.
+\end{proof}
+The problem with the above Lemma is that it requires a large value of $r$ for the result to be true resulting in an inefficient Verifier. In the following
+sections we discuss two approaches that will allows us to prove sequential composability even for an efficient Verifier:
+\begin{itemize}
+\item Limiting the class of provers we can handle in our security proof;
+\item Limiting the class of functions/circuits.
+\end{itemize}
+
+% Repetitions
+
+\subsubsection{Limiting the strategy of the prover: Non-adaptive Provers}
+
+\smallskip
+\noindent
+In proving sequential composability it is useful to find a connection between the amount of work done by a dishonest prover and its probability of cheating. The more a dishonest prover works, the higher its probability of cheating. This is true for our protocol, since the more "subcircuits" the prover computes correctly, the higher is probability of convincing the verifier of an incorrect output becomes. The question then is how can a prover who has an "effort budget" to spend, can maximize its probability of success in our protocol. 
+
+As we discussed in Remark~\ref{rem:match}, there is an {\em adaptive} strategy for the $\disP$ to maximize its probability of success: compute one subcircuit correctly at every round of the protocol. We call this strategy "adaptive", because the prover allocates its "effort budget" $\tilde{C}$ on the fly during the execution of the rational proof. Conversely a {\em non-adaptive} prover $\disP$ uses $\tilde{C}$ to compute some subcircuits in $\cal C$ before starting the protocol. Clearly an adaptive prover strategy is more powerful, than a non-adaptive one (since the adaptive prover can direct its computation effort where it matters most, i.e. where the Verifier "checks" the computation). 
+
+Is it possible to limit the Prover to a non-adaptive strategy? This could be achieved by imposing some "timing" constraints to the execution of the protocol: to prevent the prover from performing large computations while interacting with the Verifier, the latter could request that prover's responses be delivered "immediately", and if a delay happens then the Verifier will not pay the reward. Similar timing constraints have been used before in the cryptographic literature, e.g. see the notion of {\em timing assumptions} in the concurrent zero-knowedge protocols in \cite{dns}.
+
+Therefore in the rest of this subsection we assume that non-adaptive strategies are the only rational ones and proceed in analyzing our protocol 
+under the assumption that the prover is adopting a non-adaptive strategy. 
+
+
+Consider a prover $\disP$ with effort budget $\tilde{C} < C$. A \emph{DFS} (for "depth first search") prover  uses its effort budget $\tilde{C}$ to compute a whole subcircuit of size $\tilde{C}$ and maximal depth $d_{DFS}$. Call this subcircuit $\circDFS$. $\disP$ can answer correctly any verifier's query about a gate in $\circDFS$. During the interaction with $V$, the behavior of a DFS prover is as follows:
+\begin{itemize}
+\item At the beginning of the protocol send an arbitrary output value $y_1$.
+\item During procedure $Round(i, g_i, y_i)$:
+\begin{itemize}
+\item If $g_i \in \circDFS$  then $\disP$ sends the two correct inputs $z^0_i$ and $z^1_i$.
+\item If $g_i \not \in \circDFS$ and neither of $g_i$'s input gate belongs to $\circDFS$ then $\disP$ sends two arbitrary $z^0_i$ and $z^1_i$ that are consistent with $y_i$, i.e. $g_i(z^0_i,z^1_i) = y_i$.
+\item $g_i \not \in \circDFS$ and one of $g_i$'s input gates belongs to $\circDFS$, then $\disP$ will send the correct wire known to him and another arbitrary value consistent with $y_i$ as above.
+\end{itemize} 
+\end{itemize}
+
+\begin{mylemma}[Advantage of a DFS prover]
+\label{lem:DFS}
+In one repetition of the protocol above, a DFS prover with effort budget $\tilde{C}$ investment has probability of cheating $\tilde{p}_{DFS}$ defined by 
+$$ \tilde{p}_{FS} \leq 1 - 2^{-d_{DFS}}$$
+\end{mylemma}
+
+The proof of Lemma~\ref{lem:DFS} follows easily from the proof of the stand-alone rationality of our protocol (see Theorem~\ref{thm:rp}). 
+
+% BFS provers and their advantage
+If a DFS prover focuses on maximizing the depth of a computed subcircuit given a certain investment, \emph{BFS} provers allot their resources to compute all subcircuits rooted at a certain height.
+A BFS prover with effort budget $\tilde{C}$ computes the value of all gates up to the maximal height possible $d_{BFS}$. Note that $d_{BFS}$ is 
+a function of the circuit $\cal C$ and of the effort $\tilde{C}$.  Let $ \circBFS$ be the 
+collection of gates computed by the BFS prover. 
+The interaction of a BFS prover with $V$ throughout the protocol resembles that of the DFS prover outlined above:
+\begin{itemize}
+	\item At the beginning of the protocol send an arbitrary output value $y_1$.
+	\item During procedure $Round(i, g_i, y_i)$:
+	\begin{itemize}
+		\item If $g_i \in \circBFS$  then $\disP$ sends the two correct inputs $z^0_i$ and $z^1_i$.
+		\item If $g_i \not \in \circBFS$ and neither of $g_i$'s input gate belongs to $\circBFS$ then $\disP$ sends two arbitrary $z^0_i$ and $z^1_i$ that are consistent with $y_i$, i.e. $g_i(z^0_i,z^1_i) = y_i$.
+		\item $g_i \not \in \circBFS$ and both $g_i$'s input gates belong to $\circDFS$, then $\disP$ will send one of the correct wires known to him and another arbitrary value consistent with $y_i$ as above.
+	\end{itemize} 
+\end{itemize}
+As before, it is not hard to see that the probability of successful cheating by a BFS prover can be bounded as follows: 
+
+\begin{mylemma}[Advantage of a BFS prover]
+\label{lem:BFS}
+	In one repetition of the protocol above, a BFS prover with effort budget $\tilde{C}$ has probability of cheating $\tilde{p}_{BFS}$ bounded by
+	$$ \tilde{p} \leq 1 - 2^{-d_{BFS}}$$
+\end{mylemma}
+%\begin{proof}
+%	The proof proceeds analogously to that of Theorem \ref{thm:rp}, considering any subcircuit rooted at height $\deltaBfsInv+1$ instead of the whole circuit.
+%\end{proof}
+
+% TODO: write general prover and proof
+BFS and DFS provers are both special cases of the general non-adaptive strategy which allots its investment $\tilde{C}$ among a general collection of subcircuits $\circNA$.
+The interaction with $V$ of such a prover is analogous to that of a a BFS/DFS prover but with a collection of computed subcircuits not constrained by any specific height. We now try to formally define what the success probability of such a prover is. 
+
+\begin{mydef}[Path experiment]
+	\label{def:exp-path}
+	Consider a circuit $\cal C$ and a collection $\circNA$ of subcircuits of $\cal C$. Perform the following experiment: starting from the output gate, flip a biased coin and choose the "left" subcircuit or the "right" subcircuit at random with probability 1/2. Continue until the random path followed by the experiment reaches a computed gate in $\circNA$. Let $i$ be the height of this gate, which is the output of the experiment. Define with $\Pi_i$ the probability that this experiment outputs $i$.
+\end{mydef}
+
+The proof of the following Lemma is a generalization of the proof of security of our scheme. Once the "verification path" chosen by the Verifier enters a fully computed subcircuit at height $i$ (which happens with probability $\Pi_i^{\circNA}$), the probability of success of the Prover is bounded by $(1 - 2^{-i})$
+
+\begin{mylemma}[Advantage of a non adaptive prover]
+\label{lem:gen-adv}
+	In one repetition of the protocol above, a generic prover with effort budget $\tilde{C}$ used to compute a collection $\circNA$ of subcircuits, has probability of cheating $\tilde{p}_{\circNA}$ bounded by
+	$$ \tilde{p}_{\circNA} \leq \sum_{i=0}^{d} \Pi_i (1 - 2^{-i})$$
+	where $\Pi_i$-s are defined as in Definition \ref{def:exp-path}.
+\end{mylemma}
+
+\subsubsection{Limiting the class of functions: Regular Circuits}
+
+
+\smallskip
+\noindent
+Lemma~\ref{lem:gen-adv} still does not produce a clear bound on the probability of success of a cheating prover. The reason is that it is not obvious
+how to bound the probabilities $\Pi_i^{\circNA}$ that arise from the computed subcircuits $\circNA$ since those depends in non-trivial ways from the 
+topology of the circuit $\cal C$. 
+
+We now present a type of circuits for which it can be shown that the BFS strategy is optimal. The restriction on the circuit is surprisingly simple: we call them 
+{\sf regular circuits}. In 
+the next section we show examples of interesting functions that admit regular circuits. 
+
+\begin{mydef}[Regular circuit]
+\label{def:reg-circ}
+	A circuit $\cal C$ is said to be regular if the following conditions hold:
+	\begin{itemize}
+		\item $\cal C$ is layered;
+		\item every gate has fan-in 2;
+		\item the inputs of every gate are the outputs of two distinct gates.
+	\end{itemize}
+\end{mydef}
+
+The following lemma states that, in regular circuits, we can bound the advantage of any prover investing $\tilde{C}$ by looking at the advantage of a BFS prover with the same investment.
+
+\begin{mylemma}[A bound for provers' advantage in regular circuits]
+	\label{lemma:bfs-bound-reg}
+	Let $\disP$ be a prover investing $\tilde{C}$. Let $\cal C$ be the circuit being computed and $\delta=d_{BFS}({\cal C},\tilde{C})$. In one repetition of the  		protocol above, the advantage of $\disP$ is bounded by 
+	$$ \tilde{p} \leq \tilde{p}_{BFS} = 1 - 2^{-\delta}$$ 
+\end{mylemma}
+
+ \begin{proof}
+Let $\circNA$ be the family of subcircuits compued by $\disP$ with effort $\tilde{C}$. As pointed out above the probability of success for $\disP$ is 
+$$ \tilde{p} \leq \sum_{i=0}^{d} \Pi_i^{\circNA} (1 - 2^{-i})$$
+Consider now a prover $\disP'$ which uses $\tilde{C}$ effort to compute a different collection of subcircuits $\circNA'$ defined as follows: 
+\begin{itemize}
+\item Remove a gate from a subcircuit of height $j$ in $\circNA$: this produces two subcircuits of height $j-1$. This is true because of the regularity of the circuit: since the inputs of every gate are the outputs of two distinct gates, when removing a gate of height $j$ this will produce two subcircuits of height $j-1$;
+\item Use that computation to "join" two subcircuits of height $k$ into a single subcircuit of height $k+1$. Again we are using the regularity of the circuit here: since the circuit is layered, the only way to join two subcircuits into a single computed subcircuit is to take two subcircuits of the same height. 
+\end{itemize}
+What happens to the probability $\tilde{p}'$ of success of $\disP'$? Let $\ell$ be the number of possible paths generated by the experiment above
+with $\circNA$. Then the probability of entering a computed subcircuit at height $j$ decreases by $1/\ell$ and that probability weight goes to entering at
+height $j-1$. Similarly the probability of entering at height $k$ goes down by $2/\ell$ and that probability weight is shifted to entering at height $k+1$. 
+Therefore 
+$$ \tilde{p}' \leq \sum_{i \neq j,j-1,k,k+1} \Pi_i (1 - 2^{-i}) + $$
+$$ + (\Pi_j - \frac{1}{\ell})(1-2^{-j}) + (\Pi_{j-1} + \frac{1}{\ell})(1-2^{-j+1}) + $$
+$$ + (\Pi_k - \frac{2}{\ell})(1-2^{-k}) + (\Pi_{k+1} + \frac{2}{\ell})(1-2^{-k-1}) = $$
+$$ = \tilde{p} + \frac{1}{\ell 2^j} - \frac{1}{\ell 2^{j-1}} + \frac{1}{\ell 2^{k-1}} - \frac{1}{\ell 2^k} $$
+$$ = \tilde{p} +\frac{2^k-2^{k+1}+2^{j+1}-2^j}{\ell 2^{j+k}}
+= \tilde{p} + \frac{2^j - 2^k}{\ell 2^{j+k}} $$
+Note that $\tilde{p}'$ increases if $j > k$ which means that it's better to take "computation" away from tall computed subcircuits to make them shorter, and use the saved computation to increase the height of shorter computed subtrees, and therefore that the probability is maximized when all the subtrees are of the same height, i.e. by the BFS strategy which has probability of success $ \tilde{p}_{BFS} = 1 - 2^{-\delta}$.
+\end{proof}
+
+The above Lemma, therefore, yields the following 
+
+\begin{mythm}
+\label{thm:reg-circ}
+Let $\cal{C}$ be a regular circuit of size $C$. If the $(C,\epsilon)$ Unique Inner State Assumption (see Assumption~\ref{assump:uisa}) holds for the function $f$ computed by $\cal C$, and input distribution $\cal D$, then the protocol presented above with $r$ repetitions is a $k\epsilon R$-sequentially composable Rational Proof for $\cal{C}$ for $\cal D$ if the prover follows a non-adaptive strategy and the following inequality holds for all $\tilde{C}$ 
+	$$ (1-2^{-\delta})^r \leq \frac{\tilde{C}}{C} $$
+where $\delta=d_{BFS}({\cal C},\tilde{C})$.
+\end{mythm}
+
+\begin{proof}
+	Let $\gamma=\frac{\tilde{C}}{C}$. 
+Consider $x \in \cal D$ and prover $\disP$ which invests effort $\tilde{C}\leq C$. Under Assumption~\ref{assump:uisa}, $\disP$ gives the correct outputs
+with probability $\gamma+\epsilon$ -- assume that in this case $\disP$ collects the reward $R$. 
+
+If $\disP$ gives an incorrect output we can invoke Lemma~\ref{lemma:bfs-bound-reg} and conclude that he collects reward  
+$R$ with probability at most $(1-2^{-\delta})^r$ which by hypothesis is less than $\gamma$. So either way we have that $\tilde{R} \leq (\gamma + \epsilon)R$ 
+and therefore applying Lemma~\ref{lemma:cost-rew-ratios} concludes the proof.
+\end{proof}

@@ -1,0 +1,66 @@
+
+The above counterexample motivates the following Definition which formalizes 
+that the reward of the honest prover $P$ must always be larger than the total 
+reward of any prover $\disP$ that invests less computation cost than $P$. 
+
+Technically this is not trivial to do, since it is not possible to claim the above for {\em any} prover $\disP$ and {\em any} sequence of inputs, because it
+is possible that for a given input $\tilde{x}$, the prover $\disP$ has "hardwired" the correct value $\tilde{y}=f(\tilde{x})$ and can compute it without investing 
+any work. We therefore propose a definition that holds for inputs randomly chosen according to a given probability distribution $\cal D$, and we allow for
+the possibility that the reward of a dishonest prover can be "negligibly" larger than the reward of the honest prover (for example if $\disP$ is lucky and such 
+"hardwired" inputs are selected by $\cal D$).
+
+\noindent
+\begin{mydef}[Sequential Rational Proof]
+\label{def:SRP}
+A rational proof $(P,V)$ for a function $f:$ $\binstring^n$ $\to$ 
+$\binstring^n$ is $\epsilon$-{\sf sequentially composable} for an input distribution $\cal D$, if for every prover $\disP$, 
+and every sequence of inputs 
+$x,x_1,\ldots,x_k \in {\cal D}$ such that $C(x) \geq \sum_{i=1}^k 
+\tilde{C}(x_i)$ we have that $\sum_{i}\tilde{R}(x_i) - R \leq \epsilon$.
+\end{mydef}
+
+% Some properties of Sequential Rational Proofs
+\noindent
+A few sufficient conditions for sequential composability follow.
+
+\begin{mylemma}
+\label{lemma:cost-rew-ratios}
+% Rew ratio ineq. implies SRP
+Let $(P,V)$ be a rational proof.
+If for every input $x$  it holds that $R(x)=R$ and  $C(x)=C$ for constants 
+$R \mbox{ and } C$, and the 
+following inequality holds for every 
+$\disP\neq 
+P$ and input $x\in {\cal D}$:
+\[ \frac{\tilde{R}(x)}{R} \leq \frac{\tilde{C}(x)}{C} + \epsilon\]
+then $(P,V)$ is $kR\epsilon$-sequentially composable for $\cal D$
+\end{mylemma}
+\begin{proof}
+It suffices to observe that, for any $k$ inputs $x_1,...,x_k$, the inequality 
+above 
+implies
+\begin{align*}
+\sum_{i=1}^{k}\tilde{R}(x_i)  \leq R [\sum_{i=1}^{k} (\frac{\tilde{C}(x_i)}{C}  + \epsilon) ] 
+\leq R +kR\epsilon
+\end{align*}
+where the last inequality holds whenever $\sum_{i=1}^{k} \tilde{C}(x_i) \leq C$ 
+as 
+in Definition \ref{def:SRP}.
+\end{proof}
+
+\begin{mycorollary}
+\label{cor:prob}
+Let $(P,V)$ and $\rew$ be respectively an interactive proof and a reward 
+function as in 
+Definition \ref{def:RP}; if $\rew$ can only assume the values $0$ and $R$ for 
+some constant $R$, let $\pDisR = \Pr[\rew((\disP,V)(x)) = R]$. If for $x \in {\cal D}$
+$$  \pDisR \leq \frac{\tilde{C}(x)}{C} + \epsilon $$
+then $(P,V)$ is $kR\epsilon$-sequentially composable for $\cal D$. 
+% If rew can be only R or 0 then the sufficient condition is on the probability
+\end{mycorollary}
+\begin{proof}
+Observe that $\tilde{R}(x) = \pDisR\cdot R$ and then apply Lemma 
+\ref{lemma:cost-rew-ratios}.
+\end{proof}
+
+

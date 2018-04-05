@@ -1,0 +1,52 @@
+Definition~\ref{def:SRP} for sequential rational proofs requires a relationship between the reward earned by the prover and the amount of "work" the prover invested to produce that result. The intuition is that to produce the correct result, the prover must run the computation and incur its full cost. Unfortunately 
+this intuition is difficult, if not downright impossible, to formalize. Indeed for a specific input $x$ a "dishonest" prover $\disP$ could have the correct 
+$y=f(x)$ value "hardwired" and could answer correctly without having to perform any computation at all. Similarly, for certain inputs $x,x'$ and a certain 
+function $f$, a prover $\disP$ after computing $y=f(x)$ might be able to "recycle" some of the computation effort (by saving some state) and compute 
+$y'=f(x')$ incurring a much smaller cost than computing it from scratch. 
+
+A way to circumvent this problem was suggested in \cite{b08} under the name of {\em Unique Inner State Assumption}: the idea is to assume a distribution 
+$\cal D$ over the input space. When inputs $x$ are chosen according to $\cal D$, then we assume that computing $f$ requires cost $C$ from any party: 
+this can be formalized by saying that if a party invests $\tilde{C}=\gamma C$ effort (for $\gamma \leq 1$), then it computes the correct value only with
+probability negligibly close to $\gamma$ (since 
+a party can always have a "mixed" strategy in which with probability $\gamma$ it runs the correct computation and with probability $1-\gamma$ does 
+something else, like guessing at random). 
+
+\begin{myassump}
+\label{assump:uisa}
+We say that the {\em ($C$,$\epsilon$)-Unique Inner State Assumption} holds for a function $f$ and a distribution $\cal D$ if for any algorithm $\disP$ with
+cost $\tilde{C}=\gamma C$, the probability that on input $x \in {\cal D}$, $\disP$ outputs $f(x)$ is at most $\gamma+(1-\gamma)\epsilon$. 
+\end{myassump}
+
+Note that the assumption implicitly assumes a "large" output space for $f$ (since a random guess of the output of $f$ will be correct with probability 
+$2^{-n}$ where $n$ is the binary length of $f(x)$). 
+
+More importantly, note that Assumption~\ref{assump:uisa} immediately yields our notion of sequential composability, if the Verifier can detect if the 
+Prover is lying or not. Assume, as a mental experiment for now, that given input $x$, the Prover claims that $\tilde{y}=f(x)$ and the Verifier
+checks by recomputing $y=f(x)$ and paying a reward of $R$ to the Prover if $y=\tilde{y}$ and $0$ otherwise. Clearly this is not a very useful protocol, 
+since the Verifier is not saving any computation effort by talking to the Prover. But it is sequentially composable according to our definition, since 
+$\pDisR$, the probability that $\disP$ collects $R$, is equal to the probability that $\disP$ computes $f(x)$ correctly, and by using 
+Assumption~\ref{assump:uisa} we have that 
+$$ \pDisR = \gamma+(1-\gamma)\epsilon \leq \frac{\tilde{C}}{C} + \epsilon $$
+satisfying Corollary~\ref{cor:prob}.
+
+To make this a useful protocol we adopt a strategy from  \cite{b08}, which also uses this idea of verification by recomputing. Instead of checking 
+every execution, we check only a random subset of them, and therefore we can amortize the Verifier's effort over a large number of computations. 
+Fix a parameter $m$. The prover sends to the verifier the values $\tilde{y}_j$ which are claimed to be the result of computing $f$ over $m$ inputs $x_1,\ldots,x_m$. 
+The verifier chooses one index $i$ 
+randomly between $1$ and $m$, and computes $y_i=f(x_i)$. If $y_i=\tilde{y}_i$ the verifier pays $R$, otherwise it pays $0$. 
+
+Let $T$ be the total cost by the honest prover to compute $m$ instances: cleary $T=mC$. Let $\tilde{T}=\Sigma_i \tilde{C}_i$ be the total effort invested by $\tilde{P}$, by investing $\tilde{C}_i$ on the computation of $x_i$. 
+In order to satisfy Corollary~\ref{cor:prob} we need that $\pDisR$, the probability that $\disP$ collects $R$, be less than $\tilde{T}/T + \epsilon$. 
+
+Let $\gamma_i = \tilde{C}_i/C$, then under Assumption~\ref{assump:uisa} we have that $\tilde{y}_i$ is correct with probability at most $\gamma_i+(1-\gamma_i)\epsilon$. Therefore if we set $\gamma = \sum_i \gamma_i/m$ we have 
+$$ \pDisR = \frac{1}{m} \sum_i [\gamma_i+(1-\gamma_i)\epsilon] = \gamma + (1-\gamma) \epsilon \leq \gamma + \epsilon $$
+But note that $\gamma=\tilde{T}/T$ as desired since
+$$ \tilde{T} = \sum_i \tilde{C}_i = \sum_i \gamma_i C = T \sum_i \gamma_i/m $$
+
+\medskip
+\noindent
+{\sc Efficiency of the Verifier.}
+If our notion of "efficient Verifier" is a verifier who runs in time $o(C)$ where $C$ is the time to compute $f$, then in the above protocol $m$ must be sufficiently large to amortize the cost of computing one execution over many (in particular a constant -- in the input size $n$ -- value of $m$ would not work). In our "concrete analysis" treatment, if we requests that the Verifier runs in time $\delta C$ for an "efficiency" parameter $\delta \leq 1$, then we need $m \geq \delta^{-1}$. 
+
+Therefore we are still in need of a protocol which has an efficient Verifier, and would still works for the "stand-alone" case ($m=1$) but also for the case
+of sequential composability over any number $m$ of executions. 

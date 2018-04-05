@@ -1,0 +1,47 @@
+
+In the following we will adopt a "concrete-security" version of the "asymptotic" definitions and theorems in \cite{am1,rosen}. We assume the reader is familiar with the notion of interactive proofs \cite{gmr}. 
+
+\noindent
+\begin{mydef}[Rational Proof]
+\label{def:RP-delta}
+\label{def:RP}
+A function $f:$ $\binstring^n$ $\to$ $\binstring^n$ admits a rational proof if there exists an interactive proof $(P,V)$ and a randomized reward function
+$\rew : \binstrings \to \posreals$ such that
+
+\begin{enumerate}
+\item \emph{(Rational completeness)} For any input $x \in 
+\binstring^n$, $\Pr[\out((P,V)(x)) = f(x)] = 1.$
+
+\item For every prover $\disP$, and for any input $x \in 
+\binstring^n$ there exists a $\delta_{\disP}(x) \geq 0$ such that 
+$ \expRewProtDis + \delta_{\disP}(x) \leq \expRewProtHon. $
+\end{enumerate}
+The expectations and the probabilities are taken over the random coins of the prover and verifier.
+\end{mydef} 
+
+\noindent
+Let $\epsilon_{\disP} = \Pr[\out((P,V)(x)) \neq f(x)]$. 
+Following \cite{rosen} we define the {\sf reward gap} as 
+\[ \Delta(x) = min_{P^* : \epsilon_{P^*}=1}[\delta_{P^*}(x)]  \]
+i.e. the minimum reward gap over the provers that always report the incorrect value. 
+It is easy to see that for arbitrary prover $\disP$ we have $\delta_{\disP}(x) \geq 
+\epsilon_{\disP} \cdot \Delta(x)$. Therefore it suffices to prove that a protocol has 
+a strictly positive reward gap $\Delta(x)$ for all $x$. 
+
+\smallskip
+\noindent
+{\sc Examples of Rational Proofs.} For concreteness here we show the protocol for a single threshold gate (readers are referred to \cite{am,am1,rosen} for more examples). 
+
+Let $G_{n,k}(x_1,\ldots,x_n)$ be a threshold gate with $n$ Boolean inputs, that evaluates to 1 if at least $k$ of the input bits are 1. The protocol in \cite{am1} to evaluate this gate goes as follows. The Prover announces the number $\tilde{m}$ of input bits equal to 1, which allows the Verifier to compute $G_{n,k}(x_1,\ldots,x_n)$. The Verifier select a random index $i \in [1..n]$ and looks at input bit $b=x_i$ and rewards the Prover using Brier's Rule $BSR(\tilde{p},b)$ where $\tilde{p}=\tilde{m}/n$ i.e. the probability claimed by the Prover that a randomly selected input bit be 1. Then
+\[BSR(\tilde{p},1) = 2\tilde{p} - \tilde{p}^2 - (1-\tilde{p})^2 + 1 = 2\tilde{p}(2-\tilde{p}) \]
+\[BSR(\tilde{p},0) = 2(1-\tilde{p}) - \tilde{p}^2 - (1-\tilde{p})^2 +1 = 2(1-\tilde{p}^2) \]
+Let $m$ be the true number of input bits equal to 1, and $p=m/n$ the corresponding probability, then the expected reward of the Prover is
+\begin{equation}
+\label{eq:bsr}
+p BSR(\tilde{p},1) + (1-p) BSR(\tilde{p},0) 
+\end{equation}
+which is easily seen to be maximized for $p=\tilde{p}$ i.e. when the Prover announces the correct result. Moreover one can see that when the Prover announces a wrong $\tilde{m}$ his reward goes down by $2(p-\tilde{p})^2 \geq 2/n^2$. In other words 
+for all $n$-bit input $x$, we have $\Delta(x)=2/n^2$ and if a dishonest Prover $\disP$ cheats with probability $\epsilon_{\disP}$ then $\delta_{\disP} > 2\epsilon_{\disP}/n^2$. 
+
+
+

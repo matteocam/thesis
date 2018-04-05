@@ -1,0 +1,29 @@
+Consider the protocol in the previous section for the computation of the function 
+$G_{n,k}(\cdot)$. Assume that the honest execution of the protocol (including the computation of $G_{n,k}(\cdot)$) has cost $C=n$. 
+
+Assume now that we are given a sequence of $n$ inputs 
+$x^{(1)},\ldots,x^{(i)},\ldots$ where each $x^{(i)}$ is an $n$-bit string. 
+In the following let $m_i$ be the Hamming weight of $x^{(i)}$ and $p_i=m_i/n$.
+
+Therefore the honest prover investing $C=n$ cost, will be able to execute the protocol only only once, say on input $x^{(i})$.  By setting $p=\tilde{p}=p_i$ in Eq.~\ref{eq:bsr}, we see that $P$ obtains reward 
+\[ R(x^{(i)}) = 2(p_i^2-p_i+1) \leq 2 \]
+Consider instead a prover $\disP$ which in the execution of the protocol outputs a random value $\tilde{m} \in [0..n]$. The expected reward of $\disP$ on {\sf any} input $x^{(i)}$ is (by setting $p=p_i$ and $\tilde{p}=m/n$ in Eq.~\ref{eq:bsr} and taking 
+expectations):
+\begin{align*}
+\tilde{R}(x^{(i)}) &= \expectation_{m,b}[BSR(\frac{m}{n}, b)] \\
+                &= \frac{1}{n+1}\sum_{m=0}^{n}\expectation_b[BSR(\frac{m}{n},b] \\
+                &= 
+                \frac{1}{n+1}\sum_{m=0}^{n}(2(2p_i \cdot \frac{m}{n}-\frac{m^2}{n^2}-p_i+1))
+                 \\
+                 &=2-\frac{2n+1}{3n} > 1 \; \mbox{ for $n>1$.}
+\end{align*}
+Therefore by "solving" just two computations $\disP$ earns more than $P$. Moreover t
+the strategy of $\disP$ has cost $1$ and 
+therefore it earns more than $P$ by investing a lot less cost\footnote{
+If we think of cost as time, then in the same time interval in which $P$ solves one problem, $\disP$ can solve up to $n$ problems, earning a lot 
+more money, by answering fast and incorrectly.}.
+
+Note that "scaling" the reward by a multiplier $M$ does not help in this case, since both the honest and dishonest prover's rewards would be multiplied by 
+the same multipliers, without any effect on the above scenario. 
+
+We have therefore shown a rational strategy, where cheating many times and collecting many rewards is more profitable than collecting a single reward for an honest computation. 

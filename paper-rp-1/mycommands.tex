@@ -1,0 +1,113 @@
+% Tau
+\newcommand{\Tau}{\mathcal{T}}
+
+% underbar
+%\newcommand{\ubar}[1]{\underaccent{\bar}{#1}}
+\newcommand{\ubar}[1]{\uline{#1}}
+
+% Theorems
+\newtheorem{mydef}{Definition}
+\newtheorem{mythm}{Theorem}
+\newtheorem{mylemma}{Lemma}
+\newtheorem{mycorollary}{Corollary}
+\newtheorem{myassump}{Assumption}
+
+\newtheorem{myrem}{Remark}
+
+% Rational Proofs
+\newcommand{\A}{Arthur }
+\newcommand{\M}{Merlin }
+
+
+\newcommand{\claimedy}{\tilde{y}}
+\newcommand{\posreals}{\reals_{\geq 0}}
+
+\newcommand{\cost}{c}
+\newcommand{\costP}{\cost(P,x)}
+\newcommand{\xVec}{\widetilde{X}}
+\newcommand{\costDisPMany}{m\cdot\costDisP}
+\newcommand{\costDisP}{\cost(\disP, x )}
+
+\newcommand{\disP}{\widetilde{P}}
+\newcommand{\disPSm}{\widetilde{P}^*}
+\newcommand{\bfsP}{\widetilde{P}_{BFS}}
+
+\newcommand{\prCh}{p_{cheat}}
+\newcommand{\ratioCosts}{\frac{\cost_H(x)}{\disCLB}}
+
+\newcommand{\function}[1]{\ensuremath{\mathsf{#1}}}
+
+\newcommand{\Size}{\function{Size}}
+\newcommand{\out}{\function{out}}
+\newcommand{\rew}{\function{rew}}
+\newcommand{\profit}{\function{profit}}
+\newcommand{\poly}{\function{poly}}
+\newcommand{\negl}{\function{neg}}
+%\newcommand{\reward}{\function{reward}}
+%\newcommand{\log}{\function{log}}
+
+\newcommand{\expRewProtDis}{\expectation[\rew((\disP,V)(x))]}
+\newcommand{\expRewProtDisMany}{\expectation[\rew((\disP,V)(\xVec))]}
+\newcommand{\expRewProtHon}{\expectation[\rew((P,V)(x))]}
+\newcommand{\prOutProtDis}{\Pr[\out((\disP,V)(x)) \neq f(x)]}
+\newcommand{\prOutProtDisMany}{\Pr[\out((\disP,V)(\xVec)) \neq f(\xVec)]}
+
+% expected profit variants
+\newcommand{\expProfitProtDis}{\expectation[\profit((\disP,V)(x))]}
+\newcommand{\expProfitProtDisMany}{\expectation[\profit((\disP,V)(\xVec))]}
+\newcommand{\expProfitProtHon}{\expectation[\profit((P,V)(x))]}
+
+\newcommand{\pDisR}{\tilde{p}_x}
+
+\newcommand{\circDFS}{\cal{C}_{DFS}}
+\newcommand{\circBFS}{\overline{\cal{C}}_{BFS}}
+\newcommand{\circNA}{\overline{\cal{C}}}
+
+\newcommand{\circEval}{\cal{C}_{\mbox{eval}}}
+\newcommand{\circFFT}{\cal{C}_{\mbox{FFT}}}
+\newcommand{\circPow}{\cal{C}_{\mbox{pow}}}
+
+\newcommand{\tildeltaFFT}{\tildelta_{\mbox{FFT}}}
+
+\newcommand{\probCheatFFT}{\tilde{p}_{\mbox{FFT}}}
+\newcommand{\probCheatPow}{\tilde{p}_{\mbox{pow}}}
+
+\newcommand{\tildelta}{\tilde{\delta}}
+\newcommand{\investTildelta}{\tilde{C}_{\tildelta}}
+
+\newcommand{\deltaBfsInv}{\delta_{BFS}(\tilde{C})}
+
+\newcommand{\disRUB}{R'}
+\newcommand{\disCLB}{\cost'}
+
+\newcommand{\rewGapOneTime}{\Delta^{\rew}_{1}}
+\newcommand{\profGapSeq}{\Delta^{\profit}_{\infty}}
+\newcommand{\rewRatio}{\alpha^{\rew}}
+
+% Announced distribution
+\newcommand{\annd}{\hat d}
+% Real distribution
+\newcommand{\reald}{d}
+
+%\newcommand{\expectation}{\mathbb{E}}
+\newcommand{\expectation}{\mathop{\mathbb{E}}}
+
+% Some shortcuts for math symbols
+\newcommand{\binstrings}{\{0, 1\}^{*}}
+%\newcommand{\iff}{\Leftrightarrow}
+\newcommand{\binstring}{\{0, 1\}}
+\newcommand{\funonstrings}{: \binstrings \to \binstrings}
+
+\newcommand{\naturals}{\mathbb{N}}\label{key}
+\newcommand{\reals}{\mathbb{R}}
+
+% Circuit Family
+\newcommand{\circfam}{\{C_n\}_{n=1}^{\infty}}
+\newcommand{\langL}{\mathcal{L}}
+% Interactive Proofs
+\newcommand{\transc}{\mathcal{T}}
+
+\makeatletter
+\newcommand{\verbatimfont}[1]{\def\verbatim@font{#1}}%
+\makeatother
+

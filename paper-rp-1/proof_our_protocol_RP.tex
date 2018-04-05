@@ -1,0 +1,222 @@
+In the following lemmas and theorems, $\mathcal{L}$ is a language and $\{C_n\}$ 
+is a family of circuits that decides $\mathcal{L}$ of depth $d(n)$.
+
+\begin{mydef}[Dishonest prover]
+We say that a prover $\disP$ is dishonest for $\mathcal{L}$ on input  $x \in 
+\binstrings$ if $\Pr[\out(P,V)(x) \neq \mathcal{L}(x)] > 0$.
+
+We say that a dishonest prover \textbf{successfully cheats} on input $x \in \binstrings$ if the verifier accepts after an interaction $(\disP, V)(x)$ such that $\out(P,V)(x) \neq \mathcal{L}(x)$.
+\end{mydef}
+
+
+
+
+ 
+\begin{mylemma}
+Let $\disP$ be a dishonest prover for $\mathcal{L}$ on input $x$. If at the 
+first round of the protocol $\disP$ sends $V$ two input wires inconsistent with 
+the output of the final gate (i.e. $\mathcal{L}(x)$), then, if the circuit 
+family for $\langL$ have depth greater than 1, there exists another 
+dishonest prover $\disP'$ that cheats successfully on $x$ with probability 
+higher or equal than $\disP$.
+\end{mylemma}
+\begin{proof}
+This is trivial since, at any round, every prover that provides 
+inputs wires which are inconsistent with the output of the corresponding gate 
+has probability null of succeeding.
+
+Observe that the probability that a dishonest prover cheats successfully is 
+given by:
+$$ \Pr[\disP \mbox{ cheats successfully}] = (1-p_{cor})\cdot\Pr[(\disP, V)(x) = 
+accept | \out(\disP,V)(x)  \neq C_n(x)])  $$ 
+where $p_{cor}$ is the probability that $\disP$ provides $V$ the correct answer.
+
+Let us proceed by induction on the depth of the circuit.
+
+If $d =1$ then if $\disP$ gives inconsistent answer, he has no possibility to 
+convince the verifier. And the conditions of the theorem are trivially 
+satisfied.
+
+\end{proof}
+
+\begin{mydef}
+The prover $\disPSm$ is the dishonest prover that gives the following reply 
+patterns when answering on gate $g$:
+\begin{itemize}
+\item If $g$ is an input gate then give the corresponding correct values;
+\item Otherwise, let $g_L$ and $g_R$ be respectively the left and right "child" 
+gates of $g$:
+\begin{itemize}
+\item $\disPSm$ provides an incorrect answer for $g$ that is however consistent 
+with the correct output value 
+\item $\disPSm$ provides the correct values for the whole subcircuit rooted in 
+$g_L$.
+\item $\disPSm$ recursively provides answers (as for $g$) for the subcircuit 
+rooted at $g_R$
+\end{itemize}
+\end{itemize}
+\end{mydef}
+
+% CLAIM (Lemma 2): The prover \disPSm is the one dishonest one that maximizises 
+%probability of cheating with probability below
+
+\begin{mylemma}
+Let $\mathcal{L}$ be a language decidable by a 
+circuit of depth $d \geq 1$. Let $\disP$ be a dishonest prover for 
+$\mathcal{L}$ and $x \in \binstrings$. If at the first round of the protocol 
+$\disP$ 
+sends $V$ two input wires such that neither of them is equal to the 
+corresponding input wire in the actual computation, then there exists another 
+dishonest prover $\disP'$ that cheats successfully with probability higher than 
+$\disP$.
+\end{mylemma}
+
+
+
+\begin{mylemma}
+\label{lemma:bound-adv-dis}
+Let $\mathcal{L}$ be a language and let $\{C\}_n$ be a family of binary boolean 
+circuits of  depth $d(n)$ that decides $\mathcal{L}$;
+Let $\disP$ be a dishonest prover for input $x \in \binstring^n$.
+Then the probability of $\disP$ successfully cheating is lower or equal than $1-2^{-d(n)}$, i.e:
+
+$$\Pr[(\disP, V)(x) = accept | \out(\disP,V)(x) \neq C_n(x)] \leq 1-2^{-d(n)}$$
+\end{mylemma}
+\begin{proof}
+Let us proceed by induction on the depth $d$ of the circuit.
+If $d = 1$ then there is no possibility for the prover to cheat successfully 
+and the conditions of the theorem trivially hold.
+Assume $d > 1$. 
+Let $\claimedy$ be the output provided by $\disP$.
+Clearly $\claimedy \neq C(x)$ as we are assuming that $\disP$ is acting 
+dishonestly. We can think of the binary circuit $C$ as composed by two 
+subcircuits $C_L$ and $C_R$ and by a final gate $g$ such that
+$  C(x) = g(C_L(x), C_R(x))$. The respective depths $d_L, d_R$ of these 
+subcircuits are such that $0 \leq d_L, d_R \leq d-1$. After sending 
+$\claimedy$, 
+the protocol requires that
+$\disP$ sends output values for $C_L(x)$ and
+$C_R(x)$; let us denote these claimed values respectively with $\claimedy_L$ 
+and  $\claimedy_R$. 
+Notice that at least one of these alleged values will be different from the 
+respective correct subcircuit output: if it were otherwise, $\disP$ would 
+reject immediately as $g(\claimedy_L, \claimedy_R) = C(x) \neq \claimedy$.
+Thus at most one of the two values $\claimedy_L$, $\claimedy_R$ is equal 
+to the output of the corresponding subcircuit.
+The probability that the $\disP$ cheats successfully is:
+\begin{align}
+\Pr[\mbox{V accepts}] & \leq 
+\frac{1}{2}\cdot(\Pr[\mbox{V accepts on } C_L] + \Pr[\mbox{V accepts on } C_R]) 
+\label{ineq:RP-formula-vs-circuit}
+\\
+& \leq \frac{1}{2}\cdot(1-2^{-\max(d_L, d_R)}) + \frac{1}{2} 
+\label{ineq:RP-ind-hyp-bound} \\
+& \leq \frac{1}{2}\cdot(1-2^{-d+1}) + \frac{1}{2} \\
+& = 1 - 2^{-d}
+\end{align}
+Note that at line \ref{ineq:RP-formula-vs-circuit} the inequality is strict 
+whenever 
+the two probabilities are disjoint, i.e. when $C$ is not a formula.
+At line \ref{ineq:RP-ind-hyp-bound} we used the inductive hypothesis and the 
+fact 
+that all probabilities are at most $1$.
+   
+\end{proof}
+
+
+% Reward gap
+In the following proofs it will be useful to talk about the advantage 
+that 
+the honest strategy has on all the other provers. In 
+\cite{guo2014rational} it 
+is 
+introduced the concept of (one-time) reward gap, defined as the minimum 
+loss 
+incurred 
+by an \emph{always dishonest prover}.
+
+\begin{mydef}[One-time Reward Gap]
+\label{def:one-time-rew-gap}
+The one-time reward gap for a reward function $\rew$ and a protocol 
+$(P,V)$ is defined as
+$$ \rewGapOneTime(n) = \min_{x \in \binstring^n} \min_{\disP \in S_x} 
+(\expRewProtHon - \expRewProtDis )  $$
+where $ S_x = \{ \disP \ :\  \prOutProtDis = 1 \} $
+\end{mydef}
+
+As observed in \cite{guo2014rational}, for the one-time reward gap  the 
+following important property holds:
+\begin{mylemma}[A lower bound on reward losses for a dishonest prover]
+\label{lemma:one-time-rew-gap-bound}
+Let $(P,V)$ and $\rew$ be respectively a protocol and a reward function 
+yielding a rational proof for some function $f \funonstrings$.
+Let $\disP$ be an arbitrary prover, then the expected loss for $\disP$ 
+on input $x \in \binstring^n$ is at 
+least:
+$$ \rewGapOneTime(n)\cdot\prOutProtDis  $$
+\end{mylemma}
+\begin{proof}
+Let $p_{dis} = \prOutProtDis$ and $R = \expRewProtHon$; thus
+\begin{align*}
+& \expRewProtHon - \expRewProtDis   \\
+& \geq   R - (1-p_{dis})\cdot R -
+p_{dis}\cdot(R-\rewGapOneTime(n)) \\
+%& =  p_{dis}\cdot(\rewGapOneTime(n) + 1) \\
+& \geq  p_{dis}\cdot\rewGapOneTime(n)
+\end{align*}
+
+\end{proof}
+
+From Lemmas \ref{lemma:bound-adv-dis} and \ref{lemma:one-time-rew-gap-bound}
+we obtain the following corollaries.
+\begin{mycorollary}
+The one-time reward gap for the protocol in Section \ref{sec:our-protocol} on 
+an input of size $n \in \naturals$ is such that:
+$$ \rewGapOneTime \geq 2^{-d(n)}  $$
+where $d(\cdot)$ is the depth of the circuit on which the protocol is executed.
+\end{mycorollary}
+
+
+
+\begin{mycorollary}[Noticeable losses for dishonest provers]
+\label{cor:rew-gap-noticeable}
+If $2^{-d(n)} = O(\poly(n))$ there exists $R(n) = \poly(n)$
+%and $R(n) \leq 2^{-d(n)}$ 
+such that any prover giving  an incorrect  answer with 
+noticeable probability will receive a polynomially smaller reward w.r.t. a 
+honest prover.
+\end{mycorollary}
+
+% OBS: Notice that the current reward function we are using now is 
+%deterministic
+
+\begin{mythm}
+If a language $\langL$ is decidable by a family of 
+%$O(\log(S(n)))$-space uniform
+binary circuits of fan-in two, size $S(n)$ and 
+depth $d(n) = O(\log(n))$, then $\langL \in DRMA[d(n), d(n), O(d(n)\cdot 
+T_{C}(n)), 
+\poly(n)]$ 
+where $T(n)$ is the running time of the DTM returning the 
+description of the circuits for $\langL$. 
+% XXX: The definition above should be checked since it should account for 
+%noticeable probabilitt
+\end{mythm}
+\begin{proof}
+As observed earlier, the protocol described in Section \ref{sec:our-protocol} 
+satisfies the complexity requirements for number of rounds, communication and 
+$V$'s running time.
+We are now to show that the same protocol yields a rational proof for $f$ and 
+that the reward function is always polynomially bounded.
+
+As observed in Section \ref{sec:our-protocol} the protocol is rationally 
+complete. By Lemma \ref{lemma:dif-rew-RP} a honest prover earns a strictly 
+higher reward than any dishonest prover (in expectation) and the second bullet 
+in Definition \ref{def:RP-Rosen-style} holds.
+
+If $d(n) = O(\log(n))$  we can apply Corollary 
+\ref{cor:rew-gap-noticeable} and the last bullet in Definition 
+\ref{def:RP-Rosen-style} holds.
+
+\end{proof}
+

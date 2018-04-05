@@ -1,134 +1,122 @@
-\documentclass[nobib]{tufte-handout}
-%\documentclass[11pt]{tufte-book}
+% -*- Mode:TeX -*-
+
+
+\documentclass[nobib]{tufte-book}
+\usepackage{lgrind}
+\usepackage{graphicx}
+\usepackage{lipsum}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{moreverb}
+\usepackage{alltt}
+%\usepackage{parskip}
+\usepackage{url}
+\usepackage{color}
+\usepackage{array}
+\usepackage{pdfpages}
+\usepackage{wrapfig}
+\usepackage{geometry}
 \usepackage{times}
 \usepackage{url}
 \usepackage{latexsym}
 \usepackage[utf8]{inputenc}
-\usepackage{natbib}
+%\usepackage{natbib}
 \usepackage{graphicx}
-\usepackage{amsthm}
+%\usepackage{amsthm}
 \usepackage{amssymb}
 \usepackage{amsmath}
+\usepackage{amsthm}
 \usepackage{verbatim}
 \usepackage{enumitem}
 \usepackage{verbatim}
-\usepackage{accents}
-\usepackage{blindtext}
-\usepackage{hyphenat}
-\usepackage{comment}
-\usepackage{complexity}
-\usepackage{framed}
-\usepackage{csquotes}
-%s\usepackage[usenames, dvipsnames]{color}
-\usepackage{fancyhdr}
-\usepackage[normalem]{ulem}
-%\setlength\titlebox{6.5cm}    % You can expand the title box if you
-% really have to
+\setkeys{Gin}{width=\linewidth,totalheight=\textheight,keepaspectratio}
 
+%% These have been added at the request of the MIT Libraries, because
+%% some PDF conversions mess up the ligatures.  -LB, 1/22/2014
+\usepackage{fancyvrb}
+
+%%
+% Prints argument within hanging parentheses (i.e., parentheses that take
+% up no horizontal space).  Useful in tabular environments.
+\newcommand{\hangp}[1]{\makebox[0pt][r]{(}#1\makebox[0pt][l]{)}}
+
+%%
+% Prints an asterisk that takes up no horizontal space.
+% Useful in tabular environments.
+\newcommand{\hangstar}{\makebox[0pt][l]{*}}
+
+%%
+% Prints a trailing space in a smart way.
+\usepackage{xspace}
+
+
+% custom page numbering
+\fancypagestyle{plain}{
+	\fancyhead[LE]{\thepage\quad\smallcaps}% 
+	\fancyhead[RO]{\smallcaps\quad\thepage}%
+}
+
+\usepackage[parfill]{parskip}
+
+% remove paragraph indentation
+\makeatletter
+% Paragraph indentation and separation for normal text
+\renewcommand{\@tufte@reset@par}{%
+  \setlength{\RaggedRightParindent}{0.0pc}%
+  \setlength{\JustifyingParindent}{0.0pc}%
+  \setlength{\parindent}{0pc}%
+  \setlength{\parskip}{\baselineskip}%
+}
+\@tufte@reset@par
+
+% Paragraph indentation and separation for marginal text
+\renewcommand{\@tufte@margin@par}{%
+  \setlength{\RaggedRightParindent}{0.0pc}%
+  \setlength{\JustifyingParindent}{0.0pc}%
+  \setlength{\parindent}{0.0pc}%
+  \setlength{\parskip}{10pt}%
+}
+\makeatother
+
+%% This bit allows you to either specify onwly the files which you wish to
+%% process, or `all' to process all files which you \include.
+%% Krishna Sethuraman (1990).
+
+% \setcounter{secnumdepth}{0}
+% \includeonly{chap2}
+
+\newcommand{\choosecase}[1]{#1}
+
+\renewcommand{\cleardoublepage}{\clearpage}
+
+%\geometry{showframe}
+
+% Math Operators
 \DeclareMathOperator*{\argmin}{arg\,min}
 \DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\polylog}{polylog}
+\DeclareMathOperator*{\reward}{reward}
 
-\hyphenation{Efficient}
-\hyphenation{Computation}
-
-\title[Rationality and Efficient Verifiable Computation]{Rationality and Efficient Verifiable Computation\\ \noindent \small{Dissertation proposal}}
-
-
-\author{Matteo Campanelli}
-\date{}
-
-\newtheorem{remark}{Remark}
+\renewcommand{\subsubsection}[1]{\newthought[#1]}
 
 \begin{document}
-\maketitle
-
-  
-  \begin{abstract}
-  	\noindent
-  	We propose the study of protocols for delegating computation in a model in which one of the party is rational.
-  	A \textit{delegator} outsources the computation of a function $f$ on input $x$ to a \textit{worker}, who
-  	receives a (possibly monetary) reward. Our goal is to design \textit{very efficient} delegation schemes 
-  	where a worker is economically incentivized to provide the correct result
-  	$f(x)$. As a design choice, we do not want to rely on cryptographic assumptions
-  	(i.e. we will not assume one-way functions exist).
-  	
-  	We provide several results within the framework of rational proofs introduced by Azar and Micali (STOC 2012).
-  	We make several contributions to efficient rational proofs for general feasible computations.
-  	First, we design schemes with a sublinear verifier with low round and communication complexity for
-  	space-bounded computations.
-  	Second, we provide evidence, as lower bounds, against the existence of rational proofs:
-  	with logarithmic communication and polylogarithmic verification for $\P$ and 
-  	with polylogarithmic communication for $\NP$.
-  	% Third, we generalize a scaling approach in Azar and Micali (STOC) ... [composition theorem]
-  	
-  	We then move to study the case where a delegator outsources multiple inputs.
-  	First, we formalize an extended notion of rational proofs for this scenario (sequential composability) and we
-  	show that existing schemes do not satisfy it. We show how these protocols incentivize workers
-  	to provide many ``fast'' incorrect answers which allow them to solve more problems and collect more rewards.
-  	We then design a $d$-rounds rational proof for sufficiently ``regular'' arithmetic circuit of depth $d = O(\log{n})$
-  	with sublinear verification. We show, that under certain cost assumptions, our scheme is sequentially composable,
-  	i.e. it can be used to delegate multiple inputs. We finally show that our scheme for space-bounded computations is also 
-  	sequentially composable under certain cost assumptions.
-  	
-  	%The results above have been published as proceedings in GameSec as Campanelli and Gennaro (GameSec 2015)
-  	%and Campanelli and Gennaro (GameSec 2017).
-  	
-	Finally we discuss partial results for delegation of functions computable by low-depth circuits of unbounded fan-in.
-	Our techniques rely on \textit{fine-grained} cryptographic schemes whose security guarantees do not require the existence of one-way functions
-	and hold only against bounded adversaries. As a stepping stone for our delegation schemes, we also build 
-	the first fine-grained somewhat homomorphic encryption schemes which we believe to be of independent interest.
-	Our fine-grained protocols can be used to obtain sequentially composable rational proofs.
-  \end{abstract}
-  
-  
-
-%\abstract{
-%This is a proposal.
-%}
-
-%\tableofcontents
-
-% List of commands
-\input{mycommands.tex}
 
 
 
-% Introduction/Motivation:
-%\chapter{Introduction}
+\include{cover}
+% Some departments (e.g. 5) require an additional signature page.  See
+% signature.tex for more information and uncomment the following line if
+% applicable.
+% \include{signature}
 
-\input{introduction.tex}
+\include{contents}
+\pagestyle{fancy}
 
+\chapter{Rational Proofs}
+\include{paper-rp-1/paper}
 
-% Rational Proofs: Preliminaries
-%\chapter{Preliminaries and  Definitions}
-
-%\input{rp-background.tex}
-
-
-% Rational Proofs: Rational Proofs for Space-Bounded Computations
-%\chapter{Rational Proofs for Space Bounded Computation}
-
-%\input{rp-space-bounded.tex}
-
-
-% Rational Proofs:  Sequential Composability
-%\chapter{Sequentially Composable Rational Proofs}
-
-%\input{rp-sequential.tex}
-
-%  FG DoC
-%\chapter{Fine-Grained Verifiable Computation}
-%\input{fg-doc.tex}
-
-%  FG FHE
-%\chapter{Fine-Grained Somewhat Homomorphic Encryption}
-%\input{fg-fhe.tex}
-
-
-
-
-\bibliographystyle{plain}
-\bibliography{references}
-
-
+\appendix
+\include{appa}
+\include{biblio}
 \end{document}
+

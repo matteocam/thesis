@@ -1,0 +1,32 @@
+% TODO: Intro to FFT, motivation and whatnot
+
+\subsection{FFT circuit for computing a single coefficient}
+
+The Fast Fourier Transform is an almost ubiquitous computational problem that appears in many applications, including many of the volunteer 
+computations that motivated our work. As described in \cite{CLRS} a circuit to compute the FFT of a vector of $n$ input elements, consists of $\log n$ levels, 
+where each level comprises $n/2$ {\em butterflies} gates. The output of the circuit is also a vector of $n$ input elements. 
+
+Let us focus on the circuit that computes a single element of the output vector: it has $\log n$ levels, and at level $i$ it has $n/2^i$ butterflies gates. 
+Moreover the circuit is regular, according to Definition~\ref{def:reg-circ}.
+
+%As the theorem below shows, we can obtain sequential composability for this circuit with a 
+%Verifier running in time $O(T\log n)$ where $T$ is the  uniformity parameter for the circuit.
+
+% Seq. composability for this circuit
+\begin{mythm}
+Under the $(C,\epsilon)$-unique inner state assumption for input distribution $\cal D$,
+the protocol in Section \ref{sec:our-protocol}, when repeated $r = O(1)$ times, yields sequentially composable rational proofs for the FFT, under input 
+distribution $\cal D$ and assuming non-adaptive prover strategies. 
+\end{mythm}
+\begin{proof}
+Since the circuit is regular we can prove sequential composability by invoking Theorem~\ref{thm:reg-circ} and proving that for $r = O(1)$, 
+the following inequality holds 
+$$ \tilde{p} = (1-2^{-\delta})^r \leq \frac{\tilde{C}}{C} $$
+where $\delta=d_{BFS}({\cal C},\tilde{C})$.
+
+But for any $\tildelta < d$, the structure of the FFT circuit inmplies that the number of gates below height $\tildelta$ is $\investTildelta = \Theta(C(1-2^{-\tildelta}))$.
+Thus the inequality above can be satisfied with $r = \Theta(1)$.
+\end{proof}	
+
+
+

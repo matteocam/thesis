@@ -1,0 +1,97 @@
+\begin{abstract}
+We show that Rational Proofs  do not satisfy basic compositional properties in the case where a large number of "computation problems" are outsourced. We show that a "fast" incorrect answer is more remunerable for the prover, by allowing him to solve more problems and collect more rewards.
+We present an enhanced definition of Rational Proofs that removes the economic incentive  for this strategy and we present a protocol that achieves it for
+some
+% the case of 
+uniform bounded-depth circuits.
+\end{abstract}
+
+\input{paper-rp-1/mycommands.tex}
+
+\section{Introduction}
+\input{paper-rp-1/intro.tex}
+
+\section{Rational Proofs}
+\input{paper-rp-1/rp.tex}
+
+\section{Profit vs. Reward}
+\input{paper-rp-1/profit.tex}
+
+\section{Sequential Composition}
+We now present the main results of our work. First we informally describe our notion of sequential composition of 
+rational proof, via a motivating example and show that the protocols in \cite{am,am1,rosen} do not satisfy it. Then we present our definition of sequential rational proofs, and a protocol that achieves it for circuits of bounded depth. 
+
+
+\subsection{Motivating Example}
+\input{paper-rp-1/counterexample.tex}
+
+\subsection{Sequentially Composable Rational Proofs}
+\input{paper-rp-1/seq_rps.tex}
+
+\subsection{Sequential Rational Proofs in the PCP model}
+\input{paper-rp-1/pcp_rp.tex}
+
+\subsection{Sequential Composition and the Unique Inner State Assumption}
+\label{sec:uisa}
+\input{paper-rp-1/inner_state_assumption.tex}
+
+\section{Our Protocol}
+\input{paper-rp-1/our_protocol.tex}
+
+\section{Results for FFT circuits}
+
+In this section we apply the previous results to the problem of computing FFT circuits, and by extension to polynomial evaluations. 
+\input{paper-rp-1/FFT.tex}
+
+\subsection{Mixed Strategies for Verification}
+
+\input{paper-rp-1/FFT-mixed-strategy}
+
+\section{Conclusion}
+Rational Proofs are a promising approach to the problem of verifying computations in a rational model, where the prover is not malicious, but only 
+motivated by the goal of maximing its utility function. We showed that Rational Proofs do not satisfy basic compositional properties in the case where a large number of "computation problems" are outsourced, e.g. volunteered computations. We showed that a "fast" incorrect answer is more remunerable for the prover, by allowing him to solve more problems and collect more rewards.
+We presented an enhanced definition of Rational Proofs that removes the economic incentive  for this strategy and we presented a protocol that achieves it for some uniform bounded-depth circuits.
+
+One thing to point out is that our protocol has two additional advantages: 
+\begin{itemize}
+\item the honest Prover is always guaranteed a fixed reward $R$, as opposed to the some of the protocols in 
+\cite{am,am1} where the reward is a random variable even for the honest prover;
+\item Our protocol is the first example of a rational proof for arithmetic circuits. 
+\end{itemize}
+
+Our work leaves many interesting research directions to explore: 
+\begin{itemize}
+\item Is it possible to come up with a protocol that works for any bounded-depth circuit, and not circuits with special "topological" conditions such as the ones 
+imposed by our results?
+\item Our results hold for "non-adaptive" prover strategies, though that seems more a proof artifact to simplify the analysis , than a technical requirement. 
+Is it possible to lift that restriction? 
+\item Are there other circuits which, like the FFT one, satisfy our notions and requirements?
+\item What about rational proofs for arbitrary poly-time computations? Even if the simpler stand-alone case?
+\end{itemize}
+
+%\begin{thebibliography}{99}
+%
+%\bibitem{am}
+%P. D.~Azar, S.~Micali. {\em Rational Proofs.} 2012 ACM Symposium on Theory of Computing, pp. 1017-1028
+%
+%\bibitem{am1}
+%P. D.~Azar, S.~Micali. {\em Super-efficient rational proofs.} 2013 ACM Conference on Electronic Commerce: pp. 29-30
+%
+%\bibitem{b08} M.~Belenkiy, M.~Chase, C.C.~Erway, J.~Jannotti, A.~Küpçü, A.~Lysyanskaya. {\em 
+%Incentivizing outsourced computation.} NetEcon 2008: 85-90
+%
+%\bibitem{CLRS} T.~Cormen, C.~Leiserson, R.~Rivest and C.~Stein. {\em Introduction to Algorithms.} MIT Press.
+%
+%\bibitem{dns}
+%C.~Dwork, M.~Naor and A.~Sahai. {\em Concurrent Zero-Knowledge}. J. ACM 51(6): 851-898 (2004)
+%
+%\bibitem{rosen}
+%S.~Guo, P.~Hubacek, A.~Rosen and M.~Vald. {\em Rational Arguments: Single Round Delegation with Sublinear Verification.} 2014 Innovations in Theoretical Computer Science Conference.
+%
+%\bibitem{wb15} M.~Walfish, A.J.~Blumberg. {\em 
+%Verifying computations without reexecuting them.} Commun. ACM 58(2): 74-84 (2015)
+%
+%\end{thebibliography}
+
+
+
