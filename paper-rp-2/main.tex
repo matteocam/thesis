@@ -1,39 +1,39 @@
-\documentclass{llncs}
-\usepackage{booktabs} % For formal tables
-
-\usepackage{times}
-\usepackage{complexity}
-\usepackage{url}
-\usepackage{latexsym}
-\usepackage[utf8]{inputenc}
-\usepackage{framed}
-\usepackage{natbib}
-\usepackage{graphicx}
-%\usepackage{amsthm}
-\usepackage{amssymb}
-\usepackage{amsmath}
-\usepackage{verbatim}
-%\usepackage{enumitem}
-\usepackage{verbatim}
-%\usepackage{accents}
-\usepackage{bm}
-%\usepackage[normalem]{ulem}
-%\setlength\titlebox{6.5cm}    % You can expand the title box if you
-% really have to
-
-\DeclareMathOperator*{\argmin}{arg\,min}
-\DeclareMathOperator*{\argmax}{arg\,max}
-
-
-
-\begin{document}
-\title{Efficient Rational Proofs for Space Bounded Computations}
-\author{Matteo Campanelli \and Rosario Gennaro}
-
-\institute{The City University of New York \\
-	{ mcampanelli@gradcenter.cuny.edu} \hspace{.5in} { rosario@ccny.cuny.edu}
-}
-\maketitle
+%\documentclass{llncs}
+%\usepackage{booktabs} % For formal tables
+%
+%\usepackage{times}
+%\usepackage{complexity}
+%\usepackage{url}
+%\usepackage{latexsym}
+%\usepackage[utf8]{inputenc}
+%\usepackage{framed}
+%\usepackage{natbib}
+%\usepackage{graphicx}
+%%\usepackage{amsthm}
+%\usepackage{amssymb}
+%\usepackage{amsmath}
+%\usepackage{verbatim}
+%%\usepackage{enumitem}
+%\usepackage{verbatim}
+%%\usepackage{accents}
+%\usepackage{bm}
+%%\usepackage[normalem]{ulem}
+%%\setlength\titlebox{6.5cm}    % You can expand the title box if you
+%% really have to
+%
+%\DeclareMathOperator*{\argmin}{arg\,min}
+%\DeclareMathOperator*{\argmax}{arg\,max}
+%
+%
+%
+%\begin{document}
+%\title{Efficient Rational Proofs for Space Bounded Computations}
+%\author{Matteo Campanelli \and Rosario Gennaro}
+%
+%\institute{The City University of New York \\
+%	{ mcampanelli@gradcenter.cuny.edu} \hspace{.5in} { rosario@ccny.cuny.edu}
+%}
+%\maketitle
 
 \begin{abstract}
 	We present new protocols for the verification of {\em space bounded polytime computations} against a rational adversary. For such computations requiring sublinear space our protocol requires only a verifier running in sublinear-time.
@@ -48,22 +48,22 @@
 
 
 
-\input{mycommands.tex}
+%\input{mycommands.tex}
 
 %% Shortcuts specific to Composition
-\newcommand{\protOne}{\pi^{L_2}_{1}}
-\newcommand{\protTwo}{\pi_{2}}
-\newcommand{\rewGap}{\Delta}
-\newcommand{\STEP}{\function{STEP}}
-
-\newcommand{\disTransc}{\tilde{\Tau}}
+%\newcommand{\protOne}{\pi^{L_2}_{1}}
+%\newcommand{\protTwo}{\pi_{2}}
+%\newcommand{\rewGap}{\Delta}
+%\newcommand{\STEP}{\function{STEP}}
+%
+%\newcommand{\disTransc}{\tilde{\Tau}}
 
 	
 	\section{Introduction}
-	\input{intro.tex}
+	\input{paper-rp-2/intro.tex}
 	
 	%\section{Preliminaries}
-	\input{rp.tex}
+	\input{paper-rp-2/rp.tex}
 	
 	%\section{On designing rational proofs as interactive proofs}
 	%\input{rps_as_ips.tex}
@@ -72,23 +72,23 @@
 	% Rational Proofs for NL 
 	% Are these better than the ones we have already?? (not round complexity-wise)
 	\section{Rational Proofs for Space-Bounded Computations }
-	\input{boundedspace.tex}
+	\input{paper-rp-2/boundedspace.tex}
 	
 	\section{A Composition Theorem for Rational Proofs}
-	\input{composition.tex}
+	\input{paper-rp-2/composition.tex}
 	
 	
 	%\section{Rational Proofs for Randomized Log-depth Circuits}
-	\input{randomized.tex}
+	\input{paper-rp-2/randomized.tex}
 	
 	\section{Sequential Composability}
 	\label{sec:proofs-seq-comp}
-	\input{seq-comp-defs}
-	\input{proof-seq-comp.tex}
+	\input{paper-rp-2/seq-comp-defs}
+	\input{paper-rp-2/proof-seq-comp.tex}
 	
 	
 	
-	\input{lowerbounds.tex}
+	\input{paper-rp-2/lowerbounds.tex}
 	
 	%\input{arguments.tex}
 	
@@ -112,13 +112,13 @@
 	\end{itemize}
 	
 	
-
-\subsubsection*{Acknowledgments}
-Authors would like to thank Jesper Buus Nielsen for suggesting the approach of the construction in Theorem \ref{thm:main}.
-
+%
+%\subsubsection*{Acknowledgments}
+%Authors would like to thank Jesper Buus Nielsen for suggesting the approach of the construction in Theorem \ref{thm:main}.
+%
 
 % Bibliography
-\bibliographystyle{plain}
-\bibliography{references}
-
-\end{document}
+%\bibliographystyle{plain}
+%\bibliography{references}
+%
+%\end{document}
