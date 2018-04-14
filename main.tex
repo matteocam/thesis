@@ -93,6 +93,7 @@ keys]{cryptocode}
 \usepackage{array} 
 \usepackage{graphicx} 
 \usepackage{graphics}
+\usepackage{csquotes}
 \usepackage{mathtools} 
 \usepackage{tikz} 
 \usepackage{verbatim}
@@ -110,6 +111,12 @@ keys]{cryptocode}
 %% These have been added at the request of the MIT Libraries, because
 %% some PDF conversions mess up the ligatures.  -LB, 1/22/2014
 \usepackage{fancyvrb}
+
+\usepackage[backend=bibtex]{biblatex}  
+
+%\bibliographystyle{alpha}
+\addbibresource{references.bib}
+\addbibresource{crypto.bib}%
 
 %%
 % Prints argument within hanging parentheses (i.e., parentheses that take
@@ -192,19 +199,28 @@ keys]{cryptocode}
 \include{contents}
 \pagestyle{fancy}
 
-\chapter{Rational Proofs for subclasses of $\P$}
+\chapter{Introduction}
+\include{synopsis/main}
 
+\chapter{Preliminaries}
+\include{preliminaries/preliminaries}
+
+\chapter{Rational Proofs for subclasses of $\P$}
 \include{paper-rp-1/paper}
 
 \chapter{Rational Proofs for Costly Multiple Delegations}
-
 \include{paper-rp-2/main}
 
 \chapter{Fine-Grained Verifiable Computation}
 \include{FG-VC/main}
 
-\appendix
-\include{appa}
-\include{biblio}
+%\appendix
+%\include{appa}
+%\include{biblio}
+
+
+
+\printbibliography
+
 \end{document}
 
