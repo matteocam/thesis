@@ -1,0 +1,123 @@
+\section{On Rational Arguments and cryptography}
+\label{sec:ratarg}
+
+In this section we general results using standard cryptographic assumptions such as OWF and CRHF for rational arguments for $\NP$.
+
+
+\begin{definition}[Rational Argument (\cite{ratargs})]
+	A function $f : \bits  \to \bits$ admits
+a rational
+	argument with security parameter $\kappa : \naturals \to \naturals$  if there exists a protocol $(P,V)$ and a
+	randomized reward function $\rew : \bits \to \reals_{\geq 0}$
+	such that for any input $x \in \bits$
+	
+	and any prover $P^*$ of size $\leq \poly(2^{\kappa(|x|)})$ the following hold:
+	\begin{enumerate}
+		\item $\Pr[\out((P,V)(x) = f(x)] = 1$.
+		\item There exists a negligible function $\epsilon(\cdot)$  such that $\expectation[\rew((P,V)(x))] + \epsilon(|x|) \geq \expectation[\rew((P^*, V)(x))]$.
+		\item If there exists a polynomial $p(\cdot)$ such that
+		$\Pr[\out((P^*, V)(x))\not = f(x)] \geq p(|x|)^{-1}$ then there exists a polynomial $q(\cdot)$ such that
+		$\expectation[\rew((P^*, V)(x)))] + q(|x|)^{-1} \leq \expectation[\rew((P, V)(x)))] $.
+		The expectations and the probabilities are taken over the random coins of the respective prover and verifier.
+	\end{enumerate}
+\end{definition}
+
+\begin{remark}[One-sided and Oracle Rational Arguments and Their Composition]
+	\label{rem:oracle-rat-args}
+	\label{rem:os-rat-args}
+	We define the notion of oracle rational arguments extending Definition \ref{def:oracle-RP} to rational arguments in the natural way.
+	It is immediate to see that the proof of Theorem \ref{thm:composition} extends to the composition of two rational protocols where one or both are arguments
+	(the resulting composition is an argument in both cases).
+	Finally, the notion of one-sided rational proofs (Definition \ref{def:os-rp}) can also be extended to rational arguments in the natural way.
+\end{remark}
+
+\textbf{TODO: Should there be an intro on CRHFs? Is the statement of the theorem below correct?} 
+\newcommand{\hf}{\cal H}
+\begin{lemma}
+	\label{lemma:crhf-merkle-ratargs}
+	Let $f: \bit^n \to \bit$ be a function that admits a $g$-oracle rational proof $\pi^g$, with $g: \bit^{O(\log(n))} \to \bit$. Let $r,C,T$ be respectively the round, communication and verification complexity of $\pi^g$.
+	Assume the existence of a CRHF $\hf$ with output length $\kappa$, then $f$ admits a (non oracle) rational argument where:
+	\begin{itemize}
+		\item The verifier runs in time $T + O(\kappa \log(n))$;
+		\item The communication complexity is $C + O(\kappa \log(n))$ and the number of rounds is $r+2$. % HF + Merkle root + queries + replies
+	\end{itemize}
+\end{lemma}
+\begin{proofsketch}
+	At the high-level we follow Kilian's construction for interactive arguments for $\NP$ \cite{kilian1992note}.
+	We assume $P$ and $V$ agree on a representation of function $g$ as a (polynomially long) sequence of bits $s_g$.
+	The interactive argument for $g$:
+	\begin{enumerate}
+	\item The verifier sends the prover a CRHF $\hf$;
+	\item The prover sends the root of a Merkle Tree representing $s_g$;
+	\item The verifier asks for value $i$;
+	\item The prover sends the verifier $g(i)$ and the openings on the path from the root to the leaf $g(i)$.
+	\item If the openings are correct, the verifier pays the prover a reward $R = \poly(n)$; otherwise it pays $0$.
+	\end{enumerate}
+	
+	Notice that the one above is an argument in the classical sense for $g$ with soundness $\leq \negl(\kappa)$. If $\kappa = \omega(n)$ then the protocol
+	above admits noticeable reward gap and is a rational argument (see \cite{kilian1992note} for details). To conclude the proof we use Theorem \ref{thm:composition} (see also Remark \ref{rem:oracle-rat-args}). Before applying the theorem we need to pay particular attention to a point. We need to make sure that the prover's "commitment" to the string $s_g$ does not depend adaptively on any of the queries by $V$ in the rest of the protocol. Thus we apply the theorem to 
+\end{proofsketch}
+
+\newcommand{\conn}{\function{conn}_n}
+\begin{theorem}
+	\label{thm:crhf-p}
+	If CRHF exist then $\P$ admits a rational argument with security parameter $\kappa$, $O(1)$ rounds and polylogarithmic (in $n$ and $\kappa$) communication and verification time.
+\end{theorem}
+\begin{proofsketch}
+	Our approach is inspired by the construction in \cite{am1} for rational proofs for $\P^{||\NP}$ (Theorem $5.1$). Let $L$ be a language in $\P$, then there exists a polynomially sized circuit $C_n$. Also, there exists a log-space computable language
+	$\conn = \{ (\alpha, \beta, \gamma, \tau) : \alpha, \beta $ are inputs  $\tau$ gate whose output $\gamma$ in  $C_n \}$ where
+	$\tau \in \{ \function{and}, \function{or}, \function{input} \}$. If $\gamma$ is an input wire then $\alpha, \beta$ are $\bot$.
+	%Since, for a given wire $\gamma$, the verifier cannot know the values of the "parent" wires $\alpha$ and $\beta$, in order to be able to use Lemma %\ref{lemma:crhf-merkle-ratargs} we will also assume that the verifier has access to the function $\function{gate}(\cdot)$ that given in input $\gamma$ returns a pair
+	%of wires that are input to $\gamma$ and the type of the gate of which $\gamma$ is an output in $C_n$.
+	Fixed $x \in \bit^n$, we can represent the execution of $M$ on the string $x$ as a string $v$ where $v_{i}$ is the value of wire $i$ when the circuit is evaluated on input $x$. If $i$ is an input wire then $v_i = x_i$.
+	
+	We will now construct an oracle rational proof where we assume $V$ has oracle access to $v(\cdot)$ and $\conn$. Notice that both languages have polynomial size in $n$.
+	By Lemma \ref{lemma:crhf-merkle-ratargs} and we will obtain a rational argument for $\NP$.
+	
+	The protocol proceeds as follows:
+	\begin{itemize}
+		\item The prover first sends the verifier a bit $b$ denoting whether $x \in L$;
+		\item The verifier chooses a random wire $\gamma$ and sends it to the prover.
+		\item The prover sends the verifier a quadruple $(y, \alpha, \beta, \tau)$, respectively the alleged value of wire $\gamma$, its parents and the gate type $\tau$.
+		\item The verifier then proceeds in checking the results from $P$ by invokeing the oracles for $v$  and $\conn$. Then:
+		\begin{itemize}
+			\item If $\gamma$ is an input wire, $V$ checks whether $y = x_i$;
+			\item Otherwise, $\gamma$ invokes the oracle for $v$ on inputs $\alpha$ and $\beta$ and checks that $\tau(v_\alpha, v_\beta) = v_\gamma$.
+		\end{itemize}
+		\item If all the tests pass the verifier pays a reward $R = \poly(n)$ otherwise it pays nothing.
+	\end{itemize}
+	
+	
+	In the protocol described above the verifier has a noticeable probability of finding out a cheating prover and thus it is a (oracle) rational proof with noticeable reward gap for $L$. Applying Lemma \ref{lemma:crhf-merkle-ratargs} to replace oracle queries to $v$ and $\conn$ concludes the proof.
+	
+\end{proofsketch}
+
+\begin{theorem}
+	\label{thm:crhf-np}
+	If CRHF exist then $\NP$ admits a one-sided rational argument with security parameter $\kappa$, $O(\log(n))$ rounds and polylogarithmic (in $n$ and $\kappa$) communication and verification time.
+\end{theorem}
+\begin{proofsketch}
+	The proof of this theorem is very close to that of Theorem \ref{thm:crhf-p}.
+	
+	We first build a one-sided oracle rational proof for 3SAT.
+	Let $\phi$ be a 3SAT formula with $n$ variables. We assume the verifier has access to $v$, where $v$ is a satisfying assignment for $\phi$ or an arbitrary assignment if no satisfying assignment exists. The prover sends the verifier one bit $b$. The verifier randomly selects a clause and checks that the assignment satisfies the clause.
+	If $b=1$ and the randomly selected clause is satisfied then it pays the prover $R = \poly(n)$, otherwise it pays 0.
+	
+	To see this is a one-sided rational proof, assume $\phi$ were not satisfiable. Then for any assignment $v$ there would be a non-satisfying clause.
+	The verifier can guess such a clause with noticeable probability. This rational proof can be transformed in a rational argument for 3SAT using Lemma $\ref{lemma:crhf-merkle-ratargs}$.
+	
+	To obtain a rational argument for any $L \in \NP$, consider $f_L$, the Karp reduction from $L$ to 3SAT. 
+	Fixed $x \in \bit^n$, let $\phi_i$ be the $i$-th bit of $f_L(x)$. Since $f_L$ can be computed in log-space there exists a rational
+	proof for each $\phi_i$ that runs in $O(\log(n))$ rounds and with polylogarithmic communication and verification complexity
+	(see Corollary \ref{cor:L-NL}). By using Theorem \ref{thm:composition} (see also Remark \ref{rem:oracle-rat-args}) to compose the rational argument above with
+	a rational proof for $\phi_i$ we obtain a (one-sided) rational argument for any language in $\NP$. 
+	% Refer to \ref{rem:os-rat-args}
+\end{proofsketch}
+
+\begin{comment}
+\begin{remark}[Reducing round complexity of our arguments]
+	Theorem 5 in $\cite{ratargs}$ allows to transform a rational proof with $r$ rounds in a 1-round rational arguments assuming Private Information Retrieval (PIR) schemes. Unfortunately such theorem is not applicable to the arguments above because they are not history-ignorant
+\end{remark}
+\end{comment}
+% NOTE: Important: write comparison with Kilian, i.e. ours is a _sublinear_ verification time delegation scheme for NP.
+

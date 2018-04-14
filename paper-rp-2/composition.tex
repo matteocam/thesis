@@ -1,0 +1,106 @@
+In this Section we prove a relatively simple {\em composition theorem} that states that while proving the value of a function $f$, we can replace oracle access to a function $g$, with a rational proof for $g$. The technically interesting part of the proof is to make sure that the {\em total} reward of the prover is maximized when the result of the computation of $f$ is correct. In other words, while we know that lying in the computation of $g$ will not be a rational strategy for just that computation, it may turn out to be the best strategy as it might increase the reward of an incorrect computation of $f$. A similar issue (arising in a particular rational proof for depth $d$ circuits) was discussed in \cite{am1}: our proof generalizes their technique. 
+
+
+\begin{definition}
+	\label{def:oracle-RP}
+	We say that a rational proof $(P,V, \rew)$ for $f$ is a $g$-oracle rational proof if $V$ has oracle access to the function $g$ and carries out at most one oracle query.
+	We allow the function $g$ to depend on the specific input $x$.
+\end{definition}
+
+% TODO: Put example here for definition above. (Maybe the PCP-like RP by Azar/Micali)
+
+
+\newcommand{\rewf}{\rew^o_f}
+\newcommand{\rewg}{\rew_g}
+% TODO: Remove all the o-s in the notation
+\begin{theorem}
+	\label{thm:composition}
+	Assume there exists a $g$-oracle rational proof $(P^o_f, V^o_f, \rewf)$ for $f$ with noticeable reward gap  and with round, communication and verification complexity respectively $r_f, c_f$ and $T_f$. Let $t_I$ the time necessary to invoke the oracle for $g$ and to read its output.Assume there exists a rational proof $(P_g, V_g, \rewg)$ with noticeable reward gap for $g$ with round, communication and verification complexity respectively $r_g, c_g$ and $T_g$. Then there exists a (non $g$-oracle) rational proof with noticeable reward gap for $f$ with round, communication and verification complexity respectively $r_f + 1 + r_g , c_f + t_I + c_g$ and $T_f - t_i + T_g$.
+\end{theorem}
+
+Before we embark on the proof of Theorem~\ref{thm:composition}, we prove a 
+technical Lemma. 
+The definition of rational proof requires that the expected reward of the honest prover is not lower than the expected reward of any other prover.
+The following intuitive lemma states we necessarily obtain this property if an honest prover has a polynomial expected gain in comparison to provers
+that \textit{always} provide a wrong output.
+
+\begin{lemma}
+	\label{lemma:noticeable-gap-implies-rp}
+	Let $(P,V)$ be a protocol and $\rew$ a reward function as in Definition \ref{def:RP}.
+	Let $f$ be a function s.t. $\forall x \Pr[\out(P,V)(x)] = 1$.
+	Let $\rewGap$ be the corresponding reward gap w.r.t. the honest prover $P$ and $f$.
+	If $\rewGap > \invPoly$ then $(P,V,\rew)$ is a rational proof for $f$ and admits noticeable reward gap.
+\end{lemma}
+\begin{proof}
+	Assume w.l.o.g that for all $P' \not = P$ and such that $\forall x \Pr[\out(P',V)(x)] = 1$ it holds that
+	$\expectation[\rew(P,V)(x)] \geq \expectation[\rew(P',V)(x)]$.
+	
+	Fix $x$. Let $\disP$ be an arbitrary prover, $R = \expectation[\rew(P,V)(x)] $, $\claimedy = \out(\disP, V)(x)$, $\disR = \expectation[\rew(\disP,V)(x)]$, $\disR_{corr} = \expectation[\rew(\disP,V)(x) | \claimedy = f(x)]$, $\disR_{err} = \expectation[\rew(\disP,V)(x) | \claimedy \not = f(x)]$. Then:
+	
+	\begin{align}
+	& R - \disR & =  \\
+	& R - \Pr[\claimedy = f(x)]\disR_{corr} - \Pr[\claimedy \not = f(x)] & = \\
+	& \Pr[\claimedy = f(x)](R-\disR_{corr}) + \Pr[\claimedy \not = f(x)](R-\disR_{err}) & \geq \\
+	& \Pr[\claimedy \not = f(x)](R-\disR_{err}) & \geq \\
+	& \Pr[\claimedy \not = f(x)]\rewGap & > \\
+	& 0 
+	\end{align}
+	
+	The inequality above shows that $(P,V, \rew)$ is a rational proof for $f$.
+	By the hypothesis on $\rewGap$ this protocol already admits a noticeable reward gap.
+\end{proof}
+
+% TODO: Clean up the proof above. Specify it has polynomial budget. Make it homogeneous with the definitions given in preliminaries. Q: Why does the def. of DRMA not mention poly budget?
+Now we can start the proof of Theorem~\ref{thm:composition}.
+\begin{proof}
+% Introduce reward functions
+
+Let $\rewf$ and $\rewg$ be the reward functions of the $g$-oracle rational proof for $f$ and the rational proof for $g$ respectively.
+% construct new reward functions and protocol
+We now construct a new verifier $V$ for $f$. This verifier runs exactly like the $g$-oracle verifier for $f$ except that every oracle query to $g$ is now replaced with an invocation of the rational proof for $g$.
+The new reward function $\rew$ is defined as follows:
+$$ \rew(\Tau) = \delta \rewf(\Tau^o_f \circ y_g)  + \rewg(\Tau_g)$$
+where $\Tau$ is the complete transcript of the new rational proof, $\Tau^o_f$ is the transcript of the oracle rational proof for $f$,  $\Tau_g$ and $y_g$ are respectively the transcript and  the output of the rational proof for $g$. Finally $\delta$ is multiplicative factor in $(0,1])$. The intuition behind this formula is to "discount" the part of the reward from $f$ so that the prover is incentivized to provide the true answer for $g$. In turn, since $\rewf$ rewards the honest prover more when  the verifier has the right answer for a query to $g$ (by hypothesis), this entails that the whole protocol is rational proof for $f$.
+
+% Say that, by the previous lemma, you just need to show that the resulting protocol has 
+To prove the theorem we will use Lemma \ref{lemma:noticeable-gap-implies-rp} and it will suffice to prove that the new protocol has a noticeable reward gap.
+\newcommand{\pg}{p_{g}}
+\newcommand{\Rf}{R_f^o}
+\newcommand{\disRf}{\tilde{R}_f^o}
+\newcommand{\disRfGoodg}{\tilde{R}_f^{o,\text{good}(g)}}
+\newcommand{\disRfWrongg}{\tilde{R}_f^{o,\text{wrong}(g)}}
+\newcommand{\disRgGoodg}{\tilde{R}_g^{\text{good}(g)}}
+\newcommand{\disRgWrongg}{\tilde{R}_g^{\text{wrong}(g)}}
+\newcommand{\Rfmax}{b^o_f(n)}
+
+
+Consider a prover $\disP$ that always answer incorrectly on the output of $f$. 
+Let $\pg$ be the probability that the prover outputs a correct $y_g$. % TODO: Introduce variables
+Then the difference between the expected reward of the honest prover and $\disP$ is:
+\setcounter{equation}{0}
+\begin{align}
+ \delta(\Rf - \disRf) + (R_g - \disR_g)  = \\
+ \delta(\Rf - \pg \disRfGoodg - (1-\pg)\disRfWrongg) + \nonumber  \\ (R_g - \pg \disRgGoodg - (1-\pg)\disRgWrongg)  = \\
+ \delta(\pg(\Rf - \disRfGoodg) + (1-\pg)(R_f - \disRfWrongg)) \nonumber \\ + \pg(R_g - \disRgGoodg) + (1-\pg)(R_g-\disRgWrongg)  > \\
+ \delta(\pg \rewGap^o_f + (1-\pg)(-\Rfmax)) + 0 + (1-\pg)\rewGap_g  = \\
+ \pg\delta\rewGap^o_f + (1-\pg)(\rewGap_g - \delta \Rfmax)  \geq \\
+ \min\{\delta \rewGap^o_f, \rewGap_g - \delta\Rfmax \}  > \\
+\invPoly
+\end{align}
+Where the last inequality holds for $\delta = \frac{\rewGap_g}{2\Rfmax}$.
+
+The round, communication and verification complexity of the construction is given by the sum of the respective complexities from the two rational proofs modulo minor adjustments. These adjustments account for the additional round by which the verifier communicates to the prover the requested instance for $g$. 
+
+\begin{comment}
+One final note: in the proof above we replaced the oracle query to $g$ with an invocation of the rational proof for it. In certain circumstances (see for example the proof of Theorem \ref{thm:crhf-p}), it would simplify a proof to assume that some of the messages of the rational proof for $g$ are sent before the protocol for $f$ is invoked.
+The analysis above still holds if extending the rational proof for $f$ with such "preprocessing" messages still yields a $g$-oracle rational proof for $f$.
+\end{comment}
+\end{proof}
+
+The theorem above can be used as design tool of rational proofs for a function $f$: first build a rational proof assuming the verifier has oracle access to a function $g$, then build a rational proof for $g$. This automatically provides a complete rational proof for $f$.
+
+\begin{remark}
+	Theorem \ref{thm:composition} assumes that verifier in the oracle rational proof for $f$ carries out a single oracle query. Notice however that the proof of the theorem can be generalized to any verifier carrying out a constant number of adaptive oracle queries, possibly all for distinct functions.
+	This can be done by iteratively applying the theorem to a sequence of $m = O(1)$ oracle rational proofs for functions $f_1,...,f_m$ where the $i$-th rational proof is $f_{i+1}$-oracle for $1 \leq i < m$.
+\end{remark}
+% TODO: Is it possible to rewrite this in a  better way?

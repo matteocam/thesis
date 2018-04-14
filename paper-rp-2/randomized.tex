@@ -1,0 +1,57 @@
+
+
+
+\subsection{Rational Proofs for Randomized Circuits}
+\label{sec:bpnc}
+
+As an application of the composition theorem described above we present an alternative approach to rational proofs for randomized computations. We show that by assuming the existence
+of a {\em common reference string (CRS)} we obtain rational proofs for randomized circuits of polylogarithmic depth and polynomial size, i.e. $\BPNC$ the class of uniform $\polylog$-depth $\poly$-size randomized circuits with error bounded by $1/3$ on both sides.
+
+If we insist on a "super-efficient" verifier (i.e. with sublinear running time) we cannot
+use the same approach as in Section~\ref{sec:rand-space} since we do not know
+how to bound the space $S(n)$ used by a computation in NC (and the verifier's 
+complexity in our protocol for bounded space computations, depends on the 
+space complexity of the underlying language).  We get around this problem by assuming a CRS, to which the verifier has oracle access. 
+
+
+We start by describing a rational proof with oracle access for $\BPP$ and then we show how to remoe the oracle access (via our composition theorem) for the case of 
+$\BPNC$. 
+
+Let $L \in \BPP$ and let $M$ a PTM that decides $L$ in polynomial time and $\rnd(\cdot)$ the
+randomness complexity of $M$.
+For $x \in \bits$ we denote by $L_x$ the (deterministically
+decidable) language $\{(x, r) : r \in \bit^{ \rnd(|x|)} \wedge M (x, r) = L(x)\}$.
+
+\begin{lemma}
+	\label{lemma:crs-rp-oracle}
+	Let $L$ be a language in $\BPP$. Then there exists a $L_x$-oracle rational proof with CRS $\sigma$ for $L$ where $|\sigma|=\poly(n) \rho(n)$. 
+%Such rational proof is one-round and has $O(\log n)$ communication and 
+%verification complexity. The CRS has length $n\rho(n)$ and the verifier 
+%has random access to it.
+\end{lemma}
+\begin{proof}
+Our construction is as follows. W.l.o.g. we will assume $\sigma$ to be divided in 
+$\ell=\poly(n)$  blocks  $r_1,...,r_\ell$, each of size $\rho(n)$. 
+\begin{enumerate}
+\item The honest prover $P$ runs $M(x,r_i)$ for $1 \leq i \leq \ell$ and announces $m$ 
+the number of strings $r_i$ s.t. $M(x,r_i)$ accepts, i.e. $\sum_i M(x,r_i)$; 
+\item $P$ sends $m$ to $x$.
+\item The Verifier accepts if $m>\ell/2$
+\end{enumerate}
+We note that if we set $y_i=M(x,r_i)$ then the prover is announcing the Hamming weight of the string $y_1,\ldots,y_\ell$. At this point we can use the Hamming weight verification protocol in Section~\ref{sec:example} where the Verifier use the oracle for 
+$L_x$ to verify on her own the value of $y_i$. 
+\end{proof}
+We note that no matter which protocol is used, round complexity, communication complexity and verifier running time (not counting the oracle calls) are all $\polylog(n)$. 
+
+To obtain our result for $\BPNC$ we invoke the following result from \cite{ratsumchecks}:
+\begin{theorem}
+	$\NC \subseteq \DRMA[\polylog(n), \polylog(n), \polylog(n)]$
+\end{theorem}
+The theorem above, together with Theorem \ref{thm:composition} 
+%(see also Remark \ref{rem:extensions-crs}) 
+and Lemma \ref{lemma:crs-rp-oracle} yields:
+\begin{corollary}
+	Let $x \in \bit^n$ and $L \in \BPNC$. Assuming the existence of a (polynomially long) CRS then there exists a rational proof for $L$
+	with polylogarithmically many rounds, polylogarithmic communication and verification complexity.
+\end{corollary}
+Notice that some problems (e.g. perfect matching) are not known to be in $\NC$ but are known to be in $\RNC \subseteq \BPNC$ \cite{karp1985constructing}.

@@ -1,0 +1,116 @@
+
+\begin{remark}
+\label{rem:asy}
+{\em If we are interested in an asymptotic treatment, it is important to notice that as long as $\Delta(x) \geq 1/{\sf poly}(|x|)$ then it is possible to keep a polynomial reward budget, and maximize the honest prover profit against all provers who cheat with a substantial probability $\epsilon_{\disP} \geq 1/{\sf poly'}(|x|)$. This also allows us to consider the reward function to have range in $[0,1]$ without loss of generality. Such a reward function can always be scaled and keep being bounded by a polynomial. We will use this approach in some of the proofs. }
+\end{remark}
+
+
+
+
+\subsection{One-sided Rational Proofs}
+Rational proofs as in Definition \ref{def:RP} impose a loss to provers that do not provide the right output for the computation of the function $f$. When dealing with non-deterministic computations, this might be too strong of a requirement, since it might be possible to prove that there is an accepting computation path but not the opposite. For those cases we introduce {\em one-sided} proofs: 
+
+
+\begin{definition}[One-sided Rational Proof]
+	\label{def:one-sided-RP}
+	A language $L$ admits a one-sided rational proof if there exists an interactive proof $(P,V)$ and a randomized reward function
+	$\rew : \bits \to \posreals$ such that
+	
+	\begin{enumerate}
+		\item For any input $x \in 
+		L \cap \bit^n$, $\Pr[\out((P,V)(x)) = 1] \geq 1 - \negl(n).$
+		
+		\item For every prover $\disP$, and for any input $x \in 
+		L \cap \bit^n$ there exists a $\delta_{\disP}(x) \geq 0$ such that 
+		$ \expRewProtDis + \delta_{\disP}(x) \leq \expRewProtHon. $
+	\end{enumerate}
+	The expectations and the probabilities are taken over the random coins of the prover and verifier.
+\end{definition}
+Note that if $x \notin L$ no guarantee can be made about the 
+
+The class \textit{one-sided} $\DRMA$ ($\osDRMA$) is defined analogously to $\DRMA$ for one-sided rational proofs.
+
+\begin{lemma}
+	Let $L \subseteq \bits$. If $L, \bar{L} \in \osDRMA[r, C, T]$ then $L  \in \DRMA[r, C, T]$.
+\end{lemma}
+\begin{proof}
+	Construct a rational proof for $L$ as in Definition \ref{def:RP} as follows. The prover first sends a bit $b$ indicating whether $x \in L$. Then invoke the one-sided rational proof for $L$ if $b = 1$ and the one for $\bar{L}$ otherwise. 
+\end{proof}
+
+\begin{corollary}
+	Let $\Cclass$ be a complexity class closed under complement. If $\Cclass \subseteq \osDRMA[r, C, T]$ then $\Cclass \subseteq \DRMA[r, C, T]$.
+\end{corollary}
+
+\begin{comment}
+A composition theorem (in its weak version: for yes/no Rational Proofs):
+\begin{theorem}
+Let $\protOne = (P_1, V_1^{L_2})$ be a (yes/no) rational proof for language $L_1$ with noticeable reward gap and let $V^{L_2}$ have oracle access to language $L_2$ with at most $O(1)$ queries.
+Let $\protTwo (P_2, V_2)$ be a (yes/no) rational proof for $L_2$ with noticeable reward gap.
+Then there exists a (yes/no) rational proof $\pi$ for $L_1$ with noticeable reward gap.
+Moreover if $\protOne$ and $\protTwo$ have round, communication and verification complexity respectively $r_1(n), cc_1(n), T_1(n)$  and $r_2(n), cc_2(n), T_2(n)$ then language $L_1 \in DRMA[r_1(n) + O(r_2(n)), cc_1(n) + O(cc_2(n)), T_1(n) + O(T_2(n))]$
+\end{theorem}
+\end{comment}
+
+% TODO: Observe that since rational proofs with poly budget without noticeable rew gap "hardly" make sense, we will implicitly consider rational proofs, always rational proofs with noticeable rew. gap.
+
+
+
+\subsection{Sequential Composability}
+\label{sec:sq-def}
+\input{seq-comp-defs.tex}
+
+
+
+
+It is not trivial to give a definition of sequential composability, since it is not possible to claim the above for {\em any} prover $\disP$ and {\em any} sequence of inputs. Indeed it
+is possible that for a given input $\tilde{x}$, the prover $\disP$ has "hardwired" the correct value $\tilde{y}=f(\tilde{x})$ and can compute it without investing 
+any work. We therefore propose a definition that holds for inputs randomly chosen according to a given probability distribution $\mathcal D$, and we allow for
+the possibility that the reward of a dishonest prover can be "negligibly" larger than the reward of the honest prover (for example if $\disP$ is lucky and such 
+"hardwired" inputs are selected by $\mathcal D$).
+
+% Some additional points of discussion.
+{\sc Cost Function}
+In the most general version of our model (we will propose a slightly more concrete version in Section \ref{sec:proofs-seq-comp}), we use an abstract notion of cost, defined
+as a function that, given an algorithm - a prover - and a binary string - an input - returns a positive integer.
+We assume that cost is \textit{additive among inputs}. Also, we will assume that cost is the highest for the honest prover
+(intuitively, a cheating prover is trying to save on computational resources). 
+
+Examples of possible specific cost functions are:
+\begin{itemize}
+	\item in a simple threshold gate: a function that counts the number of input bits read;
+	\item in a specific circuit, a function that counts the number of wires read from it (used in \cite{cg15});
+	\item in a Turing Machine, the number of transitions computed (we will assume a variant of this cost function in Section \ref{sec:proofs-seq-comp});
+\end{itemize} 
+
+% TODO: Definition of sequential composability here?
+
+To be  able to prove results on sequential composability we also have to augment our model in another dimension.
+In certain domains, an algorithm that performs a "smaller computation" than the "best" correct one will have  a non-negligible error probability.
+Such an intuition in the context of algorithms and complexity is captured by lower bounds, such as
+computing the parity of a binary string requires reading all $n$ bits,
+distributions of numbers hard for primality tests [\textbf{XXX: citation needed}],
+depth-hardness in "regular circuits" such as the one to compute FFT (see Definition 4 and Lemma 6 in \cite{cg15}).
+The challenge for sequential composability results is to leverage how worse a "lazy" prover will perform
+given it has spent $\tilde{C}$. In order to do this we need to assume a connection between the
+$\tilde{C}$, the amount/type of computation and the distribution of the inputs.
+
+{\sc On cost functions and hardness}
+In the real world  setting cost is plausibly an increasing function of "amount of computation" (for some definition of computation and complexity measures on it).
+Thus the assumptions we will make on cost are strongly related to the notion of hardness.
+As mentioned earlier, a realistic model could not be based on worst-case hardness, but would need to assume 
+a distribution of inputs that are hard  for certain classes of algorithms.
+In this paper we will use a simple approach based on the number of transitions computed by a prover (see Section \ref{sec:proofs-seq-comp}). 
+The work in \cite{cg15} contains a more sophisticated approach (although limited to a small class of problems).
+In particular the Unique Inner State Assumption in that work is strongly connected to the notion of
+$\delta$-hardness in the research field of hardness amplification \cite{arora2009computational}.
+Such connections are out of the scope of this paper, but are left as important directions for future work.
+
+\textbf{TODO?: Introduce non-adaptive vs adaptive here or in the introduction?}
+
+\textbf{TODO: Introduce notation R and C and similar...}
+
+
+
+
+The definition of sequential rational proofs requires a relationship between the reward earned by the prover and the amount of "work" the prover invested to produce that result. In our protocol this means to demonstrate a link between the probability of success of a cheating prover and the amount of computation he invests.
+

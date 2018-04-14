@@ -1,0 +1,45 @@
+
+\section{Lower Bounds for Rational Proofs}
+
+In this section we discuss how likely it is will be able to find very efficient non-cryptographic rational protocols for the classes $\P$ and $\NP$.
+
+We denote by $\BPQP$ the class of languages decidable by a randomized algorithm running in quasi-polynomial time, i.e. $\BPQP = \bigcup_{k>0}\BPTIME[2^{O(log^k(n))} ]$.
+Our theorem follows the same approach of Theorem 16 in \cite{ratargs}\footnote{Since we only sketch our proof the reader is invited to see details of the proof \cite{ratargs}}. 
+
+\begin{theorem}
+	\label{thm:np-limits}
+	$\NP \not \subseteq \DRMA[\polylog(n), \polylog(n), \poly(n)]$  unless $\NP \subseteq \BPQP$. 
+\end{theorem}
+\begin{proofsketch}
+Assume there exists a rational proof $\pi_L$ for a language $L \in \NP$ with parameters as the ones above.
+We can build a PTM $M$ to decide $L$ as follows:
+\begin{itemize}
+	\item $M$ generates all possible transcripts $\Tau$ for $\pi_L$;
+	\item For each $\Tau$, $M$ estimates the expected reward $R_{\Tau}$ associated to that transcript by sampling $\rew(\Tau)$ $t$ times (recall the reward function is probabilistic);
+	\item $M$ returns the output associated to transcript $\Tau^* = \argmax_\Tau R_{\Tau}$.
+\end{itemize}
+Consider that space of the transcripts of rational proof with a polylogarithmic number of rounds and bits exchanged.
+The number of possible transcripts in such protocol is bounded by $(2^{\polylog(n)})^{\polylog(n)} = 2^{\polylog(n)}$. 
+Let $\rewGap$ be the (noticeable) reward gap of the protocol. By using Hoeffding's inequality we can prove $M$ can approximate each $R_\Tau$ within
+$\rewGap/3$ with probability $2/3$ after $t = \poly(n)$ samples. Recalling the definition of reward gap (see Remark \ref{rem:asy}), we conclude $M$ can decide $L$ in randomized time $2^{\polylog(n)}$. 
+
+\end{proofsketch}
+
+It is not known whether $\NP \not \subseteq \BPQP$ is true, although this assumption has  been used to show hardness of approximation results \cite{makarychev2010maximum,khot2006better}.
+Notice that this assumption  implies $\NP \not \subseteq \BPP$ \cite{johnson2006np}. 
+
+Let us now consider  rational proofs for $\P$. By the following theorem they might require $\omega(\log(n))$ total communication complexity (since we believe $\P \subseteq \BPNC$ to be unlikely \cite{papakonstantinou2010constructions} ).
+\begin{theorem}
+	\label{thm:p-limits}
+	$\P \not \subseteq \DRMA[O(1), O(\log(n)), \polylog(n)]$  unless $\P \subseteq \BPNC$. 
+\end{theorem}
+\begin{proofsketch}
+	Given a language $L \in \P$ we build a machine $M$ to decide $L$ as in the proof of Theorem \ref{thm:np-limits}.
+	The only difference is that  $M$ can be simulated by a randomized circuit of $\polylog(n)$ depth and polynomial size.
+	In fact, all the possible $2^{O(\log(n))} = \poly(n)$ transcripts can be simulated in parallel in $O(\log(n))$ sequential time. The same holds computing the $t = \poly(n)$ sample rewards for each of these transcripts. By assumption on the verifier's running time, each reward can be computed in polylogarithmic sequential time. Finally, the estimate of each transcript's expected reward and the maximum among them can be computed in $O(\log(n))$ depth.
+\end{proofsketch}
+
+\begin{remark}
+	Theorem \ref{thm:p-limits} can be generalized to rational proofs with round and communication complexities $r$ and $c$ such that $r\cdot c = O(\log(n))$.
+\end{remark}
+

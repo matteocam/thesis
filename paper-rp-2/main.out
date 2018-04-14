@@ -1,0 +1,25 @@
+\BOOKMARK [1][-]{section*.1}{Abstract}{}% 1
+\BOOKMARK [1][-]{section.1}{1 Introduction}{}% 2
+\BOOKMARK [2][-]{subsection.1.1}{1.1 Rational Proofs}{section.1}% 3
+\BOOKMARK [2][-]{subsection.1.2}{1.2 Our Contribution}{section.1}% 4
+\BOOKMARK [2][-]{subsection.1.3}{1.3 The Landscape of Rational Proof Systems}{section.1}% 5
+\BOOKMARK [2][-]{subsection.1.4}{1.4 Other Related Work}{section.1}% 6
+\BOOKMARK [1][-]{section.2}{2 Preliminaries}{}% 7
+\BOOKMARK [2][-]{subsection.2.1}{2.1 Rational Proofs}{section.2}% 8
+\BOOKMARK [2][-]{subsection.2.2}{2.2 One-sided Rational Proofs}{section.2}% 9
+\BOOKMARK [2][-]{subsection.2.3}{2.3 Sequential Composability}{section.2}% 10
+\BOOKMARK [2][-]{subsection.2.4}{2.4 A weaker form of sequential composability}{section.2}% 11
+\BOOKMARK [1][-]{section.3}{3 Rational Proofs for Nondeterministic Space-Bounded Computations }{}% 12
+\BOOKMARK [1][-]{section.4}{4 Sequential Composability of our protocol}{}% 13
+\BOOKMARK [2][-]{subsection.4.1}{4.1 Adaptive vs. Non-Adaptive Provers.}{section.4}% 14
+\BOOKMARK [2][-]{subsection.4.2}{4.2 Proof of Sequential Composability}{section.4}% 15
+\BOOKMARK [1][-]{section.5}{5 A Composition Theorem for Rational Proofs}{}% 16
+\BOOKMARK [1][-]{section.6}{6 Lower Bounds for Rational Proofs}{}% 17
+\BOOKMARK [1][-]{section.7}{7 On Rational Arguments and cryptography}{}% 18
+\BOOKMARK [1][-]{section.8}{8 Rational Proofs for Randomized Computations}{}% 19
+\BOOKMARK [2][-]{subsection.8.1}{8.1 Bounded-error Rational Proofs with CRS}{section.8}% 20
+\BOOKMARK [2][-]{subsection.8.2}{8.2 A protocol for Randomized Computation}{section.8}% 21
+\BOOKMARK [2][-]{subsection.8.3}{8.3 \040How to reduce the length of the CRS }{section.8}% 22
+\BOOKMARK [1][-]{section.9}{9 Conclusions and Open Problems}{}% 23
+\BOOKMARK [1][-]{section*.3}{Acknowledgments}{}% 24
+\BOOKMARK [1][-]{section*.5}{References}{}% 25

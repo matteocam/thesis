@@ -1,0 +1,157 @@
+\begin{thebibliography}{10}
+
+\bibitem{seti}
+David~P Anderson, Jeff Cobb, Eric Korpela, Matt Lebofsky, and Dan Werthimer.
+\newblock {SETI}@ home: an experiment in public-resource computing.
+\newblock {\em Communications of the ACM}, 45(11):56--61, 2002.
+
+\bibitem{AL10}
+Yonatan Aumann and Yehuda Lindell.
+\newblock Security against covert adversaries: Efficient protocols for
+  realistic adversaries.
+\newblock {\em J. Cryptology}, 23(2):281--343, 2010.
+
+\bibitem{am}
+Pablo~Daniel Azar and Silvio Micali.
+\newblock Rational proofs.
+\newblock In {\em Proceedings of the forty-fourth annual ACM symposium on
+  Theory of computing}, pages 1017--1028. ACM, 2012.
+
+\bibitem{am1}
+Pablo~Daniel Azar and Silvio Micali.
+\newblock Super-efficient rational proofs.
+\newblock In {\em Proceedings of the fourteenth ACM conference on Electronic
+  commerce}, pages 29--30. ACM, 2013.
+
+\bibitem{babai}
+L{\'a}szl{\'o} Babai.
+\newblock Trading group theory for randomness.
+\newblock In {\em Proceedings of the seventeenth annual ACM symposium on Theory
+  of computing}, pages 421--429. ACM, 1985.
+
+\bibitem{b08}
+Mira Belenkiy, Melissa Chase, C.~Christopher Erway, John Jannotti, Alptekin
+  K{\"{u}}p{\c{c}}{\"{u}}, and Anna Lysyanskaya.
+\newblock Incentivizing outsourced computation.
+\newblock In {\em Proceedings of the {ACM} {SIGCOMM} 2008 Workshop on Economics
+  of Networked Systems, NetEcon 2008, Seattle, WA, USA, August 22, 2008}, pages
+  85--90, 2008.
+
+\bibitem{cg15}
+Matteo Campanelli and Rosario Gennaro.
+\newblock Sequentially composable rational proofs.
+\newblock In {\em Decision and Game Theory for Security}, pages 270--288.
+  Springer, 2015.
+
+\bibitem{chen2016rational}
+Jing Chen, Samuel McCauley, and Shikha Singh.
+\newblock Rational proofs with multiple provers.
+\newblock In {\em Proceedings of the 2016 ACM Conference on Innovations in
+  Theoretical Computer Science}, pages 237--248. ACM, 2016.
+
+\bibitem{SCcompleteness}
+Sergio De~Agostino and Riccardo Silvestri.
+\newblock Bounded size dictionary compression: {SC}$_k$-completeness and {NC}
+  algorithms.
+\newblock {\em Information and Computation}, 180(2):101--112, 2003.
+
+\bibitem{dns}
+Cynthia Dwork, Moni Naor, and Amit Sahai.
+\newblock Concurrent zero-knowledge.
+\newblock {\em J. {ACM}}, 51(6):851--898, 2004.
+
+\bibitem{ggp10}
+Rosario Gennaro, Craig Gentry, and Bryan Parno.
+\newblock Non-interactive verifiable computing: Outsourcing computation to
+  untrusted workers.
+\newblock In {\em Advances in Cryptology--CRYPTO 2010}, pages 465--482.
+  Springer, 2010.
+
+\bibitem{ggpr13}
+Rosario Gennaro, Craig Gentry, Bryan Parno, and Mariana Raykova.
+\newblock Quadratic span programs and succinct {NIZK}s without {PCP}s.
+\newblock In {\em EUROCRYPT}, volume 7881, pages 626--645. Springer, 2013.
+
+\bibitem{gmr}
+Shafi Goldwasser, Silvio Micali, and Charles Rackoff.
+\newblock The knowledge complexity of interactive proof systems.
+\newblock {\em SIAM Journal on computing}, 18(1):186--208, 1989.
+
+\bibitem{ratargs}
+Siyao Guo, Pavel Hub{\'a}{\v{c}}ek, Alon Rosen, and Margarita Vald.
+\newblock Rational arguments: single round delegation with sublinear
+  verification.
+\newblock In {\em Proceedings of the 5th conference on Innovations in
+  theoretical computer science}, pages 523--540. ACM, 2014.
+
+\bibitem{ratsumchecks}
+Siyao Guo, Pavel Hub{\'a}{\v{c}}ek, Alon Rosen, and Margarita Vald.
+\newblock Rational sumchecks.
+\newblock In {\em Theory of Cryptography}, pages 319--351. Springer, 2016.
+
+\bibitem{halpern2011don}
+Joseph~Y Halpern and Rafael Pass.
+\newblock I don't want to think about it now: Decision theory with costly
+  computation.
+\newblock {\em arXiv preprint arXiv:1106.2657}, 2011.
+
+\bibitem{johnson2006np}
+David~S Johnson.
+\newblock The np-completeness column: The many limits on approximation.
+\newblock {\em ACM Transactions on Algorithms (TALG)}, 2(3):473--489, 2006.
+
+\bibitem{krr14}
+Yael~Tauman Kalai, Ran Raz, and Ron~D Rothblum.
+\newblock How to delegate computations: the power of no-signaling proofs.
+\newblock In {\em Proceedings of the 46th Annual ACM Symposium on Theory of
+  Computing}, pages 485--494. ACM, 2014.
+
+\bibitem{karp1985constructing}
+Richard~M Karp, Eli Upfal, and Avi Wigderson.
+\newblock Constructing a perfect matching is in random nc.
+\newblock In {\em Proceedings of the seventeenth annual ACM symposium on Theory
+  of computing}, pages 22--32. ACM, 1985.
+
+\bibitem{khot2006better}
+Subhash Khot and Ashok~Kumar Ponnuswami.
+\newblock Better inapproximability results for maxclique, chromatic number and
+  min-3lin-deletion.
+\newblock In {\em International Colloquium on Automata, Languages, and
+  Programming}, pages 226--237. Springer, 2006.
+
+\bibitem{folding}
+Stefan~M Larson, Christopher~D Snow, Michael Shirts, and Vijay~S Pande.
+\newblock Folding@ home and genome@ home: Using distributed computing to tackle
+  previously intractable problems in computational biology.
+\newblock {\em arXiv preprint arXiv:0901.0866}, 2009.
+
+\bibitem{makarychev2010maximum}
+Konstantin Makarychev, Rajsekar Manokaran, and Maxim Sviridenko.
+\newblock Maximum quadratic assignment problem: Reduction from maximum label
+  cover and lp-based approximation algorithm.
+\newblock In {\em International Colloquium on Automata, Languages, and
+  Programming}, pages 594--604. Springer, 2010.
+
+\bibitem{nisan1992pseudorandom}
+Noam Nisan.
+\newblock Pseudorandom generators for space-bounded computation.
+\newblock {\em Combinatorica}, 12(4):449--461, 1992.
+
+\bibitem{papakonstantinou2010constructions}
+Periklis~A Papakonstantinou.
+\newblock {\em Constructions, lower bounds, and new directions in Cryptography
+  and Computational Complexity}.
+\newblock PhD thesis, University of Toronto, 2010.
+
+\bibitem{rrr16}
+Omer Reingold, Ron Rothblum, and Guy Rothblum.
+\newblock Constant-round interactive proofs for delegating computation.
+\newblock In {\em Proceedings of the Forty-Eighth Annual ACM on Symposium on
+  Theory of Computing}, page To appear. ACM, 2016.
+
+\bibitem{wb15}
+Michael Walfish and Andrew~J Blumberg.
+\newblock Verifying computations without reexecuting them.
+\newblock {\em Communications of the ACM}, 58(2):74--84, 2015.
+
+\end{thebibliography}

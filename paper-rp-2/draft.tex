@@ -1,0 +1,40 @@
+[What do we do in this paper?]
+We want to motivate a framework. We could call it: Rational proofs without scoring rules or Beyond scoring rules:
+
+*Obtaining rational proofs with costly computation by means of classical proofs.*
+
+-- Intro --
+
+Motivated by cloud computing in a pay-per-service world, rational proofs are an interesting framework.
+The allow very efficient verification. The power of rational proofs stems from leveraging lthe assumption that the prover is a rational agent, interested in maximizing its reward.
+
+A problem with the model as it is: it does not account for the cost of the computation of the prover in the utility function. As showed in [our previous paper], rational proofs as they
+are can benefit a cheating prover that can save "computational costs" when asked to solve a large number of problems (or, more exactly, more than one problem).
+
+  
+
+-- Paragraph/section: how can we do rational proofs --
+
+[There should be a paragraph that explains the intuition on how scoring rules based approach can lead to problems]
+
+
+In this paper we present a sequential composable protoocol for space bounded computations.
+
+(How about the cost of a _non_ deterministic prover??)
+
+
+
+-- [Line for future work: what are reasonable cost models? ] --
+
+
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+La tesi di quest'articolo:
+If RPs are to be applied to the real world they should be useful when the verifier delegates more than one problem.
+If we account for the cost of computation in the utility function (a reasonable assumption in the real world), most rational proofs in literature allow provers to profitably cheat [see our last paper].
+In this paper we:
+1) further refine a framework of sequential composability (i.e. rational proofs with costly computation) by formalizing a few cost models.
+2) Motivated by obtaining rational proofs with costly computation, we propose a new (different?) approach to design protocols for rational proofs, observing (something already implicit in literature) that traditional interactive proofs can be efficient rational proofs. This approach seems more promising to obtaining rational proofs with costly computation.
+3) Proving rationality under costly computation require assumptions on cost models. We formalize cost models for various rational proof protocols in literature. 
+4) We present a new protocol for the verification of non-deterministic space-bounded polytime computations. We prove the protocol is rational under costly computation in [arguably plausible?] cost model.

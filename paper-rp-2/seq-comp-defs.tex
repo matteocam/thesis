@@ -1,0 +1,51 @@
+Until now we have only considered agents who want to maximize their reward. But the reward alone, might not capture the complete utility function that the Prover is trying to maximize in his interaction with the Verifier. In particular we have not considered the 
+{\em cost} incurred by the Prover to compute $f$ and engage in the protocol. It makes 
+sense then to define the  {\em profit} of the Prover as the difference between the reward paid by the verifier and such cost. 
+
+
+As already pointed out in \cite{am1,ratargs} the definition of Rational Proof is sufficiently robust to also maximize the profit of the honest prover and not just the reward. Indeed consider the case of a "lazy" prover $\tilde{P}$ that does not evaluate the function: let $\tilde{R}(x), \tilde{C}(x)$ be the reward and cost associated with $\tilde{P}$ on input $x$ (while $R(x),C(x)$ are the values associated with the honest prover). 
+
+Obviously we want
+\[ R(x)-C(x) \geq \tilde{R}(x)-\tilde{C}(x) \mbox{ or equivalently } 
+R(x)-\tilde{R}(x) \geq C(x) - \tilde{C}(x) \]
+Recall the notion of reward gap which is the minimum difference between the reward of the honest prover and any other prover
+\[ \Delta(x) \leq R(x)-\tilde{R}(x) \]
+To maximize the profit is therefore sufficient to change the reward by a 
+a multiplier $M= C(x)/\Delta(x)$ since then we have that 
+\[ M(R(x) - \tilde{R}(x)) \geq C(x) \geq C(x) - \tilde{C}(x) \]
+as desired. This explains why we require the reward gap to be at least the inverse of a polynomial, since this will maintain the total reward paid by the Verifier bounded by a polynomial. 
+
+\subsection{Profit in Repeated Executions}
+
+In \cite{cg15} we showed how if Prover and Verifier engage in repeated execution of a Rational Proof, where the Prover has a "budget" of computation cost that he is willing to invest, then there is no guarantee anymore that the profit is maximized by the honest prover. The reason is that it might be more profitable for the prover to use his budget to provide many incorrect answers than to provide a single correct answer. That's because incorrect (e.g. random) answers are ``cheaper" to compute than the correct one and with the same budget $B$ the prover can provide many of them while the entire budget might be necessary to solve a single problem correctly. If incorrect answers still receive a substantial reward then many incorrect answers may be more profitable and a rational prover will choose that strategy. 
+
+We refer the reader to \cite{cg15} for concrete examples of situations where this happens in many of the protocols in \cite{am,am1,ratargs,ratsumchecks}.
+
+This motivated us to consider a stronger definition which requires the reward to be 
+somehow connected to the "effort" paid by the prover. The definition (stated below) basically says that if a (possibly dishonest) prover invests less computation than the honest prover then he must collect a smaller reward. 
+
+\noindent
+\begin{definition}[Sequential Rational Proof]
+\label{def:SRP}
+A rational proof $(P,V)$ for a function $f:$ $\bit^n$ $\to$ 
+$\bit^n$ is $(\epsilon, K)$-{\sf sequentially composable} for an input distribution $\cal D$, if for every prover $\disP$, 
+and every sequence of inputs 
+$x,x_1,\ldots,x_k$ drawn according to ${\cal D}$ such that $C(x) \geq \sum_{i=1}^k 
+\tilde{C}(x_i)$ and $k \leq K$ we have that $\sum_{i}\tilde{R}(x_i) - R \leq \epsilon$.
+\end{definition}
+
+% Some properties of Sequential Rational Proofs
+
+The following Lemma is from \cite{cg15}. 
+
+\begin{lemma}
+\label{cor:prob}
+Let $(P,V)$ and $\rew$ be respectively an interactive proof and a reward 
+function as in 
+Definition \ref{def:RP}; if $\rew$ can only assume the values $0$ and $R$ for 
+some constant $R$, let $\pDisR = \Pr[\rew((\disP,V)(x)) = R]$. If for $x \in {\cal D}$
+$$  \pDisR \leq \frac{\tilde{C}(x)}{C} + \epsilon $$
+then $(P,V)$ is $(KR\epsilon, K)$-sequentially composable for $\cal D$. 
+% If rew can be only R or 0 then the sufficient condition is on the probability
+\end{lemma}
+

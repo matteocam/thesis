@@ -1,0 +1,31 @@
+One of the striking differences between the rational protocols in \cite{} % XXX: Works by Micali, Rosen et al.
+and classical interactive proofs is that the verifier carries out no check.
+Roughly, the verifier would first exchange messages with the prover, then it would pass the transcript and a sample of a few bits from the input to a "black box function" that decides how much to pay the prover.
+This black box satisfies the rationality property because it would yield the largest output, and thus the largest reward, only in the case of the prover's correct answer. The tool used in these protocols are \emph{scoring rules} \cite{brier}.  
+A scoring rules take as argument a distribution $\mathcal{D}$ and a sample $\sigma$, allegedly retrieved according to $\mathcal{D}$. The return value of a scoring function is maximized on expectation only if $\mathcal{D}$ corresponds to the distribution from which $\sigma$ was sampled. In a rational proof, $\sigma$ would correspond to a few bits of the input and the distribution $\mathcal{D}$ would depend on the transcript. Intuitively, if a prover is cheating then the distribution $\mathcal{D}$ gets farther from the "honest" distribution and the prover's reward would decrease.
+
+Scoring rules are not the only way to design a rational proof protocol. In fact, the following (trivial) result shows that we can build efficient rational proofs from efficient interactive proofs with poor soundness.
+
+%\medskip
+%\noindent
+
+% Implicit theorem in our previous work (and in general, as an obvious fact):
+\begin{lemma}
+\label{lemma:ip2rp}
+Every public coin protocol for function $f: \bits \to \bits$ with completeness 1, soundness at most $1-\frac{1}{\poly(n)}$ and verification time $T_V$  is a rational proof with noticeable reward gap for $f$ where $V$ runs in time $T_V$.
+\end{lemma}
+\begin{proof}
+The verifier can run the interactive protocol and pay the Prover $R = \poly(|x|)$ if it accepts and 0 otherwise. 
+\end{proof}
+
+% Something else to be said here?
+
+% TODO: Point out that it is necessary to have rationality as an assumption in order to obtain recent delegation schemes from these "poor" interactive proofs 
+This fact suggests an approach to designing rational proofs starting from weak interactive proofs. Variants of this approach have already been used in literature: in \cite{am1} to rationally delegate problems in P (under the assumption of a PCP-like tape); in \cite{chen2016rational} to design a simple multi-prover protocol; in \cite{cg15}, where it is used for delegating functions computable by low-depth circuits. The protocol presented in this paper also follows this approach. These  protocols intuitively differ from the ones based on scoring rules for the presence of explicit checks. These checks have comparatively low probability of detecting a cheating prover, yet high enough to provide noticeable reward gaps to a reward-incentivized prover.
+
+There are two main advantages to designing Rational proofs as traditional interactive proofs following the approach above. First, it guarantees a certain reward $R$ to the honest prover. In fact, if the honest prover is paid by scoring rules its reward will depend on the verifier's randomness. Although maximized in expectation, the reward for the honest prover can be anything between 0 and some maximum value when using scoring rules. Second, it may provide better chances of achieving sequential composability. One of the requirements of sequential composability is that a cheating prover carrying out a "very low-cost computation" will get a very low reward. However, as explained above, scoring rules can provide surprisingly high rewards even to "lazy" provers (see Section 4.1 in \cite{cg15}). It is unclear how this can be avoided with protocols based on scoring rules. On the other hand, some of the protocols in literature based on traditional interactive proofs can be proven sequentially composable in reasonable cost models, specifically the PCP-like protocol in \cite{am1} and the protocols in \cite{cg15} and in the current paper. It is unknown to the authors whether the interactive proof used as rational proof in \cite{chen2016rational} is also sequentially composable. Finally, the analysis of sequential composability for this type of protocols are comparatively easier to carry out as one can simply look at the connections between soundness, i.e. the probability for a dishonest prover of getting a high reward, the and cost to achieve it (see Corollary \ref{cor:prob}).
+A disadvantage of the approach based on interactive proofs is that it requires more checks from the Verifier, thus possibly increasing the verification time and number of rounds.
+
+% Open problems: all rational protocols as interactive protocols? Sequential composability only from those?
+\subsubsection{Open problems}
+It is not clear whether protocols based on scoring rules cannot be  sequentially composable. However, as mentioned above, sequential composability might be easier to prove in protocols based on traditional interactive proofs. For this reason it would be interesting to solve another open problem: whether, for any rational proof with certain complexity for a language, there exists a rational proof based on interactive proofs for the same language and with almost the same complexity (for example, requiring only an additional constant factor in the number of rounds). 

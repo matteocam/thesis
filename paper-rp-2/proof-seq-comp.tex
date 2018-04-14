@@ -1,0 +1,75 @@
+
+The intuition behind our definition and Lemma~\ref{cor:prob} is that to produce the correct result, the prover must run the computation and incur its full cost; moreover for a dishonest prover his probability of "success" has to be no bigger than the fraction of the total cost incurred. 
+
+This intuition is impossible, to formalize if we do not introduce a probability distribution over the input space. Indeed for a specific input $x$ a "dishonest" prover $\disP$ could have the correct 
+$y=f(x)$ value "hardwired" and could answer correctly without having to perform any computation at all. Similarly, for certain inputs $x,x'$ and a certain 
+function $f$, a prover $\disP$ after computing $y=f(x)$ might be able to "recycle" some of the computation effort (by saving some state) and compute 
+$y'=f(x')$ incurring a much smaller cost than computing it from scratch. This is the reason our definition is parametrized over an input distribution $\cal D$ (and all the expectations, including the computation of the reward, are taken over the probability of selecting a given input $x$). 
+
+A way to address this problem was suggested in \cite{b08} under the name of {\em Unique Inner State Assumption (UISA)}: when inputs $x$ are chosen according to $\cal D$, then we assume that computing $f$ requires cost $T$ from any party: 
+this can be formalized by saying that if a party invests $t=\gamma T$ effort (for $\gamma \leq 1$), then it computes the correct value only with
+probability negligibly close to $\gamma$ (since 
+a party can always have a "mixed" strategy in which with probability $\gamma$ it runs the correct computation and with probability $1-\gamma$ does 
+something else, like guessing at random). 
+
+Using this assumption \cite{b08} solve the problem of the "repeated executions with budget" by requiring the verifier to check the correctness of a random subset of the  the prover's answer by running the computation herself on that subset. This makes the verifier "efficient" only in an amortized sense. 
+
+In \cite{cg15} we formalized the notion of Sequential Composability in 
+Definition~\ref{def:SRP} and, using a variation of the UISA, we showed protocols that are sequentially composable where the verifier is efficient (i.e. polylog verification time) on {\em each execution}. Unfortunately that proof of sequential composability works only for a limited subclass of log-depth circuits. 
+
+\subsection{Sequential Composability of our new protocol}
+\label{sec:scproof}
+
+To prove our protocol to be sequentially composable we need two main assumptions which we discuss now. 
+
+\medskip
+\noindent
+{\sc Hardness of Guessing States.}
+Our protocol imposes very weak requirements on the prover: the verifier just checks a single computation step in the entire process, albeit a step chosen at random among the entire sequence. We need an equivalent of the UISA which states that for every correct transition that the prover is able to produce he must pay "one" computation step. More formally for any Turing Machine 
+$M$ we say that pair of configuration $\gamma,\gamma'$ is $M$-correct if $\gamma'$ can be obtained from $\gamma$ via a single computation step of $M$. 
+\begin{definition}[Hardness of State Guessing Assumption]
+\label{def:HSGA}
+Let $M$ be a Turing Machine and let $L_M$ be the language recognized by $M$. We say that the {\em Hardness of State Guessing Assumption} holds for $M$, for distribution $\cal D$ and security parameter $\epsilon$ if for any machine $A$ running in time $t$ the probability that $A$ on input $x$ outputs more than $t$, $M$-correct pairs of configurations is at most $\epsilon$ (where the probability is taken over the choice of $x$ according to the distribution $\cal D$ and the internal coin tosses of $A$). 
+\end{definition}
+
+\medskip
+\noindent
+{\sc Adaptive vs. Non-Adaptive Provers.}
+Assumption~\ref{def:HSGA} guarantees that to come up with $t$ correct transitions, the prover must invest at least $t$ amount of work. We now move to the ultimate goal which is to link the amount of work invested by the prover, to his probability of success. 
+As discussed in \cite{cg15} it is useful to distinguish between {\em adaptive and non-adaptive provers.}
+
+When running a rational proof on the computation of $M$ over an input $x$, an {\em adaptive} prover allocates its computational budget  {\em on the fly} during the execution of the rational proof. Conversely a {\em non-adaptive} prover $\disP$ uses his computational budget to compute as much as possible about $M(x)$ before starting the protocol with the verifier. Clearly an adaptive prover strategy is more powerful than a non-adaptive one (since the adaptive prover can direct its computation effort where it matters most, i.e. where the Verifier "checks" the computation).
+
+As an example, it is not hard to see that in our protocol an adaptive prover can 
+succesfully cheat without investing much computational effort at all. The prover will answer at random until the very last step when he will compute and answer with a correct transition. Even if we invoke Assumption~\ref{def:HSGA} a prover that invests only one computational step has a probability of success of  $1-\frac{1}{\poly(n)}$ (indeed the prover fails only if we end up checking against the initial configuration -- this is the attack that makes Theorem~\ref{thm:main} tight.). 
+
+Is it possible to limit the Prover to a non-adaptive strategy? As pointed out in \cite{cg15} this could be achieved by imposing some "timing" constraints to the execution of the protocol: to prevent the prover from performing large computations while interacting with the Verifier, the latter could request that prover's responses be delivered "immediately", and if a delay happens then the Verifier will not pay the reward. Similar timing constraints have been used before in the cryptographic literature, e.g. see the notion of {\em timing assumptions} in the concurrent zero-knowedge protocols in \cite{dns}. Note that in order to require an "immediate" answer from the prover it is 
+necessary that the latter stores all the intermediate configurations, which is why we require the prover to run in space $O(T(n)S(n))$ -- this condition is not needed for the protocol to be rational in the stand-alone case, since even the honest prover could just compute the correct transition on the fly. Still this could be a problematic approach if the protocol is conducted over a network since the network delay will most likely be larger than the computation effort required by the above "cheating" strategy. 
+
+Another option is to assume that the Prover is computationally bounded (e.g. 
+the rational argument model introduced in \cite{ratargs}) and ask the prover 
+to commit to all the configurations in the computation before starting the interaction with the verifier. Then instead of sending the configuration, the prover will decommit it (if the decommitment fails, the verifier stops and pays 0 as a reward). If we use a Merke-tree 
+committment, these steps can be performed and verified in $O(\log n)$ time. 
+
+In any case, for the proof we assume that non-adaptive strategies are the only rational ones and proceed in analyzing our protocol 
+under the assumption that the prover is adopting a non-adaptive strategy. 
+
+\medskip
+\noindent{\sc The Proof.}
+Under the above two assumptions, the proof of sequential composability is almost 
+immediate. 
+
+\begin{theorem}
+Let $L \in \NTISP[\poly(n), S(n)]$ and $M$ be a Turing Machine recognizing $L$. Assume that  Assumption~\ref{def:HSGA} holds for $M$, under input distribution 
+$\cal D$ and parameter $\epsilon$. Moreover assume the prover follows a non-adaptive strategy. Then the protocol of Section  \ref{sec:protocol} is a $(KR\epsilon, K)$-sequentially composable rational proof under $\mathcal{D}$ for any $K \in \mathbb{N}, R \in \mathbb{R}_{\geq 0}$.  
+\end{theorem}
+\begin{proof}
+Let $\disP$ be a prover with a running time of $t$ on input $x$.
+Let $T$ be the total number of transitions required by $M$ on input $x$, i.e. the 
+computational cost of the honest prover.
+
+Observe that $\pDisR$ is the probability that $V$ makes the final check on one of the transitions correctly computed by $\disP$. 
+Because of Assumption~\ref{def:HSGA} we know that the probability that $\disP$ can 
+compute more than $t$ correct transitions is $\epsilon$, therefore an upperbound on 
+$\pDisR$ is $\frac{t}{T}+\epsilon$ and the Theorem follows from Corollary~\ref{cor:prob}. 
+\end{proof}
