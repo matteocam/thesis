@@ -133,12 +133,13 @@ to limit ourselves to circuits of depth $d=O(\log n)$.
 	$$ (1-2^{-d})^r \leq \frac{1}{C} $$
 \end{lemma}
 \begin{proof}
-	Let $\gamma=\frac{\tilde{C}}{C}$. 
+Let $\gamma=\frac{\tilde{C}}{C}$. 
 Consider $x \in \cal D$ and prover $\disP$ which invests effort $\tilde{C}\leq C$. Under Assumption~\ref{assump:uisa}, $\disP$ gives the correct outputs
 with probability $\gamma+\epsilon$ -- assume that in this case $\disP$ collects the reward $R$. If $\disP$ gives an incorrect output we know (following Corollary \ref{cor:repetitions}) that he collects the reward 
 $R$ with probability at most $(1-2^{-d})^r$ which by hypothesis is less than $\gamma$. So either way we have that $\tilde{R} \leq (\gamma + \epsilon)R$ 
 and therefore applying Lemma~\ref{lemma:cost-rew-ratios} concludes the proof.
 \end{proof}
+
 The problem with the above Lemma is that it requires a large value of $r$ for the result to be true resulting in an inefficient Verifier. In the following
 sections we discuss two approaches that will allows us to prove sequential composability even for an efficient Verifier:
 \begin{itemize}

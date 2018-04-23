@@ -49,8 +49,6 @@ We assume our circuits are $T$-uniform, which allows the Verifier to select the 
 We point out that the Prover can provide the Verifier with the requested gate and then the Verifier can use the uniformity of the circuit to check that the Prover has given him the correct gate in time $O(T(n))$) at each level in $O(T(n))$. }
 Thus the Verifier runs in $O(r d\cdot T(n))$ with $r=O(\log C)$.
 
-
-
 \subsection{Proofs of (stand-alone) Rationality}
 \label{sec:proof-stand-alone}
 
@@ -140,6 +138,7 @@ with probability $\gamma+\epsilon$ -- assume that in this case $\disP$ collects 
 $R$ with probability at most $(1-2^{-d})^r$ which by hypothesis is less than $\gamma$. So either way we have that $\tilde{R} \leq (\gamma + \epsilon)R$ 
 and therefore applying Lemma~\ref{lemma:cost-rew-ratios} concludes the proof.
 \end{proof}
+
 The problem with the above Lemma is that it requires a large value of $r$ for the result to be true resulting in an inefficient Verifier. In the following
 sections we discuss two approaches that will allows us to prove sequential composability even for an efficient Verifier:
 \begin{itemize}
