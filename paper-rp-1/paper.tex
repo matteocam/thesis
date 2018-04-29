@@ -11,8 +11,8 @@ uniform bounded-depth circuits.
 \section{Introduction}
 \input{paper-rp-1/intro.tex}
 
-\section{Rational Proofs}
-\input{paper-rp-1/rp.tex}
+%\section{Rational Proofs}
+%\input{paper-rp-1/rp.tex}
 
 \section{Profit vs. Reward}
 \input{paper-rp-1/profit.tex}
@@ -23,7 +23,7 @@ Until now we have only considered agents who want to maximize their reward. But 
 sense then to define the  {\em profit} of the Prover as the difference between the reward paid by the verifier and such cost. 
 
 
-As already pointed out in \cite{am1,ratargs} the definition of Rational Proof is sufficiently robust to also maximize the profit of the honest prover and not just the reward. Indeed consider the case of a "lazy" prover $\tilde{P}$ that does not evaluate the function: let $\tilde{R}(x), \tilde{C}(x)$ be the reward and cost associated with $\tilde{P}$ on input $x$ (while $R(x),C(x)$ are the values associated with the honest prover). 
+As already pointed out in \cite{am1,ratargs} the definition of Rational Proof is sufficiently robust to also maximize the profit of the honest prover and not just the reward. Indeed consider the case of a ``lazy" prover $\tilde{P}$ that does not evaluate the function: let $\tilde{R}(x), \tilde{C}(x)$ be the reward and cost associated with $\tilde{P}$ on input $x$ (while $R(x),C(x)$ are the values associated with the honest prover). 
 
 Obviously we want
 \[ R(x)-C(x) \geq \tilde{R}(x)-\tilde{C}(x) \mbox{ or equivalently } 
@@ -34,9 +34,6 @@ To maximize the profit is therefore sufficient to change the reward by a
 a multiplier $M= C(x)/\Delta(x)$ since then we have that 
 \[ M(R(x) - \tilde{R}(x)) \geq C(x) \geq C(x) - \tilde{C}(x) \]
 as desired. This explains why we require the reward gap to be at least the inverse of a polynomial, since this will maintain the total reward paid by the Verifier bounded by a polynomial. 
-
-
-\input{paper-rp-2/seq-comp-defs}
 
 \subsection{Motivating Example}
 \input{paper-rp-1/counterexample.tex}

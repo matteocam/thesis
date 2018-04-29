@@ -37,10 +37,7 @@ It is easy to see that for arbitrary prover $\disP$ we have $\delta_{\disP}(x) \
 \epsilon_{\disP} \cdot \Delta(x)$. Therefore it suffices to prove that a protocol has 
 a strictly positive reward gap $\Delta(x)$ for all $x$. 
 
-
 % TODO: Ensure that $\Delta(x)$ is used consistently in all proofs.
-
-
 
 
 \begin{definition}[\cite{am,am1,ratargs}]
@@ -62,27 +59,45 @@ is the class of boolean functions $f : \bits \to \bit$ admitting a rational proo
 \cite{am1,ratargs} and is explained in Section~\ref{sec:proofs-seq-comp}.}
 \end{remark}
 
-\subsection{A Warmup Example}
+%\subsection{A Warmup Example}
 \label{sec:example}
+\smallskip
+\noindent
+{\sc Examples of Rational Proofs.} For concreteness here we show the protocol for a single threshold gate (readers are referred to \cite{am,am1,rosen} for more examples). 
 
-Consider the function $f:$ $\bit^n$ $\to$ $[0 \ldots n]$ which on input $x$ outputs the 
-Hamming weight of $x$ (i.e. $\sum_{i} x_i$ where $x_i$ are the bits of $x$). 
-
-In \cite{am1} the prover announces a number $\tilde{m}$ which he claims to be equal to $m=f(x)$. This can be interpreted as the prover announcing that if one chooses an input bit $x_i$ at random it will be equal to 1 with probability $\tilde{p}=\tilde{m}/n$. The verifier then chooses a random input bit $x_i$ and uses $\tilde{m},x_i$ to compute the reward via a scoring rule. Since the scoring rule is maximized by the announcement of the correct $m$, a rational prover will announce the correct value. The scoring rule used in \cite{am1} (and in all other rational proofs based on scoring rules) is 
-Brier's rule where the reward is computed as $BSR(\tilde{p},x_i)$ where: 
-\[BSR(\tilde{p},1) = 2\tilde{p}(2-\tilde{p}) \; \; \mbox{ and } \;\; 
-BSR(\tilde{p},0) = 2(1-\tilde{p}^2) \]
-Notice that $p=m/n$ is the actual probability to get 1 when selecting an input bit at random so the expected reqward of the prover is 
+Let $G_{n,k}(x_1,\ldots,x_n)$ be a threshold gate with $n$ Boolean inputs, that evaluates to 1 if at least $k$ of the input bits are 1. The protocol in \cite{am1} to evaluate this gate goes as follows. The Prover announces the number $\tilde{m}$ of input bits equal to 1, which allows the Verifier to compute $G_{n,k}(x_1,\ldots,x_n)$. The Verifier select a random index $i \in [1..n]$ and looks at input bit $b=x_i$ and rewards the Prover using Brier's Rule $BSR(\tilde{p},b)$ where $\tilde{p}=\tilde{m}/n$ i.e. the probability claimed by the Prover that a randomly selected input bit be 1. Then
+\[BSR(\tilde{p},1) = 2\tilde{p} - \tilde{p}^2 - (1-\tilde{p})^2 + 1 = 2\tilde{p}(2-\tilde{p}) \]
+\[BSR(\tilde{p},0) = 2(1-\tilde{p}) - \tilde{p}^2 - (1-\tilde{p})^2 +1 = 2(1-\tilde{p}^2) \]
+Let $m$ be the true number of input bits equal to 1, and $p=m/n$ the corresponding probability, then the expected reward of the Prover is
 \begin{equation}
 \label{eq:bsr}
 p BSR(\tilde{p},1) + (1-p) BSR(\tilde{p},0) 
 \end{equation}
-which is easily seen to be maximized for $\tilde{p}=p$, i.e. $\tilde{m}=m$. 
+which is easily seen to be maximized for $p=\tilde{p}$ i.e. when the Prover announces the correct result. Moreover one can see that when the Prover announces a wrong $\tilde{m}$ his reward goes down by $2(p-\tilde{p})^2 \geq 2/n^2$. In other words 
+for all $n$-bit input $x$, we have $\Delta(x)=2/n^2$ and if a dishonest Prover $\disP$ cheats with probability $\epsilon_{\disP}$ then $\delta_{\disP} > 2\epsilon_{\disP}/n^2$. 
 
-in \cite{cg15} we propose an alternative protocol for $f$ (motivated by the issues we
-discuss in Section~\ref{sec:proofs-seq-comp}). In our protocol we compute $f$ via an "addition circuit", organized as a complete binary tree with $n$ leaves which are the input, and where each internal node is a (fan-in 2) addition gate -- note that this circuit has depth $d=\log n$. The protocol has $d$ rounds: at the first round the prover announces $\tilde{m}$ (the claimed value of $f(x)$) and its two "children" $y_L,y_R$ in the output gate, i.e. the two input values of the last output gate $G$. The Verifier checks that 
-$y_L +y_R=\tilde{m}$, and then asks the Prover to verify that $y_L$ or $y_R$ (chosen a random) is correct, by recursing on the above test. At the end the verifier has to check the last addition gate on two input bits: she performs this test on her own by reading just those two bits. If any of the tests fails, the verifier pays a reward of 0, otherwise she will pay $R$. The intuition is that a cheating prover will be caught with probability $2^{-d}$ which is exactly the reward gap (and for log-depth circuits like this one is noticeable). 
 
-Note that the first protocol is a scoring-rule based one, while the second one is a weak-interactive proof. 
 
+
+%
+%Consider the function $f:$ $\bit^n$ $\to$ $[0 \ldots n]$ which on input $x$ outputs the 
+%Hamming weight of $x$ (i.e. $\sum_{i} x_i$ where $x_i$ are the bits of $x$). 
+%
+%In \cite{am1} the prover announces a number $\tilde{m}$ which he claims to be equal to $m=f(x)$. This can be interpreted as the prover announcing that if one chooses an input bit $x_i$ at random it will be equal to 1 with probability $\tilde{p}=\tilde{m}/n$. The verifier then chooses a random input bit $x_i$ and uses $\tilde{m},x_i$ to compute the reward via a scoring rule. Since the scoring rule is maximized by the announcement of the correct $m$, a rational prover will announce the correct value. The scoring rule used in \cite{am1} (and in all other rational proofs based on scoring rules) is 
+%Brier's rule where the reward is computed as $BSR(\tilde{p},x_i)$ where: 
+%\[BSR(\tilde{p},1) = 2\tilde{p}(2-\tilde{p}) \; \; \mbox{ and } \;\; 
+%BSR(\tilde{p},0) = 2(1-\tilde{p}^2) \]
+%Notice that $p=m/n$ is the actual probability to get 1 when selecting an input bit at random so the expected reqward of the prover is 
+%\begin{equation}
+%\label{eq:bsr}
+%p BSR(\tilde{p},1) + (1-p) BSR(\tilde{p},0) 
+%\end{equation}
+%which is easily seen to be maximized for $\tilde{p}=p$, i.e. $\tilde{m}=m$. 
+%
+%in \cite{cg15} we propose an alternative protocol for $f$ (motivated by the issues we
+%discuss in Section~\ref{sec:proofs-seq-comp}). In our protocol we compute $f$ via an "addition circuit", organized as a complete binary tree with $n$ leaves which are the input, and where each internal node is a (fan-in 2) addition gate -- note that this circuit has depth $d=\log n$. The protocol has $d$ rounds: at the first round the prover announces $\tilde{m}$ (the claimed value of $f(x)$) and its two "children" $y_L,y_R$ in the output gate, i.e. the two input values of the last output gate $G$. The Verifier checks that 
+%$y_L +y_R=\tilde{m}$, and then asks the Prover to verify that $y_L$ or $y_R$ (chosen a random) is correct, by recursing on the above test. At the end the verifier has to check the last addition gate on two input bits: she performs this test on her own by reading just those two bits. If any of the tests fails, the verifier pays a reward of 0, otherwise she will pay $R$. The intuition is that a cheating prover will be caught with probability $2^{-d}$ which is exactly the reward gap (and for log-depth circuits like this one is noticeable). 
+%
+%Note that the first protocol is a scoring-rule based one, while the second one is a weak-interactive proof. 
+%
 

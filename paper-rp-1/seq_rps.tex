@@ -33,7 +33,7 @@ following inequality holds for every
 $\disP\neq 
 P$ and input $x\in {\cal D}$:
 \[ \frac{\tilde{R}(x)}{R} \leq \frac{\tilde{C}(x)}{C} + \epsilon\]
-then $(P,V)$ is $kR\epsilon$-sequentially composable for $\cal D$
+then $(P,V)$ is $(KR\epsilon, K)$-sequentially composable for $\cal D$
 \end{lemma}
 \begin{proof}
 It suffices to observe that, for any $k$ inputs $x_1,...,x_k$, the inequality 
@@ -48,7 +48,7 @@ as
 in Definition \ref{def:SRP}.
 \end{proof}
 
-\begin{lemma}
+\begin{corollary}
 	\label{cor:prob}
 	Let $(P,V)$ and $\rew$ be respectively an interactive proof and a reward 
 	function as in 
@@ -57,7 +57,7 @@ in Definition \ref{def:SRP}.
 	$$  \pDisR \leq \frac{\tilde{C}(x)}{C} + \epsilon $$
 	then $(P,V)$ is $(KR\epsilon, K)$-sequentially composable for $\cal D$. 
 	% If rew can be only R or 0 then the sufficient condition is on the probability
-\end{lemma}
+\end{corollary}
 \begin{proof}
 Observe that $\tilde{R}(x) = \pDisR\cdot R$ and then apply Lemma 
 \ref{lemma:cost-rew-ratios}.
