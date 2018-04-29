@@ -1,3 +1,9 @@
+We now show how in repeated executions of a Rational Proof a nd where the Prover has a "budget" of computation cost that he is willing to invest, then there is no guarantee anymore that the profit is maximized by the honest prover. The reason is that it might be more profitable for the prover to use his budget to provide many incorrect answers than to provide a single correct answer. That's because incorrect (e.g. random) answers are ``cheaper" to compute than the correct one and with the same budget $B$ the prover can provide many of them while the entire budget might be necessary to solve a single problem correctly. If incorrect answers still receive a substantial reward then many incorrect answers may be more profitable and a rational prover will choose that strategy. 
+
+
+This motivated us to consider a stronger definition which requires the reward to be 
+somehow connected to the "effort" paid by the prover. The definition (stated below) basically says that if a (possibly dishonest) prover invests less computation than the honest prover then he must collect a smaller reward. 
+
 Consider the protocol in the previous section for the computation of the function 
 $G_{n,k}(\cdot)$. Assume that the honest execution of the protocol (including the computation of $G_{n,k}(\cdot)$) has cost $C=n$. 
 

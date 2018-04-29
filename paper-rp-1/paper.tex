@@ -18,9 +18,25 @@ uniform bounded-depth circuits.
 \input{paper-rp-1/profit.tex}
 
 \section{Sequential Composition}
-We now present the main results of our work. First we informally describe our notion of sequential composition of 
-rational proof, via a motivating example and show that the protocols in \cite{am,am1,rosen} do not satisfy it. Then we present our definition of sequential rational proofs, and a protocol that achieves it for circuits of bounded depth. 
+Until now we have only considered agents who want to maximize their reward. But the reward alone, might not capture the complete utility function that the Prover is trying to maximize in his interaction with the Verifier. In particular we have not considered the 
+{\em cost} incurred by the Prover to compute $f$ and engage in the protocol. It makes 
+sense then to define the  {\em profit} of the Prover as the difference between the reward paid by the verifier and such cost. 
 
+
+As already pointed out in \cite{am1,ratargs} the definition of Rational Proof is sufficiently robust to also maximize the profit of the honest prover and not just the reward. Indeed consider the case of a "lazy" prover $\tilde{P}$ that does not evaluate the function: let $\tilde{R}(x), \tilde{C}(x)$ be the reward and cost associated with $\tilde{P}$ on input $x$ (while $R(x),C(x)$ are the values associated with the honest prover). 
+
+Obviously we want
+\[ R(x)-C(x) \geq \tilde{R}(x)-\tilde{C}(x) \mbox{ or equivalently } 
+R(x)-\tilde{R}(x) \geq C(x) - \tilde{C}(x) \]
+Recall the notion of reward gap which is the minimum difference between the reward of the honest prover and any other prover
+\[ \Delta(x) \leq R(x)-\tilde{R}(x) \]
+To maximize the profit is therefore sufficient to change the reward by a 
+a multiplier $M= C(x)/\Delta(x)$ since then we have that 
+\[ M(R(x) - \tilde{R}(x)) \geq C(x) \geq C(x) - \tilde{C}(x) \]
+as desired. This explains why we require the reward gap to be at least the inverse of a polynomial, since this will maintain the total reward paid by the Verifier bounded by a polynomial. 
+
+
+\input{paper-rp-2/seq-comp-defs}
 
 \subsection{Motivating Example}
 \input{paper-rp-1/counterexample.tex}
@@ -46,6 +62,11 @@ In this section we apply the previous results to the problem of computing FFT ci
 \subsection{Mixed Strategies for Verification}
 
 \input{paper-rp-1/FFT-mixed-strategy}
+
+\section{Sequential Composability for Space Bounded Computation}
+\label{sec:proofs-seq-comp}
+
+\input{paper-rp-2/proof-seq-comp.tex}
 
 \section{Conclusion}
 Rational Proofs are a promising approach to the problem of verifying computations in a rational model, where the prover is not malicious, but only 
