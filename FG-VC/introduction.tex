@@ -1,6 +1,6 @@
 \section{Introduction}
 
-Historically Cryptography has been used to protect information (either in transit or stored) from unauthorized access. One of the most important developments in Cryptography in the last thirty years, has been the ability to protect non only information but also the {\em computations} that are performed on data that needs to be secure. Starting with the work on secure multiparty computation \cite{mpc}, and continuing with ZK proofs \cite{zk}, and more recently Fully Homomorphic Encryption \cite{gentry}, verifiable outsourcing computation \cite{muggles,ggp10}, SNARKs \cite{qap,snark-linear} and obfuscation \cite{garg2016candidate} we now have cryptographic tools that protect the secrecy and integrity not only of data, but also of the programs which run on that data. 
+Historically, Cryptography has been used to protect information (either in transit or stored) from unauthorized access. One of the most important developments in Cryptography in the last thirty years, has been the ability to protect not only information but also the {\em computations} that are performed on data that needs to be secure. Starting with the work on secure multiparty computation \cite{mpc}, and continuing with ZK proofs \cite{zk}, and more recently Fully Homomorphic Encryption \cite{gentry}, verifiable outsourcing computation \cite{muggles,ggp10}, SNARKs \cite{qap,snark-linear} and obfuscation \cite{garg2016candidate} we now have cryptographic tools that protect the secrecy and integrity not only of data, but also of the programs which run on that data. 
 
 Another crucial development in Modern Cryptography has been the adoption of a more ``fine-grained" notion of computational hardness and security. The traditional cryptographic approach modeled computational tasks as ``easy" (for the honest parties to perform) and ``hard" (infeasible for the adversary). Yet we have also seen a notion of {\em moderately hard} problems being used to attain certain security properties. The best example of this approach might be the use of moderately hard inversion problems used in blockchain protocols such as Bitcoin. Although present in many works since the inception of Modern Cryptography, this approach was first 
 formalized in a work of Dwork and Naor \cite{dn-spam}. 
@@ -13,7 +13,7 @@ Maurer \cite{maurer} and Hastad \cite{H87} where
 the cost is the space and parallel time complexity of the parties, respectively. 
 
 Recently there has been renewed interest in this model. Degwekar et al. \cite{fgcrypto} show how to construct certain cryptographic 
-primitives in $\NC^1$ [resp. ${\mathsf AC}^0$] which are secure against all adversaries in $\NC^1$ [resp. ${\mathsf AC}^0$]. In conceptually related work Ball et al. \cite{fghardness} present computational problems which are ``moderately hard'' on average, if they are moderately hard in the worst case, a useful property for such problems to be used as cryptographic primitives. 
+primitives in $\NC^1$ [resp. $\AC^0$] which are secure against all adversaries in $\NC^1$ [resp. $\AC^0$]. In conceptually related work Ball et al. \cite{fghardness} present computational problems which are ``moderately hard'' on average, if they are moderately hard in the worst case, a useful property for such problems to be used as cryptographic primitives. 
 
 The goal of this paper is to initiate a study of {\em Fine Grained Secure Computation}. By doing so we connect these two major developments in Modern Cryptography. The question we ask is if it is possible to construct {\em secure computation primitives} that are secure against ``moderately complex" adversaries. We answer this question in the affirmative, by presenting definitions and constructions for the task of Fully Homomorphic Encryption and Verifiable Computation in the fine-grained model. We also present two application scenarios for our model: i) hardware chips that prove their own correctness and ii) protocols against rational adversaries including potential solutions to the {\em Verifier's Dilemma} in smart-contracts transactions such as Ethereum. 
 
@@ -53,13 +53,14 @@ and is also reasonably efficient
 in practice \cite{CMT}.
 Or, the more recent work \cite{grlocally}, which obtains efficient VC for functions in a subset of $\NC \cap \class{SC}$.
 Compared to these results, one aspect in which our protocol fares better  is that
-our Verifier can be implemented with a constant-depth circuit (in particular in 
-$\mathsf{TC}^0$, see Section \ref{sec:VC}) which is not possible for the Verifier in \cite{muggles,grlocally}. Moreover our protocol is non-interactive (while \cite{muggles,grlocally} requires
-logarithmically many rounds of interaction) and because our protocols work in the ``pre-processing model" we do not require any uniformity or regularity condition on the circuit being outsourced (which are required by \cite{muggles} and \cite{CMT}). 
+our Prover/Verifier can be implemented with a constant-depth circuit (in particular in 
+$\ACzt$, see Section \ref{sec:VC}) which is not possible for the Prover/Verifier in \cite{muggles,grlocally}, which needs to be in $\TC^0$\footnote{The techniques in  \cite{muggles,grlocally} are based on properties of finite fields. Arithmetic in such fields can be carried out by threshold circuits of constant depth, but not in $\ACzt$.}. Moreover our protocol is non-interactive (while \cite{muggles,grlocally} requires
+$\Omega(1)$ rounds of interaction) and because our protocols work in the ``pre-processing model" we do not require any uniformity or regularity condition on the circuit being outsourced (which are required by \cite{muggles} and \cite{CMT}). Finally, out verification scheme achieves input and output privacy.
 
-Interactive proofs (again, we stress, with information-theoretic soundness) with verification in constant depth are discussed in \cite{gghkr07} (where the verifier is in 
-$\mathsf{NC}^0$). We point out that our schemes besides achieving non-interactive constant-depth verification also has a verifier that runs in linear {\em sequential} time on the input/output size (i.e. in $O(\lambda^c(n+m))$ where $\lambda$ is the security parameter, $n$ the input and $m$ the output sizes of the function being outsourced). 
+Finally, we compare our results with the information-theoretic approaches (mostly based on randomized encodings) in  \cite{gghkr07,re,cryptoNC0,SYY}. From the techniques in these works one could obtain somewhat homomorphic encryption and verifiable computation in low-depth circuits (even in $\NC^0$). Here, however, we stress that we are interested in \textit{compact} homomorphic encryption schemes (where the ciphertexts do not grow in size with each homomorphic operation) and in verifiable computation schemes where the total work of the verifier approximately linear in the I/O size (i.e. the size of the verification circuit should be $O(\poly(\lambda)(n+m))$ where $n$ and $m$ are the size of the input and output respectively). The techniques in these works cannot directly achieve these goals. In fact, for homomorphic encryption, they lead to ciphertexts of size exponential in $d$, where $d$ is the depth of the (fan-in two) evaluation circuit. For verifiable computation, they  lead to verification with quadratic running time\footnote{On why this running time: in a straightforward application of these approaches we would have the verifier computing the (randomized) encoding of a function $f \in \NC^1$. The work necessary for this is quadratic in the size of the branching program computing $f$ \cite{re} (this is  cubic if we use the approach in \cite{gghkr07}, described in Guy Rothblum's thesis \cite{rothblum2009delegating}).}. 
 
+% Interactive proofs\footnote{We stress again: with \textit{information-theoretic} soundness.} with verification in constant depth are discussed in \cite{gghkr07} (where the verifier is in 
+% $\mathsf{NC}^0$). We point out that, besides achieving non-interactive, constant-depth verification, our schemes also have a verifier running in linear {\em sequential} time in the input/output size (i.e. in size $O(\lambda^c(n+m))$ where $\lambda$ is the security parameter, $n$ the input and $m$ the output sizes of the function being outsourced). 
 
 \subsection{Overview of our Techniques}
 
@@ -78,7 +79,7 @@ the computation of multiplication gates. As we
  functions with constant multiplicative depth, as in that case the evaluation stays in $\ACzt$. 
  
 We then present a second scheme that extends the class of computable functions 
-to $\ACztq$ by allowing for a negligible error in the correctness of the scheme. We use a result by Razborov \cite{razborov1987lower} on approximating $\ACzt$ circuits with low-degree polynomials -- the correctness of the approximation (appropriately amplified) will be the correctness of our scheme. 
+to $\ACztq$ by allowing for a negligible error in the correctness of the scheme. We use techniques from a work by Razborov \cite{razborov1987lower} on approximating $\ACzt$ circuits with low-degree polynomials -- the correctness of the approximation (appropriately amplified) will be the correctness of our scheme. 
 
 
 

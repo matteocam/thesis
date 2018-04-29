@@ -10,8 +10,8 @@ algorithms defined below.
 \begin{enumerate}
 \item $\VCKG(f, 1^\lambda) \to (\pkW, \skD)$: 
       Based on the security parameter $\lambda$, the randomized \emph{key generation} 
-      algorithm generates a public key that encodes the target function $F$, 
-      which is used by the Server to compute $F$. It also 
+      algorithm generates a public key that encodes the target function $f$, 
+      which is used by the Server to compute $f$. It also 
       computes a matching secret key, which is kept private by the Client. 
 
 \item $\VCPG_{\skD}(x) \to (\qx,\sx)$:
@@ -28,7 +28,7 @@ algorithms defined below.
       Using the secret key $\skD$ and the secret ``decoding'' $\sx$, the 
       \emph{verification} algorithm converts the worker's encoded output into 
       the output of the function, e.g., $y = f(x)$ or outputs $\fail$ indicating
-      that $\ax$ does not represent the valid output of $F$ on $x$.
+      that $\ax$ does not represent the valid output of $f$ on $x$.
 \end{enumerate}      
 % A delegation scheme is an interactive protocol $\Del =  \DW$ between a delegator $\D$ and a worker $\W$ with the following structure:
 
@@ -46,7 +46,7 @@ algorithms defined below.
 
 \noindent
 The scheme should be complete, i.e. an honest Server should (almost) always return the correct value. 
-\begin{definition}{Completeness}
+\begin{definition}[Completeness]
 \label{def:vc-completeness}
 A delegation scheme $\VC = (\VCKG,\VCPG,\VCCompute,\VCVerif)$ has \textit{overwhelming completeness} for a class of functions $\mathcal{C}$ if  there is a function $\nu(n) = \negl(\lambda)$ such that for infinitely many values of $\lambda$, if $f_\lambda \in \mathcal{F} \in \mathcal{C}$, then for all 
 inputs $x$ 

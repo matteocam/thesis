@@ -8,7 +8,7 @@ secure against adversaries in $\mathsf{NC}^1$.
 
 \input{FG-VC/pke-dvv16}
  
-\subsection{Leveled Homomorphic Encryption for $\ACztq$ Functions Secure against $\NC^1$}
+\subsection{Leveled Homomorphic Encryption for $\ACztcm$ Functions Secure against $\NC^1$}
 \label{sec:leveled-he-simple}
 %XXX: Can I  use such title even if it's only a subset of $\AC^0[2]$
  % We show how to adapt the relinearization technique from BV13
@@ -136,7 +136,7 @@ We can now state the following result, derived from the observations above and t
 
 \begin{theorem}
 \label{thm:he-homomorphic}
-Let $\ACztcm$ the family of circuits in $\ACzt$ with constant multiplicative depth.
+Let $\ACztcm$ the family of circuits in $\ACzt$ with constant multiplicative depth (see Definition \ref{def:ACztcm}).
 The scheme $\HE$ is leveled $\ACztcm$-homomorphic. Key generation, encryption, decryption and evaluation are all computable in $\ACztcm$. 
 \end{theorem}
 

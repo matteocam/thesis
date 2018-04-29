@@ -18,8 +18,38 @@ is a collection of function families.
 In most of our constructions $D^f_{\lambda}=\{0,1\}^{d_\lambda^f}$ and $R^f_{\lambda}=\{0,1\}^{r_\lambda^f}$ for sequences $\{d_\lambda^f\}_\lambda$, 
 $\{d_\lambda^f\}_\lambda$. 
 
-In the rest of the paper we will focus on the class of $\mathcal{C}=\mathsf{NC}^1$ of functions for which there is a polynomial $p(\cdot)$ and a constant $c$ such that for each $\lambda$, the function $f_\lambda$ can be computed by a Boolean (randomized) fan-in 2, circuit of size $p(\lambda)$ and depth $c \log(\lambda)$. In the formal statements of our results we will also use the following classes: $\AC^0$, the class of functions of polynomial size and constant depth with $\function{AND}, \function{OR}$ and $\function{NOT}$ gates with unbounded fan-in; $\ACzt$, the class of functions of polynomial size and constant depth with $\function{AND}, \function{OR}, \function{NOT}$ and $\function{PARITY}$ gates with unbounded fan-in; $\TC^0$, the class of functions of polynomial size and constant depth with $\function{AND}, \function{OR}, \function{NOT}$ and $\function{MAJORITY}$ gates with unbounded fan-in.
-Given a function $f$, we define \textit{multiplicative depth} of $f$ as the degree of the lowest-degree polynomial in $\GF(2)$ that evaluates to $f$.
+In the rest of the paper we will focus on the class of $\mathcal{C}=\mathsf{NC}^1$ of functions for which there is a polynomial $p(\cdot)$ and a constant $c$ such that for each $\lambda$, the function $f_\lambda$ can be computed by a Boolean (randomized) fan-in 2, circuit of size $p(\lambda)$ and depth $c \log(\lambda)$. In the formal statements of our results we will also use the following classes: $\AC^0$, the class of functions of polynomial size and constant depth with $\function{AND}, \function{OR}$ and $\function{NOT}$ gates with unbounded fan-in; $\ACzt$, the class of functions of polynomial size and constant depth with $\function{AND}, \function{OR}, \function{NOT}$ and $\function{PARITY}$ gates with unbounded fan-in. For a gate $g$ we denote by $\func{type}_C(g)$ the type of the gate $g$ in the circuit $C$ and by $\func{parents}_C(g)$ the list of gates of $C$ whose output is an input to $C$ (such list may potentially contain duplicates). 
+
+Given a function $f$, we can think of its \textit{multiplicative depth} as the degree of the lowest-degree polynomial in $\GF(2)$ that evaluates to $f$. Similarly, we define the multiplicative depth of a circuit as follows:
+
+\begin{definition}[Multiplicative Depth]
+Let $C$ be a circuit, we define the multiplicative depth of $C$ as $\func{md}(g_{out})$ where $g_{out}$ is its output gate and the function $\func{md}$, from the set of gates to the set of natural numbers is recursively defined as follows:
+
+\[
+\func{md}(g) \eqdef
+    \begin{cases*}
+      1 & \mbox{if } $\func{type}_C(g) = \func{input}$ \\
+      \max\{\func{md}(g') : g' \in \func{parents}_C(g)\} & \mbox{if } $\func{type}_C(g) = \func{XOR}$ \\
+      \Sum_{g' \in \func{parents}_C(g)}\func{md}(g') & \mbox{if } $\func{type}_C(g) \in \{ \ANDgt, \ORgt \}$
+    \end{cases*}
+\]
+\end{definition}
+
+\medskip
+\noindent
+The following two circuit classes will appear in several of our results.
+
+\begin{definition}[Circuits with Constant Multiplicative Depth]
+\label{def:ACztcm}
+We denote by $\ACztcm$ the class of circuits in $\ACzt$ with \textit{constant multiplicative depth}.
+\end{definition}
+
+\begin{definition}[Circuits with Quasi-Constant Multiplicative Depth]
+\label{def:ACztq}
+\label{def:quasi-constant}
+For a circuit $C$ we denote by $S_{\omega(1)}(C)$ the set of $\ANDgt$ and $\ORgt$ gates in $C$ with non-constant fan-in. We say that $C$ has \textit{quasi-constant multiplicative depth} if $|S_{\omega(1)}(C)| = O(1)$.
+We shall denote by $\ACztq$ the class of circuits in $\ACzt$ with quasi-constant multiplicative depth.
+\end{definition}
 
 \medskip
 \noindent

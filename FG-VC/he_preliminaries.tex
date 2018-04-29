@@ -3,7 +3,7 @@
 \subsubsection{Somewhat Homomorphic Encryption}
 A public-key encryption scheme is said to be homomorphic if there is an 
 additional algorithm $\mathsf{Eval}$ which takes a input the public key $\pk$, 
-the representation of a function $f:\bit^l\rightarrow\bit$ and a set of $l$ ciphertexts $c_1,\ldots,c_l$, and outputs a ciphertext $c_f$. 
+the representation of a function $f:\bit^l\rightarrow\bit$ and a set of $l$ ciphertexts $c_1,\ldots,c_l$, and outputs a ciphertext $c_f$\footnote{Notice that the syntax of $\mathsf{Eval}$ can also be extended to return a sequence of encryptions for the case of multi-output functions. We will use this fact in Section \ref{sec:beyond-cm}. See also Remark \ref{rem:cpa-multiple}.}. 
 %$\HE = (\HEKeygen, \HEEnc, \HEDec, \HEEval)$ is a public-key encryption scheme 
 %with a few additions. It is a quadruple of algorithms which operate as follow:
 %\begin{itemize}

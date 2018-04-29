@@ -22,10 +22,9 @@ Let $f_i : \bit^{\function{lg}(l)} \to \bit^l$ be the function that computes the
 where $[i-1]_2$ is the binary representation of $i-1$ and $\function{eq}$ returns 1 if its two inputs (each of lenght $\function{lg}(l)$) are equal.
 The function $f_i$ is clearly in $\ACzt$.
 % First, for each $i$, we generate the vector of hamming weight $1$ describing $\pi(i)$ by mapping 
-
 \end{proof}
 
-The following is an adaptation of the one-time secure delegation scheme from \cite{ckv10}. We make non-black box use of our homomorphic encryption scheme $\HEp$ (Section \ref{sec:beyond-cm}) with soundness parameter $s= \lambda$. Notice that. during the preprocessing phase, we fix the ``auxiliary randomness'' for $\EvalApprox$ (and thus for $\HEpEval$) once and for all. We will use that same randomness for all the input instances. This choice does not affect the security of the construction.
+In Figure \ref{fig:one-time} we describe an adaptation of the one-time secure delegation scheme from \cite{ckv10}. We make non-black box use of our homomorphic encryption scheme $\HEp$ (Section \ref{sec:beyond-cm}) with soundness parameter $s= \lambda$. Notice that. during the preprocessing phase, we fix the ``auxiliary randomness'' for $\EvalApprox$ (and thus for $\HEpEval$) once and for all. We will use that same randomness for all the input instances. This choice does not affect the security of the construction.
 We remind the reader that we will simplify notation by considering the evaluation key of our somewhat homomorphic encryption scheme as part of its public key.
 
 If $x$ is a vector of bits $x_1, \dots, x_n$, below we will denote with $\HEpEnc(x)$ the concatenation of the bit by bit ciphertexts $\HEpEnc(x_1), \dots, \HEpEnc(x_n)$. We denote by $\HEpEnc(\zero)$ the concatenation of $n$ encryptions of $0$, $\HEpEnc(0)$.
@@ -38,13 +37,13 @@ If $x$ is a vector of bits $x_1, \dots, x_n$, below we will denote with $\HEpEnc
 \begin{framed}
 Let $f: \bit^n \to \bit^m$ be a function and $\GenApproxFun, \SampleAuxRandomness$ and $\EvalApprox$ as in Definition \ref{def:aux-he-fns}.
 \begin{itemize}
-\item $\VCKG(1^\lambda, f) \rightarrow (\pkW, \skD)$: We assume function $F$ represented as 
+\item $\VCKG(1^\lambda, f) \rightarrow (\pkW, \skD)$: We assume function $f$ represented as 
 \begin{enumerate}
 \item Generate a pair of keys $(\pk,\sk) \gets \HEpKeygen(1^\lambda)$.
-\item Generate the approximating function $f' \gets \GenApproxFun(f)$;
+\item Generate the approximating function $f' \gets \GenApproxFun(f)$ and auxiliary string $\auxf \gets \func{GenDecodeAux}(f)$;
 \item Generate the ciphertext of the auxiliary random input for homomorphic evaluation $\hatraux \gets \SampleAuxRandomness_{\lambda}(\pk, f')$
-\item Compute $t$ independent encryptions $\hatr_i = \HEpEnc_{\pk}(\zero)$ and the homomorphic evaluations $\hatw_i = \hatF(\hatr_i) =  \EvalApprox_s(\pk, f', \hatr_i, \hatraux)$ for $i \in [t]$. 
-\item $\pkW \gets (\pk, f', \hatraux), \skD \gets \{ (\hatr_i, \hatw_i)_{i \in [t]}\}$.
+\item Compute $t$ independent encryptions $\hatr_i = \HEpEnc_{\pk}(\zero)$ and the homomorphic evaluations $\hatw_i = \hatF(\hatr_i) =  \EvalApprox_s(\pk, f', \hatr_i, \hatraux)$ for $i \in [t]$;
+\item $\pkW \gets (\pk, f', \hatraux), \skD \gets (\{ (\hatr_i, \hatw_i)_{i \in [t]}\}, \auxf)$.
 \end{enumerate}
 \item $\VCPG_{\skD}(x) \rightarrow (\qx, \sx)$: 
 \begin{enumerate}
@@ -60,8 +59,8 @@ Let $f: \bit^n \to \bit^m$ be a function and $\GenApproxFun, \SampleAuxRandomnes
 \item $\VCVerif_{\skD}(\sx, \ax)$:
 \begin{enumerate}
 \item Check if $\hatw_i = \hat{y}_i$ for all $i \in [t]$.
-\item Check if $\HEpDec_{\sk}(\hat{y}_{\pi(t+1)}) = \dots = \HEpDec_{\sk}(\hat{y}_{\pi(2t)})$.
-\item If either of the two tests above fails, return $\fail$; otherwise return $\HEpDec_{\sk}(\hat{y}_{\pi(t+1)})$.
+\item Check if $\HEpDec_{\sk}(\hat{y}_{\pi(t+1)}, \auxf) = \dots = \HEpDec_{\sk}(\hat{y}_{\pi(2t)}, \auxf)$.
+\item If either of the two tests above fails, return $\fail$; otherwise return $\HEpDec_{\sk}(\hat{y}_{\pi(t+1)}, \auxf)$.
 \end{enumerate}
 \end{itemize}
 \end{framed}
@@ -70,13 +69,14 @@ Let $f: \bit^n \to \bit^m$ be a function and $\GenApproxFun, \SampleAuxRandomnes
 \end{figure}
 
 \begin{remark}[On deterministic homomorphic evaluation]
-As pointed out in \cite{ckv10}, one requirement for the approach above to work is for the homomorphic evaluation to be deterministic. We point out that once $\hatraux$ are fixed once and for all the homomorphic evaluation in $\VCCompute$ is deterministic.
+As pointed out in \cite{ckv10}, one requirement for the approach in Figure \ref{fig:one-time} to work is for the homomorphic evaluation to be deterministic. We point out that once $\hatraux$ are fixed once and for all the homomorphic evaluation in $\VCCompute$ is deterministic.
 \end{remark}
 
-\begin{remark}[On including $f'$ in $\pkW$]
-In the construction above we included $f'$ in the public key lengthening the size of the key. We point out this is not necessary and that $f'$ can be computed by the worker on her own during the execution of $\VCCompute$. However this would not allow us to simply homomorphically evaluate $\VCCompute$ in the definition of $\tVC$ in Section \ref{sec:vc-many}. This because the complexity of $\VCCompute$ would go from $\ACztcm$ to $\NC^1$, which our homomorphic schemes cannot handle.
-We point out that it would still be possible to modify the construction of $\tVC$  not including $f'$ in $\pkW$ to obtain the same completeness and soundness properties. However this would come at a cost of a more complex transformation in Figure \ref{fig:reusable-transform}. Including $f'$ in $\pkW$ allowed us to kept the transformation as simple and close to the original description in \cite{ckv10} as possible. 
-\end{remark}
+% \matteo{See if this should be fixed}
+% \begin{remark}[On including $f'$ in $\pkW$]
+% In the construction above we included $f'$ in the public key lengthening the size of the key. We point out this is not necessary and that $f'$ can be computed by the worker on her own during the execution of $\VCCompute$. However this would not allow us to simply homomorphically evaluate $\VCCompute$ in the definition of $\tVC$ in Section \ref{sec:vc-many}. This because the complexity of $\VCCompute$ would go from $\ACztcm$ to $\NC^1$, which our homomorphic schemes cannot handle.
+% We point out that it would still be possible to modify the construction of $\tVC$  not including $f'$ in $\pkW$ to obtain the same completeness and soundness properties. However this would come at a cost of a more complex transformation in Figure \ref{fig:reusable-transform}. Including $f'$ in $\pkW$ allowed us to kept the transformation as simple and close to the original description in \cite{ckv10} as possible. 
+% \end{remark}
 
 
 \begin{lemma}[Completeness of $\VC$]
@@ -84,17 +84,17 @@ The verifiable computation scheme $\VC$ in Figure \ref{fig:one-time} has overwhe
 \end{lemma}
 \begin{proof}
 The proof is straightforward and stems directly from the homomorphic properties of $\HEp$ (Theorem \ref{thm:hep-homomorphic}).
-In fact, by construction and by definition of $\HEp$ (Section \ref{sec:beyond-cm}), the distribution of the $\hatw_i$-s is identical to $\HEpEval_{\pk}(F, \hatr_i)$. Analogously, the distribution of $\hat{y}_i$-s is identical to $\HEpEval_{\pk}(F, \hat{z}_i)$. 
+In fact, by construction and by definition of $\HEp$ (Section \ref{sec:beyond-cm}), the distribution of the $\hatw_i$-s is identical to $\HEpEval_{\pk}(f, \hatr_i)$. Analogously, the distribution of $\hat{y}_i$-s is identical to $\HEpEval_{\pk}(f, \hat{z}_i)$.
 \end{proof}
 
 
 \begin{remark}[Efficiency of $\VC$]
-In the following we consider the verifiable computation of a function $F: \bit^n \to \bit^m$ computable by an $\ACztq$ circuit of size $S$.
+In the following we consider the verifiable computation of a function $f: \bit^n \to \bit^m$ computable by an $\ACztq$ circuit of size $S$.
 \begin{itemize}
-\item  $\VCKG$ can be computed by an $\NC^1$ circuit of size $O(\poly(\lambda)S)$; 
+\item  $\VCKG$ can be computed by an $\ACzt$ circuit of size $O(\poly(\lambda)S)$; 
 \item $\VCPG$ can be computed by an $\ACzt$ circuit of size $O(\poly(\lambda)(m+n))$;
-\item $\VCCompute$ can be computed by an $\NC^1$ circuit of size $O(\poly(\lambda)S)$; 
-\item $\VCVerif$ can be computed by a $\TC^0$ circuit of size $O(\poly(\lambda)(m+n))$ and whose (constant) depth is independent of the depth of $F$.
+\item $\VCCompute$ can be computed by an $\ACzt$ circuit of size $O(\poly(\lambda)S)$; 
+\item $\VCVerif$ can be computed by a $\ACzt$ circuit of size $O(\poly(\lambda)(m+n))$ and whose (constant) depth is independent of the depth of $f$.
 \end{itemize}
 \end{remark}
 
@@ -105,7 +105,7 @@ Under the assumption that $\fgAssump$ the  scheme in Figure \ref{fig:one-time} i
 \begin{proof}
 We follow the same proof structure as in the proof of Lemma $12$ in \cite{ckv10}. We will keep part of the analysis informal, emphasizing why this proof still works for low-depth circuits. We refer the reader to \cite{ckv10} for further details.
 
-The following observation will be crucial in the rest of the proof. Notice that, by construction and by definition of $\HEp$ (Section \ref{sec:beyond-cm}), the distribution of the $\hatw_i$-s is identical to $\HEpEval_{\pk}(F, \hatr_i)$. Analogously, the distribution of $\hat{y}_i$-s is identical to $\HEpEval_{\pk}(F, \hat{z}_i)$.
+The following observation will be crucial in the rest of the proof. Notice that, by construction and by definition of $\HEp$ (Section \ref{sec:beyond-cm}), the distribution of the $\hatw_i$-s is identical to $\HEpEval_{\pk}(f, \hatr_i)$. Analogously, the distribution of $\hat{y}_i$-s is identical to $\HEpEval_{\pk}(f, \hat{z}_i)$.
 
 Consider an $\NC^1$ adversary $\advstar$ that cheats with non-negligible probability in the one-time security experiment $\expVCone{\VC}$ (Definition \ref{def:vc-soundness}).
 Let $(\hatr_1,\dots,\hatr_{t})$ be the independent copies of $\HEpEnc_{\pkW}(\zero)$ and  $(\hatr_{t+1},\dots,\hatr_{2t})$ the $t$ independent copies of
@@ -130,11 +130,8 @@ where the $\hatzpi{i}$-s are defined as in Figure \ref{fig:one-time}.
 Because of Lemma \ref{lemma:perm-sampling} that the distribution of $\pi$ is statistically indistinguishable from that of a uniformly random permutation. Also, observe that the answers $\hat{y}_i$ of the adversary are independent of $\pi$.
 We can then conclude that $p \leq \frac{1}{\binom{2t} {t}} + \negl(t)$, which concludes the security analysis. 
 % TODO: define z as in the other case
-
-
 % \begin{align*}
 %     p &= \Pr[\advstar \text{ is correct on } (\hatzpi{1},\dots,\hatzpi{t}) \text{ and incorrect on } (\hatzpi{t+1},\dots,\hatzpi{2t})] \\
 %     &\leq \Pr[\advstar \text{ is correct on } (\hatzpi{1},\dots,\hatzpi{t}) \text{ and incorrect on } (\hatzpi{t+1},\dots,\hatzpi{2t}) \given[\Big] \sum^{2t}_{i=1} ]
 % \end{align*}
-
 \end{proof}

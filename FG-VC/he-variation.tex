@@ -1,12 +1,13 @@
 \subsection{Beyond Constant Multiplicative Depth}
 \label{sec:beyond-cm}
 
-In the previous section we saw how our scheme is homomorphic for a class of constant-depth, unbounded fan-in arithmetic circuits in $\GF(2)$ with \textit{constant multiplicative depth}, i.e. polynomials in $\GF(2)$ of constant degree. We now show how to overcome this limitation by slightly changing our scheme and using a result (implicit in \cite{razborov1987lower}) on approximating $\ACzt$ circuits with low-degree polynomials.
+In the previous section we saw how our scheme is homomorphic for a class of constant-depth, unbounded fan-in arithmetic circuits in $\GF(2)$ with \textit{constant multiplicative depth}, i.e. polynomials in $\GF(2)$ of constant degree. We now show how to overcome this limitation by slightly changing our scheme and using techniques from  \cite{razborov1987lower} to approximate $\ACzt$ circuits with low-degree polynomials.
 
-\begin{definition}[Quasi-Constant Multiplicative Depth]
-\label{def:quasi-constant}
-Let $C \in \ACzt$ be a circuit. Let $S$ be the number of $\function{AND}$ gates of non constant fan-in. If $S = O(1)$ we say that $C$ has quasi-constant multiplicative depth. We denote with $\ACztq$ the class of circuits with such property.
-\end{definition}
+
+
+% \begin{definition}[Quasi-Constant Multiplicative Depth]
+% Let $C \in \ACzt$ be a circuit. Let $S$ be the number of $\function{AND}$ gates of non constant fan-in. If $S = O(1)$ we say that $C$ has quasi-constant multiplicative depth. We denote with $\ACztq$ the class of circuits with such property.
+% \end{definition}
 
 \begin{lemma}[\cite{razborov1987lower}]
 \label{lemma:razborov}
@@ -14,36 +15,95 @@ Let $C$ be an $\ACztq$ circuit of depth $d$. Then there exists a randomized circ
 \[
 \Pr[C'(x) \not = C(x)] \leq \epsilon \, ,
 \]
-where $\epsilon = O(1)$. The circuit $C'$ uses $O(n)$ random bits and its representation can be computed in $\NC^1$ from a representation of $C$.
+where $\epsilon = O(1)$. The circuit $C'$ uses $O(n)$ random bits and its representation can be computed in $\NC^0$ from a representation of $C$.
 %\matteo{TODO: Check if representation can be computed in AC0.}
 \end{lemma}
+\begin{proof}
+Consider a circuit $C \in \ACztq$ and let $K = O(1)$ be the total number of $\ANDgt$ and $\ORgt$ gates with non-constant fan-in. We can replace every $\ORgt$ gate of fan-in $m = \omega(1)$ with a randomized ``gadget'' that takes in input $m$ additional random bits and computes the function
+$$\hat{g}_{\ORgt}(x_1,\dots,x_m; r_1, \dots, r_m) \eqdef \sum_{i \in [m]} x_i r_i \, .$$
+This function can  be implemented in constant multiplicative depth with one $\XORgt$ gate and $m$ $\ANDgt$ gates of fan-in two.
+Let $\vec{x} = (x_1,\dots,x_m)$ and $\vec{r} = (r_1,\dots, r_m)$. The probabilistic gadget $\hat{g}_{\ORgt}$ has one-sided error. if  $x_i = 0$ (i.e. if $\ORgt(\vec{x}) = 0$) then $\Pr[\hat{g}_{\ORgt}(\vec{x}; \vec{r}) = 0] = 1$; otherwise $\Pr[\hat{g}_{\ORgt}(\vec{x}; \vec{r}) = 1] = \frac{1}{2}$.
 
-Below is a variation of our homomorphic scheme that can evaluate all circuits in $\ACztq$ in $\NC^1$. This time, in order to evaluate circuit $C$, we perform several homomorphic evaluations of the randomized circuit $C'$ (as in Lemma \ref{lemma:razborov}). To obtain the plaintext output of $C$ we can decrypt all the ciphertext outputs and take the majority result. Notice that this scheme is still compact.
-As we use a randomized approach to evaluate $F$, the scheme $\HEp$ will be implicitly parametrized by a soundness parameter $s$. Intuitively, the probability of a function $F$ being evaluated incorrectly will be upper bounded by $2^{-s}$.
+In a similar fashion, we can replace every unbounded fan-in $\ANDgt$ gate with a randomized gadget in computing
+$$\hat{g}_{\ANDgt}(x_1,\dots,x_m; r_1, \dots, r_m) \eqdef 1 - \sum_{i \in [m]} (1 - x_i) r_i \, .$$
+This gadget can also be implemented in constant-multiplicative depth and has one-sided error $1/2$.
+Finally, let us observe that $\Pr[C'(x) \not = C(x)] \leq \epsilon$ with $\epsilon$ being a constant, because
+we have only a constant number of gates to be replaced with gadgets for $\hat{g}_{\ORgt}$ or $\hat{g}_{\ANDgt}$.
+
+We only provide the intuition for why the transformations above can be carried out in $\NC^0$. Assume the encoding of a circuit as a list of gates in the form $(g, t_g, in_1, \dots, in_m)$ where $g$ and $t$ are respectively the index of the output wire of the gate and its type (possibly of the form ``input'' or ``random input'') and the $in_i$-s are the indices of the input wire of $g$. The transformation from $C$ to $C'$ needs to simply copy all the items in the list except for the gates of unbounded fan-in. We will assume the encoding conventions of $C$ always puts these gates at the end of the list\footnote{This allows our $\NC^0$ circuit to to ``know'' which gates to copy and which ones to transform based on their position only.}. For each of such gates the transformation circuit needs to: add appropriate $r_1,\dots, r_m$ to the list, add $m$ $\ANDgt$ gates and one $\XORgt$, possibly (if we are transforming an $\ANDgt$ gate) add negation gates. All this can be carried out based on wire connections and the type of the gate (a constant-size string) and thus in $\NC^0$.
+% Say this later
+% If we repeat the execution of the gadget $s$ times using every time fresh random bit vectors $\vec{r}^{(1)},\dots, \vec{r}^{(s)}$, then we can correctly compute $\ORgt(\vec{x})$ with overwhelming probability. Define $h_{\ORgt}(\vec{x}; \vec{r}^{(1)},\dots, \vec{r}^{(s)}) \eqdef \ORgt(\hat{g}_{\ORgt}(\vec{x}; \vec{r}^{(1)}), \dots, \hat{g}_{\ORgt}(\vec{x}; \vec{r}^{(s)}))$. Clearly $\Pr[h_{\ORgt}(\vec{x}; \vec{r}^{(1)},\dots, \vec{r}^{(s)}) = \ORgt(\vec{x})] \geq 1 - 2^{-s}$.
+% Say that you replace every OR with $\hat{g}_{\func{or}}(x_1, \dots, x_m; r_1, \dots r_m) = \sum_i x_i\cdot r_i$ and that we can do this with the appropriate gates. The probability of success is 1/2. 
+\end{proof}
+
+In the construction above, we built $C'$ by replacing every gate $g \in \func{S}_{\omega(1)}(C)$ (as in Definition \ref{def:ACztq}) with a (randomized) gadget $G_g$. The output of each these gadgets will be useful in order to keep the low complexity of the decryption algorithm in our next homomorphic encryption scheme. We shall use an ``expanded'' version of $C'$, the multi-output circuit $C'_{exp}$. 
+
+\def\GenApproxFun{\function{GenApproxFun}}
+\def\SampleAuxRandomness{\function{SampleAuxRandomness}}
+\def\EvalApprox{\function{EvalApprox}}
+
+\begin{definition}[Expanded Approximating Function]
+\label{def:exp-approx-fun}
+Let $C$ be a circuit in $\ACztq$ and let $C'$ be a circuit as in the proof of Lemma \ref{lemma:razborov}.
+We denote by $G_g(\vec{x}; \vec{r})$  the output of the gadget $G_g$ when $C'$ is evaluated on inputs $(\vec{x}; \vec{r})$. On input $(\vec{x}; \vec{r})$, the multi-output circuit $C'_{exp}$  output $C'(\vec{x};\vec{r})$ together with the outputs of the $O(1)$ gadgets $G_g$ for each $g \in \func{S}_{\omega(1)}(C)$. Finally, we denote with $\GenApproxFun$ the algorithm computeing a representation of $C'_{exp}$ from a representation  of $C$.
+\end{definition}
+
+\def\auxf{\mathbf{aux}_f}
+
+
+\begin{lemma}
+\label{lemma:decode-approx}
+
+%\label{lemma:}
+There exists a deterministic algorithm $\func{DecodeApprox}$  computable in $\ACzt$ with the following properties. 
+For every circuit $C$ in $\ACztq$ computing the function $f$, there exists $\auxf \in \bit^{O(1)}$ such that for all $\vec{x} \in \bit^n$
+$$\Pr[\func{DecodeApprox}(C'_{exp}(\vec{x}; \vec{r}^{(1)}), \dots, C'_{exp}(\vec{x}; \vec{r}^{(s)}) ) = C(\vec{x})] \geq 1 - \negl(s) \, ,$$
+where $C'$ is an approximating circuit as in Lemma \ref{lemma:razborov}, the probability is taken over  the uniformly distributed bit vectors $\vec{r}^{(i)}$-s for $i \in [s]$, $C'_{exp}$ is as in Definition \ref{def:exp-approx-fun}.
+Finally, there exists a function $\func{GenDecodeAux}$ that computes $\auxf$ from a representation of $C$ in $\NC^0$.
+% \vec{y}^{(1)},\dots, \vec{y}^{(s)}, z^{(1)}, \dots, z^{(s)}
+% $\vec{y}^{(i)} \eqdef \{ G_g(\vec{x}, \vec{r}^{(i)}) : g \in \func{S}_{\omega(1)}(C) \}$ 
+\end{lemma}
+\begin{proof}
+Before we provide a construction for $\func{DecodeApprox}$, let us observe how we can amplify the error of $C'$.  Consider for example a gadget $\hat{g}_{\ORgt}$ constructed as in the proof of Lemma \ref{lemma:razborov}, approximating  an $\ORgt$ gate in $C$.
+If we repeat the execution of the gadget $s$ times, every time using fresh random bit vectors $\vec{r}'^{(1)},\dots, \vec{r}'^{(s)}$, then we can correctly compute $\ORgt(\vec{x}')$ with overwhelming probability. Define $h_{\ORgt}(\vec{x}'; \vec{r}'^{(1)},\dots, \vec{r}'^{(s)}) \eqdef \ORgt(\hat{g}_{\ORgt}(\vec{x}; \vec{r}'^{(1)}), \dots, \hat{g}_{\ORgt}(\vec{x}'; \vec{r}'^{(s)}))$. Clearly $\Pr[h_{\ORgt}(\vec{x}'; \vec{r}'^{(1)},\dots, \vec{r}'^{(s)}) = \ORgt(\vec{x}')] \geq 1 - 2^{-s}$.
+In a similar fashion we can define  $h_{\ANDgt}(\vec{x}'; \vec{r}'^{(1)},\dots, \vec{r}'^{(s)}) \eqdef \ANDgt(\hat{g}_{\ANDgt}(\vec{x}; \vec{r}'^{(1)}), \dots, \hat{g}_{\ANDgt}(\vec{x}'; \vec{r}'^{(s)}))$. It holds that $\Pr[h_{\ANDgt}(\vec{x}'; \vec{r}'^{(1)},\dots, \vec{r}'^{(s)}) = \ANDgt(\vec{x}')] \geq 1 - 2^{-s}$.
+
+If $C'$ were composed by a single gadget $\hat{g}_{\ORgt}$ (resp. $\hat{g}_{\ANDgt}$) we could just let $\func{DecodeApprox}$ be the same as $h_{\ORgt}$ (resp. $h_{\ANDgt}$) and we would be done. To deal with multiple gadgets, however, we need a more general approach. For sake of presentation, assume there are only gadgets approximating $\ORgt$ gates and let us temporarily ignore $\auxf$. We can write each of the $C'_{exp}(\vec{x}; \vec{r}^{(j)})$ input to $\func{DecodeApprox}$ as $(z^{(j)}, y_1^{(j)}, \dots, y_K^{(j)})$ where $K \eqdef |\func{S}_{\omega(1)}|$, $z^{(j)}$ is the output of $C'(\vec{x}, \vec{r}^{(j)})$ and $y_i^{(j)}$ is the output of the $i-th$ gadget when provided random bits from $\vec{r}^{(j)}$. Define $y_i^*$ as $y_i^* \eqdef \ORgt(y_i^{(1)}, \dots,y_i^{(s)})$. 
+We then let the output of $\func{DecodeApprox}$ be $z^{j^*}$ where $j^*$ is such that for all $i \in [K]$ it is the case that $y_i^{j^*} = y_i^*$. By the union bound the probability of $z^{j^*} \not = C(\vec{x})$ is upper bounded by $K\cdot 2^{-s}$, which is negligible since $K = O(1)$. 
+To generalize this same approach to the scenario including both $\ORgt$ and $\ANDgt$ gadgets we let the string $\auxf$ include information on the type of gates in $\func{S}_{\omega(1)}$. This way  $\func{DecodeApprox}$ can use $\hat{g}_{\ORgt}$ or $\hat{g}_{\ANDgt}$ accordingly.
+Clearly the  representation of $\auxf$ can be computed by a representation of $C$ in $\NC^0$.
+\end{proof}
+
+
+%The result above allows 
+
+\subsubsection{Homomorphic Evaluations of $\ACztq$ Circuits}
+
+Below is a variation of our homomorphic scheme that can evaluate all circuits in $\ACztq$ in $\ACzt$. This time, in order to evaluate circuit $C$, we perform several homomorphic evaluations of the randomized circuit $C'$ (as in Lemma \ref{lemma:razborov}). To obtain the plaintext output of $C$ we can decrypt all the ciphertext outputs and take the majority result. Notice that this scheme is still compact.
+As we use a randomized approach to evaluate $f$, the scheme $\HEp$ will be implicitly parametrized by a soundness parameter $s$. Intuitively, the probability of a function $f$ being evaluated incorrectly will be upper bounded by $2^{-s}$.
 
 %To simplify notation, in the following paragraphs and in Section \ref{sec:vc} we 
 %will slightly abuse the syntax for homomorphic encryption schemes and consider 
 %both the public key and evaluation key as part of $\pk$.
 
 
-
-\def\GenApproxFun{\function{GenApproxFun}}
-\def\SampleAuxRandomness{\function{SampleAuxRandomness}}
-\def\EvalApprox{\function{EvalApprox}}
-
-We define the following auxiliary functions for our scheme:
+For our new scheme we will use the following auxiliary functions:
 \begin{definition}[Auxiliary Functions for $\HEp$]
 \label{def:aux-he-fns}
 \item Let $f: \bit^t \to \bit$ be represented as an arithmetic circuit as in $\HE$ and $\pk$ a public key for the scheme $\HE$ that includes the evaluation key. Let $s$ be a soundness parameter.
-We denote by  $f'$ the randomized function approximating $f$ as in Lemma \ref{lemma:razborov}; let $t' = O(t)$ be the number of additional random bits $f'$ will take in input.
+We denote by  $f'$ the expanded randomized function approximating $f$ as in Definition \ref{def:exp-approx-fun}; let $t' = O(t)$ be the number of additional random bits $f'$ will take in input.
 \begin{itemize}
 \item $\GenApproxFun(f):$
-\begin{enumerate}
-\item Computes and returns the representation of the approximating function $f'$.
-\end{enumerate}
+\begin{itemize}
+\item Computes and returns the representation of the expanded approximating function $f'$ as in Definition \ref{def:exp-approx-fun}.
+\end{itemize}
+\item $\func{GenDecodeAux}(f):$
+\begin{itemize}
+\item Computes and returns the auxiliary string $\auxf$ from a representation of $f$ as in Lemma \ref{lemma:decode-approx}.
+\end{itemize}
 \item $\SampleAuxRandomness_s(\pk, f'):$
 \begin{enumerate}
-\item We assume  $f'$ is the randomized function approximating $f$ as in Lemma \ref{lemma:razborov}; let $t' = O(t)$ be the number of additional random bits $f'$ will take in input.
+\item We assume  $f'$ is the expanded randomized function approximating $f$ as in Definition \ref{def:exp-approx-fun}; let $t' = O(t)$ be the number of additional random bits $f'$ will take in input.
 \item Sample $s\cdot t'$ random bits $r^{(1)}_1,\dots,r^{(1)}_{t'}, \dots, r^{(s)}_1,\dots,r^{(s)}_{t'}$;
 \item Compute $\hatraux \eqdef \{  \hat{r}^{(i)}_j \ | \ \hat{r}^{(i)}_j \gets \HEEnc_{\pk}(r^{(i)}_j), i \in [s], j \in [t'] \} $;
 \item Output $\hatraux$.
@@ -52,16 +112,15 @@ We denote by  $f'$ the randomized function approximating $f$ as in Lemma \ref{le
 \item $\EvalApprox_s(\pk, f', c_1,\dots,c_t, \hatraux):$
 \begin{enumerate}
 \item Let $\hatraux = \{  \hat{r}^{(i)}_j \ | \  i \in [s], j \in [t'] \} $.
-\item For $i \in [s]$, compute $c^{\text{out}}_i \gets \HEEval_{\evk}(f', c_1, \dots c_t, \hat{r}^{(i)}_1, \dots, \hat{r}^{(i)}_{t'})$ .
-\item Output $\vec{c} = (c^{\text{out}}_1, \dots, c^{\text{out}}_{s})$
+\item For $i \in [s]$, compute $\vec{c}^{\text{out}}_i \gets \HEEval_{\evk}(f', c_1, \dots c_t, \hat{r}^{(i)}_1, \dots, \hat{r}^{(i)}_{t'})$;
+\item Output  $\vec{c} = (\vec{c}^{\text{out}}_1, \dots, \vec{c}^{\text{out}}_{s})$\footnote{Recall that the output of the expanded approximating function $f'$ is a bit string and thus each $\vec{c}^{\text{out}}_i$ encrypts a bit string.}.
 \end{enumerate}
-
 \end{itemize}
 \end{definition}
 
 \bigskip
 
-The new scheme $\HEp$ with soundness parameter $s$ follows.
+The new scheme $\HEp$ with soundness parameter $s$ follows. Notice that the evaluation function outputs an auxiliary string $\auxf$ together with the proper ciphertext $\vec{c}$. This is necessary to have a correct decoding in decryption phase.
 \begin{framed}
 \begin{itemize}
 \item Key generation and encryption are the same as in  $\HE$.
@@ -69,12 +128,16 @@ The new scheme $\HEp$ with soundness parameter $s$ follows.
 \begin{enumerate}
 \item Compute $f' \gets \GenApproxFun(f)$;
 \item Compute $\hatraux \gets \SampleAuxRandomness_s(\pk, f')$;
-\item Compute $\vec{c} \gets \EvalApprox_s(\pk, f', c_1,\dots, c_t, \hatraux)$;
-\item Output $\vec{c} = (c^{\text{out}}_1, \dots, c^{\text{out}}_{s})$.
+\item $\auxf \gets \func{GenDecodeAux}(f)$;
+\item $\vec{c} \gets \EvalApprox_s(\pk, f', c_1,\dots, c_t, \hatraux)$;
+\item Output $(\vec{c}, \auxf)$.
+%\item Output $\vec{c}$. % = (\vec{c}^{\text{out}}_1, \dots, \vec{c}^{\text{out}}_{s})$.
 \end{enumerate}
-\item $\HEpDec_{\sk}(\vec{c})$:
+\item $\HEpDec_{\sk}(\vec{c} = (\vec{c}^{\text{out}}_1, \dots, \vec{c}^{\text{out}}_{s}), \auxf)$:
 \begin{enumerate}
-\item Decrypt all $c^{\text{out}}_i$-s in $\vec{c}$ and output the majority bit.
+%\item $\func{DecodeApprox}_f \gets \func{GenDecodeApproxFun}(\auxf)$
+\item Let $\vec{y}^{\text{out}}_i \gets \HEDec_{\sk}(\vec{c}^{\text{out}}_i)$ for $i \in [s]$;
+\item Output $\func{DecodeApprox}_f(\vec{y}^{\text{out}}_1, \dots, \vec{y}^{\text{out}}_s)$.
 \end{enumerate}
 \end{itemize}
 \end{framed}
@@ -83,11 +146,11 @@ The new scheme $\HEp$ with soundness parameter $s$ follows.
 
 \begin{remark}
 Given in input a function $f$ not necessarily of constant multiplicative depth,  $\GenApproxFun$ returns a function $f'$ of constant multiplicative depth that approximates it.
-As stated in Lemma \ref{lemma:razborov}, $\GenApproxFun$ is computable in uniform $\NC^1$. Notice that this is the only component of $\HEpEval$ that is not computable in $\ACztcm$. In fact, $\SampleAuxRandomness$ is clearly in $\ACztcm$ and $\EvalApprox$ makes parallel invocations to $\HEEval$ which is computable in $\ACztcm$ when provided in input a function in $\ACztcm$ (Theorem \ref{thm:he-homomorphic}). This fact will be useful when showing the completeness of our verifiable computation schemes in Section \ref{sec:vc}.
+As stated in Lemma \ref{lemma:razborov}, $\GenApproxFun$ is computable in $\NC^0$ and so is $\func{GenDecodeAux}$. The function $\SampleAuxRandomness$ in $\ACztcm$ and $\EvalApprox$ makes parallel invocations to $\HEEval$ which is computable in $\ACztcm$ when provided in input a function in $\ACztcm$ (Theorem \ref{thm:he-homomorphic}). This fact will be useful when showing the completeness of our verifiable computation schemes in Section \ref{sec:vc}.
 \end{remark}
 
 \begin{theorem}
 \label{thm:hep-homomorphic}
 Let $\ACztq$ the family of circuits in $\ACzt$ with quasi-constant multiplicative depth as in Definition \ref{def:quasi-constant}.
-The scheme $\HEp$ above with soundness parameter $s = \Omega(\lambda)$ is leveled $\ACztq$-homomorphic. Key generation and encryption can be computed in $\ACzt$. Evaluation is computable in (uniform) $\NC^1$. Decryption is computable in $\ACzt$ with a single, unbounded fan-in majority gate at the root.
+The scheme $\HEp$ above with soundness parameter $s = \Omega(\lambda)$ is leveled $\ACztq$-homomorphic. Key generation, encryption and evaluation can be computed in $\ACztcm$. Decryption is computable in $\ACzt$.
 \end{theorem}
