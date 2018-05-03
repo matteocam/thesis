@@ -1,0 +1,38 @@
+
+% Overview and motivation
+
+The problem of efficiently checking the correctness of a computation performed by an untrusted party has been central in Complexity Theory for the last 30 years since the introduction of Interactive Proofs by Babai and Goldwasser, Micali and Rackoff \cite{babai,gmr}. 
+
+{\sf Verifiable Outsourced Computation} is now a very active research area in Cryptography and Network Security (see \cite{wb15} for a survey) with the aim to design protocols where it is impossible (under suitable cryptographic assumptions) for a provider to ``cheat" in the above scenarios. While much progress has been done in this area, we are still far from solutions that can be deployed in practice. 
+
+Part of the reason is that Cryptographers consider a very strong adversarial model that prevents {\sf any} adversary from cheating. A different approach is to restrict ourselves to {\em rational adversaries}, whose motivation is not just to disrupt the protocol or computation, but simply to maximize a well defined utility function (e.g. profit).
+%\subsection{Rational Proofs}
+
+A different approach is to consider a model where ``cheating" might actually be possible, but the provider would have no motivation to do so. In other words while cryptographic protocols prevent {\sf any} adversary from cheating, one considers protocols that work against {\sf rational} adversaries whose motivation is to maximize a well defined utility function. 
+
+We investigate this approach through two theoretical ``lenses'': \textit{(i)} \textit{rational proofs}, a variant of interactive proofs where provers lose (in economic terms) whenever they attempt to ``prove'' a false statement; \textit{(ii)} \textit{fine-grained protocols}, a model where parties's resources are assumed to be limited \footnote{In a more specific sense than the usual ``probabilistic polynomial time''.} and cheating is possible only through a larger amount of resources (e.g., cheating requires time $\lambda^3$, for some parameter $\lambda$, but all participating parties are assumed to be able to run in time at most $\lambda^2$). The connections between rationality and the latter model will be explored in the subsequent sections and in Chapter $\ref{chap:FG}$.
+
+\subsection{Rational Proofs}
+
+\input{intro-rp}
+
+
+\subsection{Fine-Grained Verifiable Computation}
+
+\input{FG-VC/introduction}
+
+\section{Notation and Common Preliminaries}
+
+For a distribution $D$, we denote by $x \gets D$ the fact that $x$ is being sampled according to $D$.
+We remind the reader that an ensemble $\mathcal{X} = \ens{X}$ is a family of  probability distributions over a family of domains $\mathcal{D}=\ens{D}$. We say two ensembles $\mathcal{D} = \ens{D}$ and $\mathcal{D}' = \ens{D'}$ are statistically indistinguishable if $\frac{1}{2}\Sum_x |D(x)-D'(x)| < \negl(\lambda)$. 
+
+% TODO: Add parts on circuits?
+
+\section{Thesis Roadmap} 
+This thesis combines research done in several works.
+\textbf{Chapter \ref{chap:RP-expr}} contains results on rational proofs for subclasses of polynomial-time computations in the model of Azar and Micali~\cite{am}. 
+\textbf{Chapter \ref{chap:RP-seq}} contains a critique of the original model of raitonal proofs, definitions for sequential composability and related results. The results of these two chapters are joint work with Rosario Gennaro, originally presented in \cite{cg15} and \cite{cg17} (notice that each of the two chapters do not correspond to each of the two works).
+\textbf{Chapter \ref{chap:FG}} contains results on homomorphic encryptions and delegating computation in a fine-grained model where adversaries are $\NC^1$ circuits.
+ The results in this chapter are joint work with Rosario Gennaro, originally presented in \cite{cg18}.
+
+

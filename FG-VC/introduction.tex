@@ -1,11 +1,11 @@
 %\section{Introduction}
 
-Historically, Cryptography has been used to protect information (either in transit or stored) from unauthorized access. One of the most important developments in Cryptography in the last thirty years, has been the ability to protect not only information but also the {\em computations} that are performed on data that needs to be secure. Starting with the work on secure multiparty computation \cite{mpc}, and continuing with ZK proofs \cite{zk}, and more recently Fully Homomorphic Encryption \cite{gentry}, verifiable outsourcing computation \cite{muggles,ggp10}, SNARKs \cite{qap,snark-linear} and obfuscation \cite{garg2016candidate} we now have cryptographic tools that protect the secrecy and integrity not only of data, but also of the programs which run on that data. 
+%Historically, Cryptography has been used to protect information (either in transit or stored) from unauthorized access. One of the most important developments in Cryptography in the last thirty years, has been the ability to protect not only information but also the {\em computations} that are performed on data that needs to be secure. Starting with the work on secure multiparty computation \cite{mpc}, and continuing with ZK proofs \cite{zk}, and more recently Fully Homomorphic Encryption \cite{gentry}, verifiable outsourcing computation \cite{muggles,ggp10}, SNARKs \cite{qap,snark-linear} and obfuscation \cite{garg2016candidate} we now have cryptographic tools that protect the secrecy and integrity not only of data, but also of the programs which run on that data. 
 
-Another crucial development in Modern Cryptography has been the adoption of a more ``fine-grained" notion of computational hardness and security. The traditional cryptographic approach modeled computational tasks as ``easy" (for the honest parties to perform) and ``hard" (infeasible for the adversary). Yet we have also seen a notion of {\em moderately hard} problems being used to attain certain security properties. The best example of this approach might be the use of moderately hard inversion problems used in blockchain protocols such as Bitcoin. Although present in many works since the inception of Modern Cryptography, this approach was first 
+One of the crucial developments in Modern Cryptography has been the adoption of a more ``fine-grained" notion of computational hardness and security. The traditional cryptographic approach modeled computational tasks as ``easy" (for the honest parties to perform) and ``hard" (infeasible for the adversary). Yet we have also seen a notion of {\em moderately hard} problems being used to attain certain security properties. The best example of this approach might be the use of moderately hard inversion problems used in blockchain protocols such as Bitcoin. Although present in many works since the inception of Modern Cryptography, this approach was first 
 formalized in a work of Dwork and Naor \cite{dn-spam}. 
 
-In this paper we consider the following model (which can be traced back to the seminal paper by Merkle \cite{merkle} on public key cryptography). Honest parties will run a protocol which will cost\footnote{
+In the second part of this thesis (Chapter \ref{chap:FG}) we consider the following model (which can be traced back to the seminal paper by Merkle \cite{merkle} on public key cryptography). Honest parties will run a protocol which will cost\footnote{
 We intentionally refer to it as ``cost" to keep the notion generic. For concreteness one can think of $C$ as the running time required to run the protocol.} 
 them $C$ while an adversary who wants to compromise the security of the protocol will incur a $C'=\omega(C)$ cost. Note that while $C'$ is asymptotically larger than $C$, it might still be a feasible cost to incur -- the only guarantee is that it is 
 substantially larger than the work of the honest parties. For example in Merkle's original proposal for public-key cryptography the honest parties can exchange a key in time $T$ but the adversary can only learn the key in time $T^2$. Other examples include primitives introduced by Cachin and
@@ -15,9 +15,13 @@ the cost is the space and parallel time complexity of the parties, respectively.
 Recently there has been renewed interest in this model. Degwekar et al. \cite{fgcrypto} show how to construct certain cryptographic 
 primitives in $\NC^1$ [resp. $\AC^0$] which are secure against all adversaries in $\NC^1$ [resp. $\AC^0$]. In conceptually related work Ball et al. \cite{fghardness} present computational problems which are ``moderately hard'' on average, if they are moderately hard in the worst case, a useful property for such problems to be used as cryptographic primitives. 
 
-The goal of this paper is to initiate a study of {\em Fine Grained Secure Computation}. By doing so we connect these two major developments in Modern Cryptography. The question we ask is if it is possible to construct {\em secure computation primitives} that are secure against ``moderately complex" adversaries. We answer this question in the affirmative, by presenting definitions and constructions for the task of Fully Homomorphic Encryption and Verifiable Computation in the fine-grained model. We also present two application scenarios for our model: i) hardware chips that prove their own correctness and ii) protocols against rational adversaries including potential solutions to the {\em Verifier's Dilemma} in smart-contracts transactions such as Ethereum. 
+The goal of this work is to initiate a study of {\em Fine Grained Secure Computation}. The question we ask is if it is possible to construct {\em secure computation primitives} that are secure against ``moderately complex" adversaries. We answer this question in the affirmative, by presenting definitions and constructions for the task of Fully Homomorphic Encryption and Verifiable Computation in the fine-grained model. We also present two application scenarios for our model: i) hardware chips that prove their own correctness and ii) protocols against rational adversaries including potential solutions to the {\em Verifier's Dilemma} in smart-contracts transactions such as Ethereum.
 
-\subsection{Our Results}
+\subsubsection{Rationality and Fine-Grained Secure Computation.}
+In Chapter \ref{chap:RP-seq} we studied ``sequentially composable'' rational protocols, i.e. protocols where the reward is strictly connected, not just to the correctness of the result, but to the amount of work done by the prover. Our work on Fine-Grained Secure Computation complements those results, which only apply to a limited class of computations. In fact, a protocol secure in a fine-grained sense is also a sequentially composable rational proof:
+consider for example a protocol where the prover collects the reward only if he produces a proof of correctness of the result. Assume that the cost to  produce a valid proof for an incorrect result, is higher than just computing the correct result and the correct proof. Then obviously a rational prover will always answer correctly, because the above strategy of fast incorrect answers will not work anymore. 
+
+\subsection{Contributions for Fine-Grained Secure Computation}
 
 Our starting point is the work in \cite{fgcrypto} and specifically their public-key encryption scheme secure against $\NC^1$ circuits. Recall that $\ACzt$ is the class of Boolean circuits with constant depth, unbounded fan-in, 
 augmented with parity gates. If the number of $\function{AND}$ gates of non constant fan-in is constant we say that the circuit belongs to the class $\ACztq \subset \ACzt$.
@@ -62,7 +66,7 @@ Finally, we compare our results with the information-theoretic approaches (mostl
 % Interactive proofs\footnote{We stress again: with \textit{information-theoretic} soundness.} with verification in constant depth are discussed in \cite{gghkr07} (where the verifier is in 
 % $\mathsf{NC}^0$). We point out that, besides achieving non-interactive, constant-depth verification, our schemes also have a verifier running in linear {\em sequential} time in the input/output size (i.e. in size $O(\lambda^c(n+m))$ where $\lambda$ is the security parameter, $n$ the input and $m$ the output sizes of the function being outsourced). 
 
-\subsection{Overview of our Techniques}
+\subsection{Technical Highlights}
 
 In \cite{fgcrypto} the authors already point out that their scheme is 
 linearly homomorphic. We make use of the {\em re-linearization} technique 
@@ -94,23 +98,20 @@ Verifiable Computation (VC) can be used to verify the execution of hardware chip
 
 When working in hardware, however, one may not need the full power of cryptographic protection against {\em any} malicious attacks since one could bound the computational power of the malicious chip. The bound could be obtained by making (reasonable and evidence-based) assumptions on how much computational power can fit in a given chip area. For example one could safely assume that a malicious chip can perform at most a constant factor more work than the original function because of the basic physics of the size and power constraints. In other words, if $C$ is the cost of the honest Server in a VC protocol, then in this model the adversary is limited to $O(C)$-cost computations, and therefore a protocol that guarantees that succesful cheating strategies require $\omega(C)$ cost, will suffice. This is exactly the model in our paper. Our results will apply to the case in which we define the cost as the depth (i.e. the parallel time complexity) of the computation implemented in the chip. 
 
-\medskip
-\noindent
-{\sc Rational Proofs.}
-The problem above is related to the notion of composable Rational Proofs defined in \cite{cg15}. In a Rational Proof (introduced by Azar and Micali~\cite{am,am1}), given a function $f$ and an input $x$, the Server returns the value $y=f(x)$, and (possibly) some auxiliary information, to the Client. The Client in turn 
-pays the Server for its work with a reward based on the transcript exchanged with the server and some randomness chosen by the client.  The crucial 
-property is that this reward is maximized in expectation when the server 
-returns the correct value $y$. Clearly a {\em rational} prover who is only interested 
-in maximizing his reward, will always answer correctly. 
+%\medskip
+%\noindent
+%{\sc Rational Proofs.}
+%The problem above is related to the notion of composable Rational Proofs defined in \cite{cg15}. In a Rational Proof (introduced by Azar and Micali~\cite{am,am1}), given a function $f$ and an input $x$, the Server returns the value $y=f(x)$, and (possibly) some auxiliary information, to the Client. The Client in turn 
+%pays the Server for its work with a reward based on the transcript exchanged with the server and some randomness chosen by the client.  The crucial 
+%property is that this reward is maximized in expectation when the server 
+%returns the correct value $y$. Clearly a {\em rational} prover who is only interested 
+%in maximizing his reward, will always answer correctly. 
+%
+%The authors of \cite{cg15} 
+%show however that the definition of Rational Proofs in \cite{am,am1} does not satisfy a basic compositional property needed for the case in which many computations are outsourced to many servers who compete with each other for rewards (e.g. the case of volunteer computations \cite{seti}). 
+%A ``rational proof" for the single-proof setting may no longer be rational when a large number of ``computation problems" are outsourced. %  Assume that solving each problem takes time $T$. Then in a time interval of length $T$, the honest prover can only solve and receive the reward for a single problem. On the other hand a dishonest prover, can answer up to $T$ problems, for example by answering at random, a strategy that takes $O(1)$ time. 
+%If one can produce $T$ ``random guesses" to problems in the time it takes to solve 1 problem correctly,  it may be preferable to guess! That's because even if each individual reward for an incorrect answer is lower than the reward for a correct answer, the total reward of $T$ incorrect answers might be higher (and this is indeed the case for some of the protocols presented in \cite{am,am1}). 
 
-The authors of \cite{cg15} 
-show however that the definition of Rational Proofs in \cite{am,am1} does not satisfy a basic compositional property needed for the case in which many computations are outsourced to many servers who compete with each other for rewards (e.g. the case of volunteer computations \cite{seti}). 
-A ``rational proof" for the single-proof setting may no longer be rational when a large number of ``computation problems" are outsourced. %  Assume that solving each problem takes time $T$. Then in a time interval of length $T$, the honest prover can only solve and receive the reward for a single problem. On the other hand a dishonest prover, can answer up to $T$ problems, for example by answering at random, a strategy that takes $O(1)$ time. 
-If one can produce $T$ ``random guesses" to problems in the time it takes to solve 1 problem correctly,  it may be preferable to guess! That's because even if each individual reward for an incorrect answer is lower than the reward for a correct answer, the total reward of $T$ incorrect answers might be higher (and this is indeed the case for some of the protocols presented in \cite{am,am1}). 
-
-The question (only partially answered in \cite{cg15,cg17} for a limited class of computations) is to design protocols where the reward is strictly connected, not just to the correctness of the result, but to the amount of work done by the prover. Consider for example a protocol where the prover collects the reward only if he produces a proof of correctness of the result. Assume that the cost to  produce a valid proof for an incorrect result, is higher than just computing the correct result and the correct proof. Then obviously a rational prover will always answer correctly, because the above strategy of fast incorrect answers will not work anymore. 
-
-While the application is different, the goal is the same as in the previous verifiable hardware scenario. 
 
 \medskip
 \noindent

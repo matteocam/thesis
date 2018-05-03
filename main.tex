@@ -3,6 +3,7 @@
 
 \documentclass[justified,nobib]{tufte-book}
 
+
 %\input{FG-VC/llncs.cls}
 
 \usepackage{draftwatermark}
@@ -13,9 +14,13 @@
 \usepackage{enumerate, amssymb}
 %\onehalfspacing % XXX
 
-\hypersetup{colorlinks}
-\setcounter{secnumdepth}{1} 
-% turn on numbering for parts and chapters 
+\hypersetup{colorlinks = true,
+linkcolor = NavyBlue,
+urlcolor  = NavyBlue,
+citecolor = NavyBlue,
+anchorcolor = NavyBlue}
+
+
 
 \usepackage{amsthm, amsmath, amssymb}
 \usepackage{setspace, graphicx, enumerate}
@@ -35,7 +40,6 @@
 
 % AMS Theorem Setup
 % User Macro Setup
-\usepackage{hyperref}
 
 \usepackage{lgrind}
 \usepackage{graphicx}
@@ -190,6 +194,44 @@ keys]{cryptocode}
 
 \input{mycommands}
 
+\newcommand{\matteo}[1]{{\color{red}{#1 -- MC}}}
+
+\setcounter{secnumdepth}{2}
+
+\usepackage{xcolor}
+\definecolor{MyOrange}{RGB}{232,108,20}
+
+
+% chapter format
+\titleformat{\chapter}%
+{\Huge\rmfamily\itshape\color{NavyBlue}}% format applied to label+text
+{\llap{\colorbox{NavyBlue}{\parbox{1.5cm}{\hfill\itshape\Huge\color{white}\thechapter}}}}% label
+{1em}% horizontal separation between label and title body
+{}% before the title body
+[]% after the title body
+
+% section format
+%\setlength{\titlewidth}{0.5\textwidth}
+
+\titleformat{\section}%
+{\normalfont\Large\itshape\color{MyOrange!96!black}}% format applied to label+text
+{\llap{\colorbox{MyOrange!96!black}{\parbox{1.5cm}{\hfill\color{white}\thesection}}}}% label
+{1em}% horizontal separation between label and title body
+{}% before the title body
+[]% after the title body
+
+\definecolor{darkslategray}{rgb}{0.18, 0.31, 0.31}
+
+% subsection format
+\titleformat{\subsection}%
+{\normalfont\Large\itshape\color{darkslategray}}% format applied to label+text
+{\llap{\color{darkslategray}\thesubsection}}% label
+{1em}% horizontal separation between label and title body
+{}% before the title body
+[]% after the title body
+% turn on numbering for parts and chapters 
+
+
 \begin{document}
 	
 
@@ -203,21 +245,22 @@ keys]{cryptocode}
 \include{contents}
 \pagestyle{fancy}
 
+\pagenumbering{arabic}
 \chapter{Introduction}
 \include{synopsis/main}
 
 %\chapter{Preliminaries}
 %\include{preliminaries/preliminaries}
 
-\chapter{Rational Proofs for Subclasses of $\P$}
+\chapter[Rational Proofs for Subclasses of $\P$]{Rational Proofs\\for Subclasses of $\ \P$}
 \label{chap:RP-expr}
 \include{paper-rp-2/main}
 
-\chapter{Rational Proofs for Costly Multiple Delegations}
+\chapter[Rational Proofs for Costly Multiple Delegations]{Rational Proofs for Costly\\Multiple Delegations}
 \label{chap:RP-seq}
 \include{paper-rp-1/paper}
 
-\chapter{Fine-Grained Verifiable Computation}
+\chapter[Fine-Grained Verifiable Computation]{Fine-Grained\\Verifiable Computation}
 \label{chap:FG}
 \include{FG-VC/main}
 

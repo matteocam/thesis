@@ -19,11 +19,11 @@ The work by Chen et al. \cite{chen2016rational} focuses on rational proofs with 
 
 
 
-\subsection{Our Results}
+\subsection{Contributions for Rational Proofs}
 
-\subsubsection{Expressivity of Rational Proofs.}
-This paper presents new protocols for the verification of {\em space-bounded polytime computations} against a rational adversary. More specifically consider a language $L \in \DTISP(T(n), S(n))$, i.e. recognized by a deterministic Turing Machine $M_L$ which runs in time $T(n)$ and space $S(n)$. 
-We construct a protocol where a rational prover can
+\subsubsection{Expressivity.}
+We present new protocols for the verification of {\em space-bounded polytime computations} against a rational adversary. More specifically, consider a language $L \in \DTISP(T(n), S(n))$, i.e. recognized by a deterministic Turing Machine $M_L$ which runs in time $T(n)$ and space $S(n)$. 
+In Section \ref{sec:rp-dtisp} we construct a protocol where a rational prover can
 convince the verifier that $x \in L$ or $x \notin L$ with the following properties: 
 \begin{itemize}
 	\item The verifier runs in time $O(S(n) \log n)$
@@ -31,10 +31,10 @@ convince the verifier that $x \in L$ or $x \notin L$ with the following properti
 	\item The prover simply runs $M_L(x)$ 
 	%and stores all the intermediate configurations (i.e. requires space $O(S(n) T(n))$
 \end{itemize}
-Our protocol can be proven to correctly incentivize a prover in {\bf both} the stand-alone model of \cite{am} and the sequentially composable definition of \cite{cg15}. This is the first protocol which is sequentially composable for a well-defined complexity class. 
+%Our protocol can be proven to correctly incentivize a prover in {\bf both} the stand-alone model of \cite{am} and the sequentially composable definition of \cite{cg15}. This is the first protocol which is sequentially composable for a well-defined complexity class. 
 
 For the case of ``real-life" computations (i.e. poly-time computations verified by a ``super-efficient" verifier) we 
-note that for computations in sublinear space our general results yields a protocol in which the verifier is sublinear-time. More specifically, we introduce the first rational proof for $\SC$ (also known as $\DTISP(\poly(n), \polylog(n))$) with polylogarithmic verification and logarithmic rounds. 
+note that for computations in sublinear space our general results yields a protocol in which the verifier is sublinear-time. Our protocols is the first rational proof for $\SC$ (also known as $\DTISP(\poly(n), \polylog(n))$) with polylogarithmic verification and logarithmic rounds. 
 %Moreover, our results provide the first efficient rational proof for the 
 %non-deterministic class $\NSC = \NTISP(\poly(n), \polylog(n) )$ . 
 
@@ -46,7 +46,7 @@ We present several extensions of our main result:
 	
 	\item Our main protocol can be extended to the case of space-bounded randomized computations using Nisan's 
 	pseudo-random generator \cite{nisan1992pseudorandom} to derandomize the computation. 
-	\item We also present a different protocol that works for BPNC (bounded error randomized NC) where the Verifier runs in polylog time (note that this class is not covered by our result since we do not know how to express NC with a polylog-space computation). This protocol uses in a crucial way a new {\em composition theorem} for rational proofs which we present in this paper and can be of independent interest. 
+	\item We also present a different protocol that works for BPNC (bounded error randomized NC) where the Verifier runs in polylog time (note that this class is not covered by our result since we do not know how to express NC with a polylog-space computation). This protocol uses in a crucial way a new {\em composition theorem} for rational proofs presented in this work and can be of independent interest. 
 	\item Finally, we present lower bounds (i.e. conditional impossibility results) for Rational Proofs for various complexity classes.
 \end{itemize}
 
@@ -57,10 +57,14 @@ Motivated by the problem of volunteer computation, our first
 result is to show that the definition of Rational Proofs in \cite{am,am1} does not satisfy a basic compositional property which would make them applicable 
 in that scenario. 
 Consider the case where a large number of "computation problems" are outsourced. Assume that solving each problem takes time $T$. Then in a time interval of length $T$, the honest prover can only solve and receive the reward for a single problem. On the other hand a dishonest prover, can answer up to $T$ problems, for example by answering at random, a strategy that takes $O(1)$ time. To assure that answering correctly is a rational strategy, we 
-need that at the end of the $T$-time interval the reward of the honest prover be larger than the reward of the dishonest one. But this is not necessarily the case: for some of the protocols in \cite{am,am1,ratargs} we can show that a "fast" incorrect answer is more remunerable for the prover, by allowing him to solve more problems and collect more rewards.
+need that at the end of the $T$-time interval the reward of the honest prover be larger than the reward of the dishonest one. But this is not necessarily the case: for some of the protocols in \cite{am,am1,ratargs} we can show that a ``fast" incorrect answer is more remunerable for the prover, by allowing him to solve more problems and collect more rewards.
 
 The next questions, therefore, was to come up with a definition and a protocol that achieves rationality both in the stand-alone case, and in the composition
 described above.  We first present an enhanced definition of Rational Proofs that removes the economic incentive  for the strategy of fast incorrect answers, and then we present a protocol that achieves it for the case of some (uniform) bounded-depth circuits.
+Next, we design a $d$-rounds rational proof for sufficiently ``regular'' arithmetic circuit of depth $d = O(\log{n})$
+with sublinear verification. We show, that under certain cost assumptions, our scheme is sequentially composable,
+i.e. it can be used to delegate multiple inputs. We finally show that our scheme for space-bounded computations from Section \ref{sec:rp-dtisp} is also 
+sequentially composable under certain cost assumptions.
 
 
 \subsection{Comparison with Other Prior Work}
@@ -86,7 +90,7 @@ Apart from round complexity (which is the impressive breakthrough of the result 
 
 \medskip
 \noindent{\sc Computational Arguments.}
-There is a large class of protocols for {\em arguments} of correctness (e.g. \cite{ggp10,ggpr13,krr14}) even in the rational model \cite{ratargs,ratsumchecks}. Recall that in an argument, security is achieved only against computationally bounded prover. In this case even single round solutions can be achieved. We do not consider this model in this paper, except in Section~\ref{sec:scproof} as one possible option to obtain sequential composability. 
+There is a large class of protocols for {\em arguments} of correctness (e.g. \cite{ggp10,ggpr13,krr14}) even in the rational model \cite{ratargs,ratsumchecks}. Recall that in an argument, security is achieved only against computationally bounded prover. In this case even single round solutions can be achieved. We will consider a variant of this model in Chapter \ref{chap:FG}.
 
 \medskip
 \noindent
