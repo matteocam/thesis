@@ -4,40 +4,5 @@ It is by now well recognized that these new scenarios have introduced new securi
 
 {\sf Verifiable Outsourced Computation} is a very active research area in Cryptography and Network Security (see \cite{wb15} for a survey), with the goal of designing protocols where it is impossible (under suitable cryptographic assumptions) for a provider to "cheat" in the above scenarios. While much progress has been done in this area, we are still far from solutions that can be deployed in practice. 
 
-A different approach is to consider a model where "cheating" might actually be possible, but the provider would have no motivation to do so. In other words while cryptographic protocols prevent {\sf any} adversary from cheating, one considers protocols that work against {\sf rational} adversaries whose motivation is to maximize a well defined utility function. 
 
 
-\smallskip
-\noindent
-{\sc Previous Work.}
-An earlier work in this line is \cite{b08} where the authors describe a system based on a scheme of rewards [resp. penalties] that the client assesses to the server for computing the function correctly [resp. incorrectly]. However in this system checking the computation may require re-executing it, something that the client does only on a randomized subset of cases, hoping that the penalty is sufficient to incentivize the server to perform honestly. Morever the scheme might require an "infinite" budget for the rewards, and has no way to "enforce" payment of penalties from cheating servers. For these reasons the best application scenario of this approach is the incentivization of volunteer computing schemes (such as SETI@Home or Folding@Home), where the rewards are non-fungible "points" used for "social-status". 
-
-Because verification is performed by re-executing the computation, in this approach the client is "efficient" (i.e. does "less" work than the server) only in an 
-amortized sense, where the cost of the subset of executions verified by the client is offset by the total number of computations performed by the server. This implies that the server must perform many executions for the client. 
-
-Another approach, instead, is the concept of {\sf Rational Proofs} introduced by Azar and Micali in \cite{am} and refined in subsequent papers \cite{am1,ratargs}. This model captures, more accurately, real-world financial "pay-for-service" transactions, typical of cloud computing contractual arrangements, and security
-holds for a single "stand-alone" execution.
-
-In a Rational Proof, given a function $f$ and an input $x$, the server returns the value $y=f(x)$, and (possibly) some auxiliary information, to the client. The client will in turn 
-pay the server for its work with a reward which is a function of the messages 
-sent by the server and some randomness chosen by the client.  The crucial 
-property is that this reward is maximized in expectation when the server 
-returns the correct value $y$. Clearly a rational prover who is only interested 
-in maximizing his reward, will always answer correctly. 
-
-The most striking feature of Rational Proofs is their simplicity. For example in \cite{am}, Azar and Micali show {\sf single-message} Rational Proofs for any problem in $\#P$, where an (exponential-time) prover convinces a (poly-time) verifier of the number of satisfying assignment of a Boolean formula. 
-
-For the case of "real-life" computations, where the Prover is polynomial and the Verifier is as efficient as possible, Azar and Micali in \cite{am1} show $d$-round Rational Proofs for functions computed by (uniform) Boolean circuits of depth $d$, for $d=O(\log n)$ (which can be collapsed to a single round under some well-defined computational assumption as shown in \cite{ratargs}). The problem of rational proofs for any polynomial-time computable function remains tantalizingly open. 
-
-\smallskip
-\noindent
-{\sc Our Results.} 
-Motivated by the problem of volunteer computation, our first
-result is to show that the definition of Rational Proofs in \cite{am,am1} does not satisfy a basic compositional property which would make them applicable 
-in that scenario. 
-Consider the case where a large number of "computation problems" are outsourced. Assume that solving each problem takes time $T$. Then in a time interval of length $T$, the honest prover can only solve and receive the reward for a single problem. On the other hand a dishonest prover, can answer up to $T$ problems, for example by answering at random, a strategy that takes $O(1)$ time. To assure that answering correctly is a rational strategy, we 
-need that at the end of the $T$-time interval the reward of the honest prover be larger than the reward of the dishonest one. But this is not necessarily the case: for some of the protocols in \cite{am,am1,ratargs} we can show that a "fast" incorrect answer is more remunerable for the prover, by allowing him to solve more problems and collect more rewards.
-
-The next questions, therefore, was to come up with a definition and a protocol that achieves rationality both in the stand-alone case, and in the composition
-described above.  We first present an enhanced definition of Rational Proofs that removes the economic incentive  for the strategy of fast incorrect answers, and then we present a protocol that achieves it for the case of some (uniform) bounded-depth circuits.
- 

@@ -1,4 +1,51 @@
-\section{Rational Proofs}
+
+\section{The Landscape of Rational Proof Systems}
+
+Rational Proof systems can be divided in roughly two categories, both of them presented in the original work \cite{am}. 
+
+\medskip
+\noindent
+{\sc Scoring Rules.}
+The more ``novel" approach in \cite{am} uses {\em scoring rules} to compute the reward paid by the verifier to the prover. A scoring rule is used to asses the ``quality" of a prediction of a randomized process. Assume that the prover declares that a certain random variable $X$ follows a particular probability distribution $D$. The verifier runs an ``experiment" (i.e. samples the random variable in question) and computes a ``reward" based on the distribution $D$ announced by the prover and the result of the experiment. A scoring rule is maximized if the prover announced the real distribution followed by $X$. The novel aspect of many of the protocols in \cite{am} was how to cast the computation of $y=f(x)$ as the announcement of a certain distribution $D$ that could be tested efficiently by the verifier and rewarded by a scoring rule. 
+
+A simple example is the protocol for $\#P$ in \cite{am} (or its ``scaled-down" version for Hamming weight described more in detail in Section~\ref{sec:example}). Given a Boolean formula $\Phi(x_1,\ldots,x_n)$ the prover announces the number $m$ of satisfying assignments. This can be interpreted as the prover announcing that if one chooses an assignment at random it will be a satisfying one with probability $m \cdot 2^{-n}$. The verifier then chooses a random assignment and checks if it satisfies $\Phi$ or not and uses $m$ and the result of the test to compute the reward via a scoring rule. Since the scoring rule is maximized by the announcement of the correct $m$, a rational prover will announce the correct value. 
+
+As pointed out in \cite{cg15} the problem with the scoring rule approach is that the reward declines slowly as the distribution announced by the Prover becomes more and more distant from the real one. The consequence is that incorrect results still get a substantial reward, even if not a maximal one. Since those incorrect results can be computed faster than the correct one, a Prover with ``budget" $B$ might be incentivized to produce many incorrect answers instead of a single correct one. All of the scoring rule based protocols in \cite{am,am1,ratargs,ratsumchecks} suffer from this problem. 
+
+\medskip
+\noindent
+{\sc Weak Interactive Proofs.}
+The definition of rational proofs requires that the expected reward is maximized for the honest prover. This definition can be made stronger (as done explicitly in \cite{ratargs}) and require a that every systematically dishonest prover would incur a polynomial loss (this property is usually described in terms of a \textit{noticeable reward gap}). As discussed above, the elegant device of scoring rules is the basis for most rational proof protocols in literature, some of which achieve noticeable reward gap. Another simple way in which we can obtain this stronger type of rational proof is the following. Imagine having a test where the prover can be caught cheating with ``low", but non-negligible probability, e.g. $n^{-k}$ for some $k \in \naturals$.
+We will informally call this test a \textit{weak interactive proof}\footnote{This is basically the {\em covert adversary} model for multiparty computation introduced in \cite{AL10}.}. Indeed for such proofs we can always pay a fixed reward $R$ to the prover unless we catch him cheating in which case we pay $0$. These are rational proofs since obviously the expected reward of the prover is maximized by the honest behavior. Some of the proofs in \cite{am} and the proofs in \cite{cg15} are weak interactive proofs. Those proofs also turn out to be secure in the sequential model of \cite{cg15} (under appropriate assumptions). 
+
+The protocols in this work are weak interactive proof, which is why we can prove them to be sequentially composable\footnote{
+	One exception is the protocol for BPNC, which depends on the underlying protocol for (deterministic) NC. If we use the one in \cite{ratsumchecks}, then the resulting protocol uses scoring rules and is not sequentially composable. However an alterative protocol for NC can be used, based on our work in \cite{cg15}, which is a weak interactive proof and can be proven sequentially composable.}.
+
+
+\medskip
+\noindent
+{\sc Scoring rules vs. weak interactive proofs.}
+Comparing approaches based on scoring rules and weak interactive proofs the following two questions come up: 
+\begin{itemize}
+	\item Does one approach systematically lead to more efficient rational proofs (in terms of rounds, communication and verifying complexity) than the other? 
+	\item Is one approach more suitable for sequential composability than the other?
+\end{itemize}
+We do not have a precise answer to the above questions, which we believe are interesting open problems to consider. However we can make the following statements. 
+
+Regarding the first question: in the context of ``stand-alone" (non sequential) rational proofs it is not clear which approach is more powerful. We know that for every language class known to admit a scoring rule based protocol we also have a weak interactive proof with similar performance metrics (i.e. number of rounds, verifier efficiency, etc.). The result in this paper is the first example of a language class for which we have rational proofs based on weak interactive proofs but no example of a scoring rule based protocol exist\footnote{
+	We stress that in this comparison we are interested in protocols with similar efficiency parameters. For example, the work in \cite{am} presents several large complexity classes for which we have rational proofs. However, these protocols require a polynomial verifier and do not obtain a noticeable reward gap.}.
+This suggests that the weak interactive proof approach might be the more powerful technique. It would be interesting to prove that all rational proofs are indeed weak interactive proofs: i.e. that given a rational proof with certain efficiency parameters, one can construct a weak interactive proof with ``approximately" the same parameters. This question is left as future work.
+
+On the issue of sequential composability, we have already proven in \cite{cg15} that some rational proofs based on scoring rules (such as Brier's scoring rule) are not  sequentially composable. 
+This problem might be inherent at least for scoring rules that pay a substantial reward to incorrect computations. What we can say is that all known sequentially composable proofs are based on weak interactive proofs (\cite{cg15}, \cite{am1}\footnote{The construction in Theorem $5.1$ in \cite{am1} is shown to be sequentially composable in \cite{cg15}.} and this work). Again it would be interesting to prove that this is required, i.e. that all sequentially composable rational proofs are weak interactive proofs. 
+%An important caveat to keep in mind, however, is that the notion of sequential 
+%composability is to some extent flexible and depends
+%on the cost model one assumes. % XXX: Maybe say something about the cost model in this work and in the previous one here?
+
+% XXX: Rational arguments here.
+
+
+\section{Definitions and Preliminaries}
 
 The following is the definition of Rational Proof from \cite{am}. As usual with $\negl(\cdot)$ we denote a {\em negligible} function, i.e. one that is asymptotically smaller than the inverse of any polynomial. Conversely a {\em noticeable} function is the inverse of a polynomial. 
 
@@ -76,6 +123,17 @@ p BSR(\tilde{p},1) + (1-p) BSR(\tilde{p},0)
 which is easily seen to be maximized for $p=\tilde{p}$ i.e. when the Prover announces the correct result. Moreover one can see that when the Prover announces a wrong $\tilde{m}$ his reward goes down by $2(p-\tilde{p})^2 \geq 2/n^2$. In other words 
 for all $n$-bit input $x$, we have $\Delta(x)=2/n^2$ and if a dishonest Prover $\disP$ cheats with probability $\epsilon_{\disP}$ then $\delta_{\disP} > 2\epsilon_{\disP}/n^2$. 
 
+
+
+
+%\noindent
+%Let $\epsilon_{\disP} = \Pr[\out((P,V)(x)) \neq f(x)]$. 
+%Following \cite{rosen} we define the {\sf reward gap} as 
+%\[ \Delta(x) = min_{P^* : \epsilon_{P^*}=1}[\delta_{P^*}(x)]  \]
+%i.e. the minimum reward gap over the provers that always report the incorrect value. 
+%It is easy to see that for arbitrary prover $\disP$ we have $\delta_{\disP}(x) \geq 
+%\epsilon_{\disP} \cdot \Delta(x)$. Therefore it suffices to prove that a protocol has 
+%a strictly positive reward gap $\Delta(x)$ for all $x$. 
 
 
 

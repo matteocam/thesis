@@ -5,6 +5,10 @@
 
 %\input{FG-VC/llncs.cls}
 
+\usepackage{draftwatermark}
+\SetWatermarkColor[gray]{0.95}
+
+
 \usepackage{geometry, setspace, graphicx}
 \usepackage{enumerate, amssymb}
 %\onehalfspacing % XXX
@@ -206,12 +210,15 @@ keys]{cryptocode}
 %\include{preliminaries/preliminaries}
 
 \chapter{Rational Proofs for Subclasses of $\P$}
+\label{chap:RP-expr}
 \include{paper-rp-2/main}
 
 \chapter{Rational Proofs for Costly Multiple Delegations}
+\label{chap:RP-seq}
 \include{paper-rp-1/paper}
 
 \chapter{Fine-Grained Verifiable Computation}
+\label{chap:FG}
 \include{FG-VC/main}
 
 %\appendix

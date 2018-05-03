@@ -2,6 +2,10 @@
 % Nowadays a lot of computational resources are available. Yet, not evenly so.
 % XXX: More about the transition back to "mainframe"-like era through cloud computing
 
+{
+\color{gray}
+
+
 \section{Setting the Scene}
 
 Imagine the following situation.
@@ -264,10 +268,41 @@ As a stepping stone  for Result~\ref{res:delegation} we  also show how to transf
 	\end{itemize}
 \end{result}
 
-\subsection{A Timeline}
-In this proposal we gave an overview of results that are both complete and in progress.
-It is this candidate's goal to have a complete thesis dissertation by the end of May 2018.
-This will include complete proofs of the partial results above and a formalization of cost assumptions.
-During this time, if possible, we will also approach some of the open problems left by our work mentioned here and
-the still unexplored implications of our partial results.
+
+}
+
+
+% -- From here on the new stuff --
+
+% Overview and motivation
+
+The problem of efficiently checking the correctness of a computation performed by an untrusted party has been central in Complexity Theory for the last 30 years since the introduction of Interactive Proofs by Babai and Goldwasser, Micali and Rackoff \cite{babai,gmr}. 
+
+{\sf Verifiable Outsourced Computation} is now a very active research area in Cryptography and Network Security (see \cite{wb15} for a survey) with the aim to design protocols where it is impossible (under suitable cryptographic assumptions) for a provider to ``cheat" in the above scenarios. While much progress has been done in this area, we are still far from solutions that can be deployed in practice. 
+
+Part of the reason is that Cryptographers consider a very strong adversarial model that prevents {\sf any} adversary from cheating. A different approach is to restrict ourselves to {\em rational adversaries}, whose motivation is not just to disrupt the protocol or computation, but simply to maximize a well defined utility function (e.g. profit).
+%\subsection{Rational Proofs}
+
+A different approach is to consider a model where ``cheating" might actually be possible, but the provider would have no motivation to do so. In other words while cryptographic protocols prevent {\sf any} adversary from cheating, one considers protocols that work against {\sf rational} adversaries whose motivation is to maximize a well defined utility function. 
+
+We investigate this approach through two ``lenses'': \textit{(i)} \textit{rational proofs}, a variant of interactive proofs where provers lose (in economic terms) whenever offering a wrong proof; \textit{(ii)} \textit{fine-grained protocols}, a model where parties's resources are assumed to be limited \footnote{In a more specific sense than the usual ``probabilistic polynomial time''.} and cheating is possible only through a larger amount of resources (e.g. cheating requires time $\lambda^3$, for some parameter $\lambda$, but participating parties are assumed to be able to run in time at most $\lambda^2$). The connections between rationality and the latter model will be explored in the subsequent sections and in Chapter $\ref{chap:FG}$.
+
+\subsection{Rational Proofs}
+
+\input{intro-rp}
+
+%\textbf{1}
+
+%\input{paper-rp-1/intro}
+
+%\textbf{2}
+
+%\input{paper-rp-2/intro}
+
+\subsection{Fine-Grained Verifiable Computation}
+
+\input{FG-VC/introduction}
+
+\section{Notation and Common Preliminaries}
+
 

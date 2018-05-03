@@ -1,4 +1,4 @@
-\section{Introduction}
+%\section{Introduction}
 
 Historically, Cryptography has been used to protect information (either in transit or stored) from unauthorized access. One of the most important developments in Cryptography in the last thirty years, has been the ability to protect not only information but also the {\em computations} that are performed on data that needs to be secure. Starting with the work on secure multiparty computation \cite{mpc}, and continuing with ZK proofs \cite{zk}, and more recently Fully Homomorphic Encryption \cite{gentry}, verifiable outsourcing computation \cite{muggles,ggp10}, SNARKs \cite{qap,snark-linear} and obfuscation \cite{garg2016candidate} we now have cryptographic tools that protect the secrecy and integrity not only of data, but also of the programs which run on that data. 
 
@@ -37,7 +37,7 @@ Our somewhat homomorphic encryption also allows us to obtain the following proto
 
 The class $\ACztq$ includes many natural and interesting problems such as: fixed precision arithmetic, evaluation of formulas in 3CNF (or $k$CNF for any constant $k$), a representative subset of SQL queries, and S-Boxes~\cite{sboxes} for symmetric key encryption. 
 
-Our results (like \cite{fgcrypto}) hold under the assumption that $\fgAssump$, a widely believed worst-case assumption on separation of complexity classes. Notice that this assumption does not imply the existence of one-way functions (or even $\P \not = \NP$). Thus, our work shows that it is possible to obtain ``advanced'' cryptographic schemes\footnote{Naturally the security guarantees of these schemes are more limited compared to their standard definitions.} such as somewhat homomorphic encryption and verifiable computation even if we do not live in Minicrypt\footnote{This is a reference to Impagliazzo's ``five possible worlds''~\cite{impagliazzo1995personal}.}.
+Our results (like \cite{fgcrypto}) hold under the assumption that $\fgAssump$, a widely believed worst-case assumption on separation of complexity classes. Notice that this assumption does not imply the existence of one-way functions (or even $\P \not = \NP$). Thus, our work shows that it is possible to obtain ``advanced'' cryptographic schemes, such as somewhat homomorphic encryption and verifiable computation, even if we do not live in Minicrypt\footnote{This is a reference to Impagliazzo's ``five possible worlds''~\cite{impagliazzo1995personal}.}\footnote{Naturally the security guarantees of these schemes are more limited compared to their standard definitions.}.
 
 \medskip
 \noindent
