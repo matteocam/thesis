@@ -110,7 +110,7 @@ is the class of boolean functions $f : \bits \to \bit$ admitting a rational proo
 \label{sec:example}
 \smallskip
 \noindent
-{\sc Examples of Rational Proofs.} For concreteness here we show the protocol for a single threshold gate (readers are referred to \cite{am,am1,rosen} for more examples). 
+{\sc Examples of Rational Proofs.} For concreteness here we show the protocol for a single threshold gate (readers are referred to \cite{am,am1,ratargs} for more examples). 
 
 Let $G_{n,k}(x_1,\ldots,x_n)$ be a threshold gate with $n$ Boolean inputs, that evaluates to 1 if at least $k$ of the input bits are 1. The protocol in \cite{am1} to evaluate this gate goes as follows. The Prover announces the number $\tilde{m}$ of input bits equal to 1, which allows the Verifier to compute $G_{n,k}(x_1,\ldots,x_n)$. The Verifier select a random index $i \in [1..n]$ and looks at input bit $b=x_i$ and rewards the Prover using Brier's Rule $BSR(\tilde{p},b)$ where $\tilde{p}=\tilde{m}/n$ i.e. the probability claimed by the Prover that a randomly selected input bit be 1. Then
 \[BSR(\tilde{p},1) = 2\tilde{p} - \tilde{p}^2 - (1-\tilde{p})^2 + 1 = 2\tilde{p}(2-\tilde{p}) \]
@@ -128,7 +128,7 @@ for all $n$-bit input $x$, we have $\Delta(x)=2/n^2$ and if a dishonest Prover $
 
 %\noindent
 %Let $\epsilon_{\disP} = \Pr[\out((P,V)(x)) \neq f(x)]$. 
-%Following \cite{rosen} we define the {\sf reward gap} as 
+%Following \cite{ratargs} we define the {\sf reward gap} as 
 %\[ \Delta(x) = min_{P^* : \epsilon_{P^*}=1}[\delta_{P^*}(x)]  \]
 %i.e. the minimum reward gap over the provers that always report the incorrect value. 
 %It is easy to see that for arbitrary prover $\disP$ we have $\delta_{\disP}(x) \geq 

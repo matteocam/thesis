@@ -65,27 +65,27 @@ In this section we apply the previous results to the problem of computing FFT ci
 
 \input{paper-rp-2/proof-seq-comp.tex}
 
-\section{Conclusion}
-Rational Proofs are a promising approach to the problem of verifying computations in a rational model, where the prover is not malicious, but only 
-motivated by the goal of maximing its utility function. We showed that Rational Proofs do not satisfy basic compositional properties in the case where a large number of "computation problems" are outsourced, e.g. volunteered computations. We showed that a "fast" incorrect answer is more remunerable for the prover, by allowing him to solve more problems and collect more rewards.
-We presented an enhanced definition of Rational Proofs that removes the economic incentive  for this strategy and we presented a protocol that achieves it for some uniform bounded-depth circuits.
-
-One thing to point out is that our protocol has two additional advantages: 
-\begin{itemize}
-\item the honest Prover is always guaranteed a fixed reward $R$, as opposed to the some of the protocols in 
-\cite{am,am1} where the reward is a random variable even for the honest prover;
-\item Our protocol is the first example of a rational proof for arithmetic circuits. 
-\end{itemize}
-
-Our work leaves many interesting research directions to explore: 
-\begin{itemize}
-\item Is it possible to come up with a protocol that works for any bounded-depth circuit, and not circuits with special "topological" conditions such as the ones 
-imposed by our results?
-\item Our results hold for "non-adaptive" prover strategies, though that seems more a proof artifact to simplify the analysis , than a technical requirement. 
-Is it possible to lift that restriction? 
-\item Are there other circuits which, like the FFT one, satisfy our notions and requirements?
-\item What about rational proofs for arbitrary poly-time computations? Even if the simpler stand-alone case?
-\end{itemize}
+%\section{Conclusion}
+%Rational Proofs are a promising approach to the problem of verifying computations in a rational model, where the prover is not malicious, but only 
+%motivated by the goal of maximing its utility function. We showed that Rational Proofs do not satisfy basic compositional properties in the case where a large number of "computation problems" are outsourced, e.g. volunteered computations. We showed that a "fast" incorrect answer is more remunerable for the prover, by allowing him to solve more problems and collect more rewards.
+%We presented an enhanced definition of Rational Proofs that removes the economic incentive  for this strategy and we presented a protocol that achieves it for some uniform bounded-depth circuits.
+%
+%One thing to point out is that our protocol has two additional advantages: 
+%\begin{itemize}
+%\item the honest Prover is always guaranteed a fixed reward $R$, as opposed to the some of the protocols in 
+%\cite{am,am1} where the reward is a random variable even for the honest prover;
+%\item Our protocol is the first example of a rational proof for arithmetic circuits. 
+%\end{itemize}
+%
+%Our work leaves many interesting research directions to explore: 
+%\begin{itemize}
+%\item Is it possible to come up with a protocol that works for any bounded-depth circuit, and not circuits with special "topological" conditions such as the ones 
+%imposed by our results?
+%\item Our results hold for "non-adaptive" prover strategies, though that seems more a proof artifact to simplify the analysis , than a technical requirement. 
+%Is it possible to lift that restriction? 
+%\item Are there other circuits which, like the FFT one, satisfy our notions and requirements?
+%\item What about rational proofs for arbitrary poly-time computations? Even if the simpler stand-alone case?
+%\end{itemize}
 
 %\begin{thebibliography}{99}
 %
@@ -103,7 +103,7 @@ Is it possible to lift that restriction?
 %\bibitem{dns}
 %C.~Dwork, M.~Naor and A.~Sahai. {\em Concurrent Zero-Knowledge}. J. ACM 51(6): 851-898 (2004)
 %
-%\bibitem{rosen}
+%\bibitem{ratargs}
 %S.~Guo, P.~Hubacek, A.~Rosen and M.~Vald. {\em Rational Arguments: Single Round Delegation with Sublinear Verification.} 2014 Innovations in Theoretical Computer Science Conference.
 %
 %\bibitem{wb15} M.~Walfish, A.J.~Blumberg. {\em 

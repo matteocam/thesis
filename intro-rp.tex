@@ -103,4 +103,16 @@ Thus the choice of the DM reduces to the choice of a Turing Machine from a certa
 Rational proofs with costly computation could be formalized in the language of \emph{computational decision problems} in \cite{halpern2011don}. There are similarities between the approach in this
 work and that in \cite{halpern2011don}, as both take into account the cost of computation in a decision problem.
 
+\subsection{Future Directions}
+
+Our work leaves open a series of questions:
+\begin{itemize}
+	\item What is the relationship between scoring rule based protocols vs weak interactive proofs? Our work seems to indicate that the latter technique is more powerful (our work shows an example of a class of language which is not known to be recognizable using scoring rules and that scoring rules seem inherently insecure in a composable setting). Is it possible to show, however, that a scoring-rule based protocol can be transformed into a weak interactive proof (without a substantial loss of efficiency) therefore showing that it is enough to focus on the latter?
+	
+	\item Can we build efficient rational proofs for arbitrary poly-time computations, where the verifier runs in sub-linear, or even in linear, time? Even in the standalone model of \cite{am}?
+	
+	\item Our proof of sequential composability considers only non-adaptive adversaries, and enforces this condition by the use of timing assumptions or computationally bounded provers. Is it possible to construct protocols that are secure against adaptive adversaries? Or is it possible to relax the timing assumption to something less stringent than what is required in our protocol?
+	
+	\item It would be interesting to investigate the connection between the model of Rational Proofs and the work on Computational Decision Theory in  \cite{halpern2011don}. In particular it would be interesting to look at realistic cost models that could affect the choice of strategy by the prover particularly in the sequentially composable model. 
+\end{itemize}
 

@@ -87,21 +87,7 @@
 	
 	
 	
-	\section{Conclusions and Open Problems}
-	We presented a rational proof for languages recognized by (deterministic) 
-	space-bounded computations. Our protocol is the first rational proof for a general class of languages that does not use circuit representations. Our protocol is secure both in the standard stand-alone notion of rational proof introduced in 
-	\cite{am} and in the stronger composable version presented in \cite{cg15}. 
 	
-	Our work leaves open a series of questions
-	\begin{itemize}
-		\item What is the relationship between scoring rule based protocols vs weak interactive proofs? Our work and the work in \cite{cg15} seem to indicate that the latter technique is more powerful (our work shows an example of a class of language which is not known to be recognizable using scoring rules, the work in \cite{cg15} shows that scoring rules seem inherently insecure in a composable setting). Is it possible to show, however, that a scoring-rule based protocol can be transformed into a weak interactive proof (without a substantial loss of efficiency) therefore showing that it is enough to focus on the latter?
-		
-		\item Can we build efficient rational proofs for arbitrary poly-time computations, where the verifier runs in sub-linear, or even in linear, time? Even in the standalone model of \cite{am}?
-		
-		\item Our proof of sequential composability considers only non-adaptive adversaries, and enforces this condition by the use of timing assumptions or computationally bounded provers. Is it possible to construct protocols that are secure against adaptive adversaries? Or is it possible to relax the timing assumption to something less stringent than what is required in our protocol?
-		
-		\item It would be interesting to investigate the connection between the model of Rational Proofs and the work on Computational Decision Theory in  \cite{halpern2011don}. In particular it would be interesting to look at realistic cost models that could affect the choice of strategy by the prover particularly in the sequentially composable model. 
-	\end{itemize}
 	
 	
 %
