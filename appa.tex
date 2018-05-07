@@ -1,0 +1,23 @@
+\chapter{Appendix A}
+
+%\clearpage
+%\newpage
+\newtheorem*{theorem*}{Theorem}
+\newtheorem*{definition*}{Definition}
+
+In this section we show that a fine-grained interactive proof implies a sequentially composable rational proof.
+
+\def\sndCls{\mathcal{C}}
+
+\begin{definition*}[Fine-Grained Interactive Proof]
+Let $\sndCls$ be a complexity class. An interactive protocol $(P, V)$ is a fine-grained interactive proof with respect to $\sndCls$ if it has perfect completeness and for all $\disP \in \sndCls$ and all inputs $x$
+$$ \Pr[\out(\disP,V)(x) \not = f(x)] \leq  \negl(|x|)$$
+\end{definition*}
+
+\begin{theorem*}
+Let $(P, V)$ be a fine-grained interactive proof with respect to class $\sndCls$ for the function $f$. Let $\cost$ be a cost function such that for all $\disP$ and for all inputs $x$ $\cost(\disP, x) \leq \cost(f) \implies \disP \in \sndCls$, then $(P, V)$ is a $(\negl(|x|, \poly(|x|))$-sequentially composable rational proof for $f$.
+\end{theorem*}
+\begin{proof}
+	Let $\disP$ be a prover such that $\cost(\disP, x) < \cost(f)$ and such that $\Pr[\out(\disP, V) \not = f(x)] = 1$. Consider the interaction between $\disP$ and $V$. And let $V$ reward $\disP$ with $R = \poly(|x|)$ if $V$ accepts and with $0$ otherwise.
+	The probability of $\disP$ cheating successfully is negligible (as it must be in the class $\sndCls$ by hypothesis).  The result follows by Corollary \ref{cor:prob}.
+\end{proof}

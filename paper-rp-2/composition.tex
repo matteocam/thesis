@@ -51,10 +51,10 @@ that \textit{always} provide a wrong output.
 \end{proof}
 
 % TODO: Clean up the proof above. Specify it has polynomial budget. Make it homogeneous with the definitions given in preliminaries. Q: Why does the def. of DRMA not mention poly budget?
-Now we can start the proof of Theorem~\ref{thm:composition}.
+The proof of Theorem~\ref{thm:composition} follows.
+
 \begin{proof}
 % Introduce reward functions
-
 Let $\rewf$ and $\rewg$ be the reward functions of the $g$-oracle rational proof for $f$ and the rational proof for $g$ respectively.
 % construct new reward functions and protocol
 We now construct a new verifier $V$ for $f$. This verifier runs exactly like the $g$-oracle verifier for $f$ except that every oracle query to $g$ is now replaced with an invocation of the rational proof for $g$.
