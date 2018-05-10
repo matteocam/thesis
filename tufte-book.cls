@@ -118,10 +118,10 @@
 \def\supervisor#1#2{\setbox\@titlesupervisor\vbox
   {\unvbox\@titlesupervisor \vskip 10pt% plus 1fil minus 1fil
   \def\baselinestretch{1}\large
-  \signature{Certified by}{#1 \\ #2 \\ Thesis Supervisor}}
+  \signature{Certified by}{#1 \\ #2 \\ Thesis Advisor}}
   \setbox\@abstractsupervisor\vbox{\unvbox\@abstractsupervisor
   \vskip\baselineskip \def\baselinestretch{1}\@normalsize 
-  \par\noindent Thesis Supervisor: #1 \\ Title: #2}}
+  \par\noindent Thesis Advisor: #1}}
 
 % department chairman, not thesis committee chairman
 \def\chairman#1#2{\gdef\@chairmanname{#1}\gdef\@chairmantitle{#2}}
@@ -156,24 +156,31 @@
 \end{titlepage}}
 
 % abstract
-\def\abstractpage{\cleardoublepage
-\noindent\large{\bf \@title} \\
-\hfill \\
- \noindent\@author 
-\par
-\def\baselinestretch{1}\@normalsize
+\def\abstractpage{\cleardoublepage	
 \noindent
-{\setlength{\parindent}{0cm}Submitted to the \@department  \\
-on \@thesisdate, in partial fulfillment of the requirements for \\
-the \@degreeword\ of \@degree}
-\par
+\begin{center}
+\Large{\bf \@title} \\
+by %\hfill
+\\
+ \noindent\@author 
+\end{center}
+\noindent
+\unvcopy\@abstractsupervisor
+\vspace{0.7cm}
 \begin{abstract}}
+%\par
+%\def\baselinestretch{1}\@normalsize
+%\noindent
+%{\setlength{\parindent}{0cm}Submitted to the \@department  \\
+%on \@thesisdate, in partial fulfillment of the requirements for %\\
+%the \@degreeword\ of \@degree}
+%\par
+
 
 %% Changed from \unvbox to \unvcopy for use with multiple copies of abstract
 %% page.
 %% Krishna Sethuraman (1990)
-\def\endabstractpage{\end{abstract}\noindent
- \unvcopy\@abstractsupervisor \newpage}
+\def\endabstractpage{\end{abstract}\newpage}
 
 %% This counter is used to save the page number for the second copy of
 %% the abstract.

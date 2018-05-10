@@ -1564,8 +1564,9 @@
   \vspace{11.5pc}%
   \fontsize{34}{36}\selectfont\par\noindent\textcolor{darkgray}{\allcaps{\thanklesstitletufte}}%
   \vfill%
-  \fontsize{14}{16}\selectfont\par\noindent\allcaps{\thanklesspublisher}%
   \end{fullwidth}%
+  \sffamily\large\noindent\begin{center}{\thanklesspublisher} \\ 2018\end{center}%
+  \vspace{0.5cm}
   }
   \thispagestyle{empty}%
   \clearpage%
