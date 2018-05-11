@@ -155,6 +155,59 @@
 \end{flushleft}
 \end{titlepage}}
 
+\def\myreaderpage{
+	\cleardoublepage	
+	\noindent
+	{\Large 
+	\begin{center}
+%		\Large{\bf \@title} \\
+%		by %\hfill
+%		\\
+%		\noindent\@author
+This manuscript has  been read and accepted by the Graduate Faculty in Computer Science in satisfaction of the dissertation requirement for the degree of Doctor of Philosophy.
+
+%	\noindent
+%\unvcopy\@abstractsupervisor
+	\vspace{2.0cm}
+\begin{table}[H]
+	%\caption{My caption}
+	%\label{my-label}
+	\begin{tabular}{lp{.5\linewidth}lp{.5\linewidth}l}
+		& \textbf{Professor Rosario Gennaro} \\
+		\rule{2in}{.1pt} & \rule{3in}{.1pt}                   \\
+		Date            & Chair of Examining Committee      
+	\end{tabular}%
+\end{table}
+	\vspace{0.6cm}
+	\begin{table}[H]
+		%\centering
+		%\caption{My caption}
+		%\label{my-label}
+	\begin{tabular}{lp{.5\linewidth}lp{.5\linewidth}l}
+	& \textbf{Professor Robert M. Haralick} \\
+		\rule{2in}{.1pt} & \rule{3in}{.1pt}                   \\
+	Date             & Executive Officer     
+\end{tabular}%
+	\end{table} 
+	\end{center}
+\vspace{3cm}
+\textbf{Professor Rosario Gennaro}\\
+\noindent
+\textbf{Professor William Skeith III}\\
+\noindent
+\textbf{Professor Itai Feigenbaum}\\
+\noindent
+\textbf{Professor Mariana Raykova}\\
+\noindent
+Supervisory Committee
+\vfill
+\begin{center}
+ {\sc The City University of New York}
+	\end{center} }
+\vspace{2cm}
+	\newpage
+}
+
 % abstract
 \def\abstractpage{\cleardoublepage	
 \noindent
