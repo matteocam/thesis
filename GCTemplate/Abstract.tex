@@ -1,22 +1,52 @@
 \begin{center}
 Abstract \\
-\textsc{Title} \\
+\textsc{Rationality and Efficient Verifiable Computation} \\
 by \\
-\textsc{My Full Name} \\[0.25in]
+\textsc{Matteo Campanelli} \\[0.25in]
 \end{center}
 
 \vspace{0.25in}
 
-\noindent Adviser: Professor W.T. Door
+\noindent Advisor: Professor Rosario Gennaro
 
 \vspace{0.25in}
 
-\noindent This dissertation consists of four chapters\ldots
+	\noindent
+%Delegating computation is a prominent computing paradigm 	
+In this thesis, we study protocols for delegating computation in a model where one of the parties is rational. In our model, a \textit{delegator} outsources the computation of a function $f$ on input $x$ to a \textit{worker}, who
+receives a (possibly monetary) reward. Our goal is to design \textit{very efficient} delegation schemes 
+where a worker is economically incentivized to provide the correct result
+$f(x)$. In this work we strive for not relying on cryptographic assumptions, in particular our results do not require the existence of one-way functions. 
 
-\paragraph{Chapter 1} \input{One.tex}
+We provide several results within the framework of rational proofs introduced by Azar and Micali (STOC 2012).
+We make several contributions to efficient rational proofs for general feasible computations.
+First, we design schemes with a sublinear verifier with low round and communication complexity for
+space-bounded computations.
+Second, we provide evidence, as lower bounds, against the existence of rational proofs:
+with logarithmic communication and polylogarithmic verification for $\P$ and 
+with polylogarithmic communication for $\NP$.
+% Third, we generalize a scaling approach in Azar and Micali (STOC) ... [composition theorem]
 
-\paragraph{Chapter 2} \input{Two.tex}
+We then move to study the case where a delegator outsources multiple inputs.
+First, we formalize an extended notion of rational proofs for this scenario (sequential composability) and we
+show that existing schemes do not satisfy it. We show how these protocols incentivize workers
+to provide many ``fast'' incorrect answers which allow them to solve more problems and collect more rewards.
+We then design a $d$-rounds rational proof for sufficiently ``regular'' arithmetic circuit of depth $d = O(\log{n})$
+with sublinear verification. We show, that under certain cost assumptions, our scheme is sequentially composable,
+i.e. it can be used to delegate multiple inputs. We finally show that our scheme for space-bounded computations is also 
+sequentially composable under certain cost assumptions.
 
-\paragraph{Chapter 3} \input{Three.tex}
+%The results above have been published as proceedings in GameSec as Campanelli and Gennaro (GameSec 2015)
+%and Campanelli and Gennaro (GameSec 2017).
 
-\paragraph{Chapter 4} \input{Four.tex}
+In the last part of this thesis we initiate the study of {\em Fine Grained Secure Computation}: i.e. 
+the construction of {\em secure computation primitives} against ``moderately complex" adversaries. Such fine-grained protocols can be used to obtain sequentially composable rational proofs. We present definitions and constructions for \textit{compact} Fully Homomorphic Encryption and Verifiable Computation secure against (\textit{non-uniform}) $\mathsf{NC}^1$ adversaries. Our results hold under a widely believed separation assumption, namely $\fgAssump$. We also present two application scenarios for our model: \textit{(i)} hardware chips that prove their own correctness, and \textit{(ii)} protocols against rational adversaries potentially relevant to the {\em Verifier's Dilemma} in smart-contracts transactions such as Ethereum. 
+
+%
+%\paragraph{Chapter 1} \input{One.tex}
+%
+%\paragraph{Chapter 2} \input{Two.tex}
+%
+%\paragraph{Chapter 3} \input{Three.tex}
+%
+%\paragraph{Chapter 4} \input{Four.tex}

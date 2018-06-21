@@ -4,6 +4,13 @@
 % 1" margins, page numbers >= 3/4" from edge
 \usepackage[margin = 1in, includehead, footskip=0.25in]{geometry}
 
+\usepackage[backend=bibtex]{biblatex}  
+
+%\bibliographystyle{alpha}
+\addbibresource{references.bib}
+\addbibresource{crypto.bib}%
+
+
 % double-spaced (except bibliography)
 \usepackage{setspace}
 \doublespacing
@@ -31,7 +38,7 @@
 \usepackage{lscape}
 \usepackage{graphicx}
 \usepackage{import} % -import- facilitates relative file references within each file
-\usepackage[round]{natbib}
+%\usepackage[round]{natbib}
 
 % for eps to pdf conversion
 % these may not be necessary for all students/disciplines
@@ -43,6 +50,88 @@
     pdftitle={Rationality and Efficient Verifiable Computation},
     hidelinks
 ]{hyperref}
+
+
+\usepackage{lgrind}
+\usepackage{graphicx}
+\usepackage{lipsum}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{moreverb}
+\usepackage{alltt}
+\usepackage{complexity}
+%\usepackage{parskip}
+\usepackage{url}
+\usepackage{color}
+\usepackage{array}
+\usepackage{pdfpages}
+\usepackage{wrapfig}
+\usepackage{geometry}
+\usepackage{times}
+\usepackage{url}
+\usepackage{latexsym}
+\usepackage[utf8]{inputenc}
+%\usepackage{natbib}
+\usepackage{graphicx}
+%\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{verbatim}
+\usepackage{enumitem}
+\usepackage{verbatim}
+\setkeys{Gin}{width=\linewidth,totalheight=\textheight,keepaspectratio}
+
+\usepackage{setspace, graphicx}
+\usepackage{fancyvrb}
+
+\usepackage{fancyhdr} 
+\usepackage{amsfonts}
+\usepackage{multicol}
+\usepackage{framed} 
+\usepackage{array} 
+\usepackage{graphicx} 
+\usepackage{graphics}
+\usepackage{csquotes}
+\usepackage{mathtools} 
+\usepackage{tikz} 
+\usepackage{verbatim}
+\usepackage{float}
+\restylefloat{table}
+
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{amsthm}
+
+\usepackage{amsmath,amssymb}
+\usepackage{mathtools}
+\usepackage{bm}
+\usepackage{complexity}
+\usepackage[
+n,
+operators,
+advantage,
+sets,
+adversary,
+landau,
+probability,
+notions,	
+logic,
+ff,
+mm,
+primitives,
+events,
+complexity,
+asymptotics,
+keys]{cryptocode}
+
+\usepackage{comment}
+ \usepackage{relsize}
+
+
+\input{mycommands}
+
+\DeclareMathOperator*{\argmax}{arg\,max}
 
 % dissertation
 \begin{document}
@@ -68,6 +157,37 @@
 
 % content
 \mainmatter
+
+\chapter{Introduction}
+\chaptermark{Introduction}
+\include{synopsis/main}
+\clearpage
+
+
+\chapter{Rational Proofs for Subclasses of $\P$}
+\label{chap:RP-expr}
+\include{paper-rp-2/main}
+\clearpage
+
+
+\chapter{Rational Proofs for Costly Multiple Delegations}
+\label{chap:RP-seq}
+\include{paper-rp-1/paper}
+\clearpage
+
+
+
+\chapter{Fine-Grained Verifiable Computation}
+\label{chap:FG}
+\include{FG-VC/main}
+\clearpage
+
+
+\appendix
+\chapter{Appendix A}
+\label{app:fg-rational}
+\include{appa}
+\clearpage
 
 % chapter one
 %\chapter{One}
@@ -107,7 +227,6 @@
 
 % end matter
 \singlespacing
-\bibliographystyle{apalike}
-\bibliography{library}
+\printbibliography
 
 \end{document}
