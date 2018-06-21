@@ -1,0 +1,282 @@
+% -*- Mode:TeX -*-
+
+
+\documentclass[justified,nobib]{tufte-book}
+
+
+%\input{FG-VC/llncs.cls}
+
+%\usepackage{draftwatermark}
+%\SetWatermarkColor[gray]{0.95}
+
+
+\usepackage{geometry, setspace, graphicx}
+\usepackage{enumerate, amssymb}
+%\onehalfspacing % XXX
+
+\hypersetup{colorlinks = true,
+linkcolor = NavyBlue,
+urlcolor  = NavyBlue,
+citecolor = NavyBlue,
+anchorcolor = NavyBlue}
+
+
+
+\usepackage{amsthm, amsmath, amssymb}
+\usepackage{setspace, graphicx, enumerate}
+
+
+% For nicely typeset tabular material
+\usepackage{booktabs}
+
+% For graphics / images
+\usepackage{graphicx}
+\usepackage{fancyvrb}
+\fvset{fontsize=\normalsize}
+\usepackage{xspace}
+
+\usepackage{units}
+
+
+% AMS Theorem Setup
+% User Macro Setup
+
+\usepackage{lgrind}
+\usepackage{graphicx}
+\usepackage{lipsum}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{moreverb}
+\usepackage{alltt}
+\usepackage{complexity}
+%\usepackage{parskip}
+\usepackage{url}
+\usepackage{color}
+\usepackage{array}
+\usepackage{pdfpages}
+\usepackage{wrapfig}
+\usepackage{geometry}
+\usepackage{times}
+\usepackage{url}
+\usepackage{latexsym}
+\usepackage[utf8]{inputenc}
+%\usepackage{natbib}
+\usepackage{graphicx}
+%\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{verbatim}
+\usepackage{enumitem}
+\usepackage{verbatim}
+\setkeys{Gin}{width=\linewidth,totalheight=\textheight,keepaspectratio}
+
+\usepackage{amsmath,amssymb}
+\usepackage{mathtools}
+\usepackage{bm}
+\usepackage{complexity}
+\usepackage[
+n,
+operators,
+advantage,
+sets,
+adversary,
+landau,
+probability,
+notions,	
+logic,
+ff,
+mm,
+primitives,
+events,
+complexity,
+asymptotics,
+keys]{cryptocode}
+
+
+\usepackage{fancyhdr} 
+\usepackage{amsfonts}
+\usepackage{multicol}
+\usepackage{framed} 
+\usepackage{array} 
+\usepackage{graphicx} 
+\usepackage{graphics}
+\usepackage{csquotes}
+\usepackage{mathtools} 
+\usepackage{tikz} 
+\usepackage{verbatim}
+\usepackage{float}
+\restylefloat{table}
+
+\usepackage{bm}
+\usepackage{comment}
+\usepackage{relsize}
+%\usepackage[section]{placeins}
+
+\usepackage[utf8]{inputenc}
+
+\usepackage{adjustbox}
+
+
+%% These have been added at the request of the MIT Libraries, because
+%% some PDF conversions mess up the ligatures.  -LB, 1/22/2014
+\usepackage{fancyvrb}
+
+\usepackage[backend=bibtex]{biblatex}  
+
+%\bibliographystyle{alpha}
+\addbibresource{references.bib}
+\addbibresource{crypto.bib}%
+
+%%
+% Prints argument within hanging parentheses (i.e., parentheses that take
+% up no horizontal space).  Useful in tabular environments.
+\newcommand{\hangp}[1]{\makebox[0pt][r]{(}#1\makebox[0pt][l]{)}}
+
+%%
+% Prints an asterisk that takes up no horizontal space.
+% Useful in tabular environments.
+\newcommand{\hangstar}{\makebox[0pt][l]{*}}
+
+%%
+% Prints a trailing space in a smart way.
+\usepackage{xspace}
+
+
+% custom page numbering
+\fancypagestyle{plain}{
+	\fancyhead[LE]{\thepage\quad\smallcaps}% 
+	\fancyhead[RO]{\smallcaps\quad\thepage}%
+}
+
+%\usepackage[parfill]{parskip}
+
+% remove paragraph indentation
+\makeatletter
+% Paragraph indentation and separation for normal text
+\renewcommand{\@tufte@reset@par}{%
+  \setlength{\RaggedRightParindent}{0.0pc}%
+  \setlength{\JustifyingParindent}{0.0pc}%
+  \setlength{\parindent}{0pc}%
+  \setlength{\parskip}{\baselineskip}%
+}
+\@tufte@reset@par
+
+% Paragraph indentation and separation for marginal text
+\renewcommand{\@tufte@margin@par}{%
+  \setlength{\RaggedRightParindent}{0.0pc}%
+  \setlength{\JustifyingParindent}{0.0pc}%
+  \setlength{\parindent}{0.0pc}%
+  \setlength{\parskip}{10pt}%
+}
+\makeatother
+
+%% This bit allows you to either specify onwly the files which you wish to
+%% process, or `all' to process all files which you \include.
+%% Krishna Sethuraman (1990).
+
+% \setcounter{secnumdepth}{0}
+% \includeonly{chap2}
+
+\newcommand{\choosecase}[1]{#1}
+
+\renewcommand{\cleardoublepage}{\clearpage}
+
+%\geometry{showframe}
+
+% Math Operators
+%\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator*{\argmax}{arg\,max}
+%\DeclareMathOperator*{\polylog}{polylog}
+%\DeclareMathOperator*{\reward}{reward}
+
+\renewenvironment{proof}{\noindent{\bf \textit{Proof}}\hspace*{0.5em}}{\qed\bigskip}
+
+\def\subsubsection{\newthought}
+
+\input{mycommands}
+
+\newcommand{\matteo}[1]{{\color{red}{#1 -- MC}}}
+
+\setcounter{secnumdepth}{2}
+
+\usepackage{xcolor}
+\definecolor{MyOrange}{RGB}{232,108,20}
+
+
+% chapter format
+\titleformat{\chapter}%
+{\Huge\rmfamily\itshape\color{NavyBlue}}% format applied to label+text
+{\llap{\colorbox{NavyBlue}{\parbox{1.5cm}{\hfill\itshape\Huge\color{white}\thechapter}}}}% label
+{1em}% horizontal separation between label and title body
+{}% before the title body
+[]% after the title body
+
+% section format
+%\setlength{\titlewidth}{0.5\textwidth}
+
+\titleformat{\section}%
+{\normalfont\Large\itshape\color{MyOrange!96!black}}% format applied to label+text
+{\llap{\colorbox{MyOrange!96!black}{\parbox{1.5cm}{\hfill\color{white}\thesection}}}}% label
+{1em}% horizontal separation between label and title body
+{}% before the title body
+[]% after the title body
+
+\definecolor{darkslategray}{rgb}{0.18, 0.31, 0.31}
+
+% subsection format
+\titleformat{\subsection}%
+{\normalfont\Large\itshape\color{darkslategray}}% format applied to label+text
+{\llap{\color{darkslategray}\thesubsection}}% label
+{1em}% horizontal separation between label and title body
+{}% before the title body
+[]% after the title body
+% turn on numbering for parts and chapters 
+
+
+\pagenumbering{roman}
+
+\begin{document}
+\setcounter{page}{1}
+	
+
+\include{cover}
+% Some departments (e.g. 5) require an additional signature page.  See
+% signature.tex for more information and uncomment the following line if
+% applicable.
+% \include{signature}
+
+\include{contents}
+\pagestyle{fancy}
+
+\pagenumbering{arabic}
+\chapter{Introduction}
+\include{synopsis/main}
+
+%\chapter{Preliminaries}
+%\include{preliminaries/preliminaries}
+
+\chapter[Rational Proofs for Subclasses of $\P$]{Rational Proofs\\for Subclasses of $\ \P$}
+\label{chap:RP-expr}
+\include{paper-rp-2/main}
+
+\chapter[Rational Proofs for Costly Multiple Delegations]{Rational Proofs for Costly\\Multiple Delegations}
+\label{chap:RP-seq}
+\include{paper-rp-1/paper}
+
+\chapter[Fine-Grained Verifiable Computation]{Fine-Grained\\Verifiable Computation}
+\label{chap:FG}
+\include{FG-VC/main}
+
+\appendix
+\chapter{Appendix A}
+\label{app:fg-rational}
+\include{appa}
+%\include{biblio}
+
+
+
+\printbibliography
+
+\end{document}
+
