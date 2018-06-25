@@ -114,8 +114,9 @@ Whenever the verification algorithm accepts, the adversary must have responded c
 Our goal is to bound the probability that the adversary succeeds in doing that. 
 
 First, notice that the view of the adversary is
-$(\pkW, \hatr_1,\dots,\hatr_{2t})$, and identical to $(\pkW, \HEpEnc_{\pkW}(\zero)^t, \HEpEnc_{\pkW}(x)^t)$.
-By semantic security of the homomorphic encryption scheme, there exists an infinitely large set of parameters $\Lambda$ such that $ (\pkW, \HEpEnc_{\pkW}(\zero)^t, \HEpEnc_{\pkW}(x)^t) \lind (\pkW, \HEpEnc_{\pkW}(\zero)^{2t})$. Consider a modified game where the adversary receives  $(\pkW, \HEpEnc_{\pkW}(\zero)^{2t})$. Denote by $p$ the probability that the adversary succeeds in this game. By computational indistinguishability we have
+$(\pkW, \hatr_1,\dots,\hatr_{2t})$, and identical to \\
+$(\pkW, \HEpEnc_{\pkW}(\zero)^t, \HEpEnc_{\pkW}(x)^t)$.
+By semantic security of the homomorphic encryption scheme, there exists an infinitely large set of parameters $\Lambda$ such that $$ (\pkW, \HEpEnc_{\pkW}(\zero)^t, \HEpEnc_{\pkW}(x)^t) \lind (\pkW, \HEpEnc_{\pkW}(\zero)^{2t})$$ Consider a modified game where the adversary receives  $(\pkW, \HEpEnc_{\pkW}(\zero)^{2t})$. Denote by $p$ the probability that the adversary succeeds in this game. By computational indistinguishability we have
 \[
 \Pr[\advstar \text{ is correct on } (\hatr_1,\dots,\hatr_{t}) \text{ and incorrect on } (\hatr_{t+1},\dots,\hatr_{2t}) ] \leq p + \negl(\lambda)
 \]
