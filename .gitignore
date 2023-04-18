@@ -10,3 +10,14 @@ synopsis/main.pdf
 CHANGES
 titleps.tex
 titlesec.tex
+appa.aux
+contents.aux
+cover.aux
+*.aux
+*.bbl
+main.blg
+main.log
+main.run.xml
+main.synctex.gz
+main.toc
+texput.log
